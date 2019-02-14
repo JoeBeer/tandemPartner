@@ -1,0 +1,12 @@
+<form class="border" [formGroup]="registerForm" (ngSubmit)="registerFormSave()">
+  <label>Firstname:</label>
+  <input type="text" id="registerFormFirstname" formControlName="registerFormFirstname">
+
+  <label>Lastname:</label>
+  <input type="text" id="registerFormLastname" formControlName="registerFormLastname">
+
+  <label>Mail:</label>
+  <input type="text" id="registerFormMail" formControlName="registerFormMail">
+
+  <button type="button" type="submit">Speichern</button>
+</form>
