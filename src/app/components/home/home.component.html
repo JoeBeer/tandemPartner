@@ -1,0 +1,25 @@
+<!-- show all users who are saved in the Array of 'users'-->
+<div *ngFor="let user of users">
+  <label>Firstname:</label>
+  <h6>{{ user.firstname }}</h6>
+
+  <label>Lastname:</label>
+  <h6>{{ user.lastname }}</h6>
+
+  <label>Mail:</label>
+  <h6>{{ user.mail }}</h6>
+</div>
+
+<!-- there are the input fields for updating the user but now we don't need them-->
+<form class="border" [formGroup]="editForm" (ngSubmit)="editFormSave()">
+  <label>Firstname:</label>
+  <input type="text" id="editFormFirstname" formControlName="editFormFirstname">
+
+  <label>Lastname:</label>
+  <input type="text" id="editFormLastname" formControlName="editFormLastname">
+
+  <label>Mail:</label>
+  <input type="text" id="editFormMail" formControlName="editFormMail">
+
+  <button type="button" type="submit">Änderunge speichern</button>
+</form>
