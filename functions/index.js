@@ -65,9 +65,10 @@ app.post('/users', (req, res) => {
 });
 
 // Update user
-app.patch('/users/:userId', (req, res) => {
-    userCollection.doc(req.params.userId).set(req.params.data)
+app.put('/users/:userId', (req, res) => {
+    userCollection.doc(req.params.userId).set(req.body)
     .then(result => {
+	  res.status(201).send(true);
       console.log('Succesfully updated user');
     })
     .catch((error) => {
@@ -78,7 +79,7 @@ app.patch('/users/:userId', (req, res) => {
 
 // Delete a user 
 app.delete('/users/:userId', (req, res) => {
-    userCollection.doc(req.params.id).delete()
+    userCollection.doc(req.params.userId).delete()
     .then(result => {
       res.status(204).send(true);
       console.log('Succesfully deleted user');
