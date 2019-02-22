@@ -21,11 +21,11 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: '/login',
+    path: 'login',
     component: LoginPageComponent
   },
   {
-    path: '/register',
+    path: 'register',
     component: RegisterPageComponent
   },
   {
@@ -33,15 +33,15 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: '/matches',
+    path: 'matches',
     component: MatchListComponent
   },
   {
-    path: '/matches/:id',
+    path: 'matches/:id',
     component: MatchItemComponent
   },
   {
-    path: '/chats',
+    path: 'chats',
     component: ChatroomListComponent
   },
   {
@@ -49,23 +49,23 @@ const routes: Routes = [
     component: ChatroomItemComponent
   },
   {
-    path: '/profile',
+    path: 'profile',
     component: ProfilePageComponent
   },
   {
-    path: '/search',
+    path: 'search',
     component: SearchPageComponent
   },
   {
-    path: '/search/result',
+    path: 'search/result',
     component: ResultPageComponent
   },
   {
-    path: '/impressum',
+    path: 'impressum',
     component: ImpressumPageComponent
   },
   {
-    path: '/about',
+    path: 'about',
     component: AboutPageComponent
   },
   {
