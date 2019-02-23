@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -11,7 +12,10 @@ export class NavbarComponent implements OnInit {
   // default value for not showing the page in english
   showEnglish = false;
 
-  constructor(private translateService: TranslateService) {
+  isLoggedIn = false;
+
+  constructor(private translateService: TranslateService,
+              private router: Router) {
     translateService.setDefaultLang('de');
    }
 
@@ -25,6 +29,11 @@ export class NavbarComponent implements OnInit {
     } else {
       this.showEnglish = false;
     }
+  }
+
+  logout() {
+// TODO: add functionality
+    this.router.navigate(['/login']);
   }
 
 }
