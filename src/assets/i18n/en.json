@@ -1,0 +1,16 @@
+{
+  "navbar": {
+    "homeLink": "Home",
+    "profileLink": "My Profile",
+    "searchLink": "Search",
+    "matchesLink": "Matches",
+    "chatLink": "Chats",
+    "logout": "Logout",
+    "login": "Login"
+  },
+
+  "footer": {
+    "legalDisclosure": "Legal Disclosure",
+    "aboutUs": "About Us"
+  }
+}
