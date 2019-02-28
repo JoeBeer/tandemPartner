@@ -1,3 +1,5 @@
+import { User } from './../../models/user';
+import { UserStoreService } from './../../services/user-store.service';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,16 +15,18 @@ export class NavbarComponent implements OnInit {
   // default value for not showing the page in english
   showEnglish = false;
 
-  isLoggedIn = false;
-
   constructor(private translateService: TranslateService,
               private authService: AuthService,
-              private router: Router) {
+              private router: Router,
+              private userStoreService: UserStoreService) {
     translateService.setDefaultLang('de');
    }
 
   ngOnInit() {
-    this.isLoggedIn = this.authService.isloggedIn();
+  }
+
+  isLoggedIn() {
+    return this.authService.isloggedIn();
   }
 
   switchLanguage(language: string) {
@@ -35,7 +39,6 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-// TODO: add functionality
     this.authService.logout();
   }
 
