@@ -25,11 +25,6 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
 import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuthModule } from 'angularfire2/auth';
-import { environment } from '../environments/environment';
-import { AuthService } from './services/auth.service';
-import { AuthGuard } from './services/auth-guard.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -65,14 +60,10 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    }),
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule
+    })
   ],
   providers: [
-    UserStoreService,
-    AuthService,
-    AuthGuard
+    UserStoreService
   ],
   bootstrap: [AppComponent]
 })
