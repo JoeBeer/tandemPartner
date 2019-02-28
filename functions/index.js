@@ -52,13 +52,8 @@ app.get('/users/:userId', (req, res) => {
 });
 
 // Create new user
-app.put('/users', (req, res) => {
-  const data = {
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    mail: req.body.mail
-  }
-    userCollection.doc(req.body.uid).set(data)
+app.post('/users', (req, res) => {
+    userCollection.add(req.body)
     .then(result => {
       res.status(201).send(true);
       console.log('Succesfully inserted user');
@@ -82,7 +77,7 @@ app.put('/users/:userId', (req, res) => {
     });
 });
 
-// Delete a user
+// Delete a user 
 app.delete('/users/:userId', (req, res) => {
     userCollection.doc(req.params.userId).delete()
     .then(result => {
