@@ -1,51 +1,65 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private user: Observable<firebase.User>;
-  private userDetails: firebase.User = null;
+  public currentUser: firebase.User = null;
+  isLoggedIn = false;
+   // store the URL so we can redirect after logging in
+   redirectUrl: string;
 
-  constructor(private angularFireAuth: AngularFireAuth,
-              private router: Router) {
-    this.user = angularFireAuth.authState;
-
-    this.user.subscribe((user) => {
+  constructor(public angularFireAuth: AngularFireAuth,
+              public router: Router) {
+    this.angularFireAuth.authState.subscribe( user => {
       if (user) {
-        this.userDetails = user;
-        console.log('userdetails: ', this.userDetails);
+        this.currentUser = user;
+        localStorage.setItem('user', JSON.stringify(this.currentUser));
       } else {
-        this.userDetails = null;
+        localStorage.setItem('user', null);
       }
     });
+
   }
 
-  isloggedIn() {
-    if (this.userDetails == null) {
-      return false;
+  isloggedIn(): boolean {
+    const user = this.angularFireAuth.auth.currentUser;
+
+    if (user) {
+      return this.isLoggedIn = true;
     } else {
-      return true;
+      return this.isLoggedIn = false;
     }
   }
 
   logout() {
-    this.angularFireAuth.auth.signOut().then((res) => {
+    this.angularFireAuth.auth.signOut()
+    .then(() => {
+      localStorage.removeItem('user');
       this.router.navigate(['/login']);
     });
+
   }
 
   signUpWithMailAndPassword(mail: string, password: string) {
-    return this.angularFireAuth.auth.createUserWithEmailAndPassword(mail, password);
+    return new Promise<any>((resolve, reject) => {
+      this.angularFireAuth.auth.createUserWithEmailAndPassword(mail, password)
+      .then( res => {
+        this.isLoggedIn = true;
+        resolve(res);
+      }, error => reject(error));
+    });
   }
 
-  signInWithMailAndPassword(mail: string, password: string) {
-    const credential = firebase.auth.EmailAuthProvider.credential(mail, password);
-
-    return this.angularFireAuth.auth.signInWithEmailAndPassword(mail, password);
+  async signInWithMailAndPassword(mail: string, password: string) {
+    try {
+      await this.angularFireAuth.auth.signInWithEmailAndPassword(mail, password);
+      this.isLoggedIn = true;
+      this.router.navigate(['/home']);
+    } catch (error) {
+      alert('Not able to sign in!' + error.message);
+    }
   }
 }

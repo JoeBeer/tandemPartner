@@ -30,7 +30,6 @@ export class UserStoreService {
        uid: id,
        firstname: user.firstname,
        lastname: user.lastname,
-       mail: user.mail
      };
 
      return this.http.put(`${this.apiUrl}/users`, data);
@@ -40,7 +39,6 @@ export class UserStoreService {
     const data = {
       firstname: user.firstname,
       lastname: user.lastname,
-      mail: user.mail
     };
 
     return this.http.put(`${this.apiUrl}/users/${id}`, data);
