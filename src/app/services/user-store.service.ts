@@ -8,7 +8,7 @@ import { User } from '../models/user';
 })
 export class UserStoreService {
 
-  private apiUrl = 'http://127.0.0.1:3000';
+  private apiUrl = 'https://us-central1-experimentaltandem.cloudfunctions.net/app';
   private headers: Headers = new Headers();
 
   constructor(private http: HttpClient) {
@@ -24,7 +24,7 @@ export class UserStoreService {
      return this.http.get(`${this.apiUrl}/users/${id}`);
    }
 
-   insertUser(user: User) {
+   createUser(user: User) {
      // generate new API-User
      const data = {
        firstname: user.firstname,
@@ -42,10 +42,14 @@ export class UserStoreService {
       mail: user.mail
     };
 
-     return this.http.post(`${this.apiUrl}/users/${id}`, data);
+    return this.http.put(`${this.apiUrl}/users/${id}`, data);
   }
 
   public deleteUser(id: any) {
     return this.http.delete(`${this.apiUrl}/users/${id}`);
+  }
+
+  private errorHandler(error: Error | any) {
+    return Observable.throw(error);
   }
 }

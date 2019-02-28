@@ -43,7 +43,7 @@ export class RegisterPageComponent implements OnInit {
     };
 
     // insert new user
-    this.userStoreService.insertUser(user).subscribe(() => {
+    this.userStoreService.createUser(user).subscribe(() => {
     // then go to page 'home'
       this.router.navigate(['/home']);
     });
