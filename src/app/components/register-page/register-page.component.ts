@@ -3,6 +3,7 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserStoreService } from 'src/app/services/user-store.service';
 import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register-page',
@@ -15,7 +16,8 @@ export class RegisterPageComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
-              private userStoreService: UserStoreService) {
+              private userStoreService: UserStoreService,
+              private authService: AuthService) {
 
               this.registerForm = this.createRegisterForm();
   }
@@ -42,10 +44,14 @@ export class RegisterPageComponent implements OnInit {
       mail: this.registerForm.value.registerFormMail
     };
 
-    // insert new user
-    this.userStoreService.createUser(user).subscribe(() => {
-    // then go to page 'home'
-      this.router.navigate(['/home']);
+    // create new user at Authentication
+    this.authService.signUpWithMailAndPassword(user.mail, user.lastname).then((res) => {
+      console.log('UID: ', res.user.uid);
+      // create new user in cloud firestore and take the UID from the new created User
+      this.userStoreService.createUser(res.user.uid, user).subscribe(() => {
+        // then go to page 'home'
+        this.router.navigate(['/home']);
+      });
     });
   }
 

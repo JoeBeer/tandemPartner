@@ -24,15 +24,16 @@ export class UserStoreService {
      return this.http.get(`${this.apiUrl}/users/${id}`);
    }
 
-   createUser(user: User) {
+   createUser(id: string, user: User) {
      // generate new API-User
      const data = {
+       uid: id,
        firstname: user.firstname,
        lastname: user.lastname,
        mail: user.mail
      };
 
-     return this.http.post(`${this.apiUrl}/users`, data);
+     return this.http.put(`${this.apiUrl}/users`, data);
    }
 
    updateUser(id: any, user: User) {
