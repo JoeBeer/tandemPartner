@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -15,11 +16,13 @@ export class NavbarComponent implements OnInit {
   isLoggedIn = false;
 
   constructor(private translateService: TranslateService,
+              private authService: AuthService,
               private router: Router) {
     translateService.setDefaultLang('de');
    }
 
   ngOnInit() {
+    this.isLoggedIn = this.authService.isloggedIn();
   }
 
   switchLanguage(language: string) {
@@ -33,7 +36,7 @@ export class NavbarComponent implements OnInit {
 
   logout() {
 // TODO: add functionality
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 
 }
