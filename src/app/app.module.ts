@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UserStoreService } from './services/user-store.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+// components
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
@@ -25,11 +25,16 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
 import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuthModule } from 'angularfire2/auth';
-import { environment } from '../environments/environment';
+// services
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
+import { UserStoreService } from './services/user-store.service';
+
+// imports for firebase
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { environment } from '../environments/environment';
+
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
