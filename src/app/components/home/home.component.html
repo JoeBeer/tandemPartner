@@ -1,26 +1,20 @@
-<!-- show all users who are saved in the Array of 'users'-->
-<div *ngFor="let user of users">
-  <div>Firstname: <b>{{ user.firstname }}</b>
+<h1>Matchrequests</h1>
+<div class="row">
+  <div class="col-1"></div>
+  <div class="col-10">
+    <!-- show all matchRequests which are saved in the Array of 'matchRequests'-->
+    <div *ngFor="let match of matchRequests">
+      <div class="row">
+        <div class="col-9">
+          <div>Username: <b>{{ match.initiatorID }}</b></div>
+        </div>
+        <div class="col-3 border">
+          <button type="button" class="btn btn-info mr-1" (click)="acceptMatch()">Annehmen</button>
+          <button type="button" class="btn btn-outline-danger" (click)="deleteMatch()">Ablehnen</button>
+        </div>
+      </div>
+      <hr>
+    </div>
   </div>
-
-  <div>
-    Lastname: <b>{{ user.lastname }}</b>
-  </div>
-
-  <div>Mail:  <b>{{ user.mail }}</b>
-  </div>
-  <hr>
+  <div class="col-1"></div>
 </div>
-
-<form class="border" [formGroup]="editForm" (ngSubmit)="editFormSave('SkcGljXTpsua8zq5aS9F')">
-  <label>Firstname:</label>
-  <input type="text" id="editFormFirstname" formControlName="editFormFirstname">
-
-  <label>Lastname:</label>
-  <input type="text" id="editFormLastname" formControlName="editFormLastname">
-
-  <label>Mail:</label>
-  <input type="text" id="editFormMail" formControlName="editFormMail">
-
-  <button type="button" type="submit">Änderungen speichern</button>
-</form>

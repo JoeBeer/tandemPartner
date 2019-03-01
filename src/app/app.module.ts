@@ -29,6 +29,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { UserStoreService } from './services/user-store.service';
+import { MatchStoreService } from './services/match-store.service';
 
 // imports for firebase
 import { AngularFireModule } from '@angular/fire';
@@ -77,7 +78,8 @@ export function HttpLoaderFactory(http: HttpClient) {
   providers: [
     UserStoreService,
     AuthService,
-    AuthGuard
+    AuthGuard,
+    MatchStoreService
   ],
   bootstrap: [AppComponent]
 })
