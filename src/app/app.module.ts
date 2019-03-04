@@ -7,6 +7,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 // components
 import { RegisterPageComponent } from './components/register-page/register-page.component';
@@ -73,7 +75,9 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     }),
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    FontAwesomeModule,
+    NgxPaginationModule
   ],
   providers: [
     UserStoreService,
