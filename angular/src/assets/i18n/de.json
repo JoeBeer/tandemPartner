@@ -1,0 +1,24 @@
+{
+  "navbar": {
+    "homeLink": "Startseite",
+    "profileLink": "Mein Profil",
+    "searchLink": "Suchanfrage",
+    "matchesLink": "Matches",
+    "chatLink": "Nachrichten",
+    "logout": "Ausloggen",
+    "login": "Einloggen"
+  },
+
+  "footer": {
+    "legalDisclosure": "Impressum",
+    "aboutUs": "Über Uns"
+  },
+
+  "home": {
+    "openMatchrequests": "Meine offenen Matchanfragen",
+    "noRequests": "Du hast momentan keine offenen Matchanfragen",
+    "requestTitle": "Matchanfrage für: ",
+    "previous": "Vorherige",
+    "next": "Nächste"
+  }
+}

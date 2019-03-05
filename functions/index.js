@@ -20,6 +20,7 @@ matches.use(cors);
 let chatroomsEndpoint = require('./chatroomsEndpoint')
 
 
+
 users.get('/', usersEndpoint.getUsers); //Get all users
 users.get('/:user-id', usersEndpoint.getUserById);// Get one user
 users.post('/', usersEndpoint.createUser); // Create new user
@@ -35,4 +36,3 @@ exports.matches = functions.https.onRequest(matches); //Enables function 'matche
 chatrooms.post('/', chatroomsEndpoint.createChatroom); // Create new chatroom
 chatrooms.get('/:chatroom-id', chatroomsEndpoint.getChatroomById) // Get one chatroom
 exports.chatrooms = functions.https.onRequest(chatrooms); //Enables function 'chatrooms' @ Cloud Functions
-
