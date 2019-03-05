@@ -12,5 +12,13 @@
   "footer": {
     "legalDisclosure": "Impressum",
     "aboutUs": "Über Uns"
+  },
+
+  "home": {
+    "openMatchrequests": "Meine offenen Matchanfragen",
+    "noRequests": "Du hast momentan keine offenen Matchanfragen",
+    "requestTitle": "Matchanfrage für: ",
+    "previous": "Vorherige",
+    "next": "Nächste"
   }
 }

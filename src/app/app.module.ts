@@ -7,6 +7,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 // components
 import { RegisterPageComponent } from './components/register-page/register-page.component';
@@ -29,6 +31,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { UserStoreService } from './services/user-store.service';
+import { MatchStoreService } from './services/match-store.service';
 
 // imports for firebase
 import { AngularFireModule } from '@angular/fire';
@@ -72,12 +75,15 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     }),
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    FontAwesomeModule,
+    NgxPaginationModule
   ],
   providers: [
     UserStoreService,
     AuthService,
-    AuthGuard
+    AuthGuard,
+    MatchStoreService
   ],
   bootstrap: [AppComponent]
 })

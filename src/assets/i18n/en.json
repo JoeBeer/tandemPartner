@@ -12,5 +12,14 @@
   "footer": {
     "legalDisclosure": "Legal Disclosure",
     "aboutUs": "About Us"
+  },
+
+  "home": {
+    "openMatchrequests": "My currently not accepted Matchrequests",
+    "noRequests": "Currently there are no Matchrequests for you.",
+    "requestTitle": "Matchrequest for: ",
+    "previous": "Previous",
+    "next": "Next"
+
   }
 }
