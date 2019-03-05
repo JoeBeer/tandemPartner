@@ -1603,7 +1603,7 @@ __webpack_require__.r(__webpack_exports__);
 var UserStoreService = /** @class */ (function () {
     function UserStoreService(http) {
         this.http = http;
-        this.apiUrl = 'https://us-central1-experimentaltandem.cloudfunctions.net/app';
+        this.apiUrl = 'https://us-central1-experimentaltandem.cloudfunctions.net';
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
     }
