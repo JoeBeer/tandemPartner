@@ -20,6 +20,13 @@
     "requestTitle": "Matchrequest for: ",
     "previous": "Previous",
     "next": "Next"
+  },
 
+  "login": {
+    "tandemSlogan": " - learn together",
+    "mailPlaceholder": "Mailadress",
+    "passwordPlaceholder": "Password",
+    "loginButton": "Einloggen",
+    "registerButton": "Register now"
   }
 }
