@@ -1,9 +1,42 @@
-<form class="border" [formGroup]="loginForm" (ngSubmit)="login()">
-  <label>Mail:</label>
-  <input type="text" id="loginFormMail" formControlName="loginFormMail">
+<div class="row">
+  <div class="col-1"></div>
+  <div class="col-10 d-flex justify-content-center">
+    <div class="mx-auto my-5 card shadow">
+      <img class="card-img-top mb-4 mt-3 rounded-circle mx-auto shadow" src="../../../assets/images/tandemLogo.png">
+      <div class="card-body">
+        <div class="card-title text-center">tandemPartner<i class="text-muted">{{'login.tandemSlogan' | translate }}</i></div>
+        <form class="m-3" [formGroup]="loginForm" (ngSubmit)="login()">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="mailIcon">
+                <fa-icon [icon]="faAt"></fa-icon>
+              </span>
+            </div>
+            <input type="text" class="form-control" id="loginFormMail" placeholder="{{'login.mailPlaceholder' | translate }}" formControlName="loginFormMail" aria-describedby="mailIcon" autofocus>
+          </div>
 
-  <label>Password:</label>
-  <input type="password" id="loginFormPassword" formControlName="loginFormPassword">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="passwordIcon">
+                <fa-icon [icon]="faLock"></fa-icon>
+              </span>
+            </div>
+            <input type="password" class="form-control" id="loginFormPassword" placeholder="{{'login.passwordPlaceholder' | translate }}" formControlName="loginFormPassword" aria-describedby="passwordIcon" autofocus>
+          </div>
 
-  <button type="button" type="submit">Login</button>
-</form>
+          <div class="btn-toolbar d-flex justify-content-center" role="toolbar">
+            <div class="btn-group mr-2">
+              <button type="button" type="submit" class="btn btn-warning d-flex mx-auto  mt-2" >{{'login.loginButton' | translate }}</button>
+            </div>
+            <div class="btn-group">
+              <button type="button" [routerLink]="['/register']" class="btn btn-outline-warning d-flex mx-auto mt-2" >{{'login.registerButton' | translate }}</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-1"></div>
+</div>

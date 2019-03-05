@@ -20,5 +20,13 @@
     "requestTitle": "Matchanfrage für: ",
     "previous": "Vorherige",
     "next": "Nächste"
+  },
+
+  "login": {
+    "tandemSlogan": " - gemeinsam lernen",
+    "mailPlaceholder": "E-Mailadresse:",
+    "passwordPlaceholder": "Passwort",
+    "loginButton": "Einloggen",
+    "registerButton": "Account erstellen"
   }
 }
