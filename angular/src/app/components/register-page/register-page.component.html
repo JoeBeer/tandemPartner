@@ -1,12 +1,82 @@
-<form class="border" [formGroup]="registerForm" (ngSubmit)="registerFormSave()">
-  <label>Firstname:</label>
-  <input type="text" id="registerFormFirstname" formControlName="registerFormFirstname">
+<div class="row">
+  <div class="col-1"></div>
+  <div class="col-10">
+    <div class="card mx-auto my-5 shadow">
+        <div class="card-header bg-warning text-center h5">
+            {{'register.headerTitle' | translate }}
+          </div>
+      <div class="card-body">
+          <form class="" [formGroup]="registerForm" (ngSubmit)="registerFormSave()">
+            <div class="row">
+              <div class="form-group col-md-6">
+                  <label for="registerFormFirstname">{{'register.firstname' | translate }}*</label>
+                  <input type="text" class="form-control shadow-sm" id="registerFormFirstname" formControlName="registerFormFirstname" placeholder="{{'register.firstname' | translate }}">
+              </div>
+              <div class="form-group col-md-6">
+                  <label for="registerFormLastname">{{'register.lastname' | translate }}*</label>
+                  <input type="text" class="form-control shadow-sm" id="registerFormLastname" formControlName="registerFormLastname" placeholder="{{'register.lastname' | translate }}">
+              </div>
+            </div>
 
-  <label>Lastname:</label>
-  <input type="text" id="registerFormLastname" formControlName="registerFormLastname">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="registerFormSex">{{'register.sex' | translate }}*</label>
+                <select  class="form-control shadow-sm" id="registerFormSex">
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </div>
+              <div class="col-md-6 form-group">
+                  <label>{{'register.mail' | translate }}*</label>
+                  <input type="text" class="form-control shadow-sm" id="registerFormMail" formControlName="registerFormMail" placeholder="name@example.com">
+              </div>
+            </div>
 
-  <label>Mail:</label>
-  <input type="text" id="registerFormMail" formControlName="registerFormMail">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="registerFormOffer">{{'register.offers' | translate }}*</label>
+                <select  class="form-control shadow-sm" id="registerFormOffer">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="registerFormActivities">{{'register.activities' | translate }}*</label>
+                <select  class="form-control shadow-sm" id="registerFormActivities">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+            </div>
 
-  <button type="button" type="submit">Speichern</button>
-</form>
+            <div class="row">
+              <div class="col-md-6 form-group">
+                  <label>{{'register.password' | translate }}*</label>
+                  <input type="password" class="form-control shadow-sm" id="registerFormPassword" formControlName="registerFormPassword" placeholder="{{'register.password' | translate }}">
+              </div>
+              <div class="col-md-6 form-group">
+                  <label>{{'register.passwordConfirm' | translate }}*</label>
+                  <input type="password" class="form-control shadow-sm" id="registerFormPasswordConfirm" formControlName="registerFormPasswordConfirm" placeholder="{{'register.passwordConfirm' | translate }}">
+              </div>
+            </div>
+
+            <div class="btn-toolbar d-flex justify-content-center" role="toolbar">
+              <div class="btn-group mr-1 mr-md-3">
+                <button type="button" type="submit" class="btn btn-warning d-flex mx-auto  mt-2" >{{'register.saveButton' | translate }}</button>
+              </div>
+              <div class="btn-group ml-md-3">
+                <button type="button" [routerLink]="['/login']" class="btn btn-outline-warning d-flex mx-auto mt-2" >{{'register.quitButton' | translate }}</button>
+              </div>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-1"></div>
+</div>

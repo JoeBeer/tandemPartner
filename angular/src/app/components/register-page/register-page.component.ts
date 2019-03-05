@@ -33,6 +33,11 @@ export class RegisterPageComponent implements OnInit {
       registerFormLastname: ['', Validators.required],
 
       registerFormMail: ['', Validators.required],
+
+      registerFormPassword: ['', Validators.required],
+
+      registerFormPasswordConfirm: ['', Validators.required]
+
     });
   }
 
@@ -41,11 +46,13 @@ export class RegisterPageComponent implements OnInit {
     const user: User = {
       firstname: this.registerForm.value.registerFormFirstname,
       lastname: this.registerForm.value.registerFormLastname,
-      mail: this.registerForm.value.registerFormMail
     };
 
+    const mail = this.registerForm.value.registerFormMail;
+    const password = this.registerForm.value.registerFormPassword;
+
     // create new user at Authentication
-    this.authService.signUpWithMailAndPassword(user.mail, user.lastname).then((res) => {
+    this.authService.signUpWithMailAndPassword(mail, password).then((res) => {
       console.log('UID: ', res.user.uid);
       // create new user in cloud firestore and take the UID from the new created User
       this.userStoreService.createUser(res.user.uid, user).subscribe(() => {
@@ -67,4 +74,13 @@ export class RegisterPageComponent implements OnInit {
   get registerFormMail() {
     return this.registerForm.get('registerFormMail');
   }
+
+  get registerFormPassword() {
+    return this.registerForm.get('registerFormPassword');
+  }
+
+  get registerFormPasswordConfirm() {
+    return this.registerForm.get('registerFormPasswordConfirm');
+  }
+
 }

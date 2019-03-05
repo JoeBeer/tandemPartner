@@ -28,5 +28,19 @@
     "passwordPlaceholder": "Passwort",
     "loginButton": "Einloggen",
     "registerButton": "Account erstellen"
+  },
+
+  "register": {
+    "headerTitle": "Registrieren",
+    "firstname": "Vorname",
+    "lastname": "Nachname",
+    "sex": "Geschlecht",
+    "mail": "E-Mail",
+    "offers": "Ich biete an",
+    "activities": "Meine Aktivitäten",
+    "password": "Passwort",
+    "passwordConfirm": "Passwort bestätigen",
+    "saveButton": "Speichern",
+    "quitButton": "Abbrechen"
   }
 }

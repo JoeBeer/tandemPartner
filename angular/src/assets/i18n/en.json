@@ -28,5 +28,19 @@
     "passwordPlaceholder": "Password",
     "loginButton": "Einloggen",
     "registerButton": "Register now"
+  },
+
+  "register": {
+    "headerTitle": "Register",
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "sex": "Sex",
+    "mail": "Mailadress",
+    "offers": "I'm offering",
+    "activities": "My activities",
+    "password": "Password",
+    "passwordConfirm": "Confirm your Password",
+    "saveButton": "Save",
+    "quitButton": "Quit"
   }
 }
