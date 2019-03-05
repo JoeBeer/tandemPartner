@@ -8,7 +8,7 @@ import { User } from '../models/user';
 })
 export class UserStoreService {
 
-  private apiUrl = 'https://us-central1-experimentaltandem.cloudfunctions.net/app';
+  private apiUrl = 'https://us-central1-experimentaltandem.cloudfunctions.net';
   private headers: Headers = new Headers();
 
   constructor(private http: HttpClient) {
