@@ -1,5 +1,8 @@
 <header>
-  <nav class="navbar navbar-light navbar-expand-lg shadow">
+  <!--when the bug of new logging in is solved, we can use the following line
+  <nav *ngIf="router.url !== '/login'" class="navbar navbar-light navbar-expand-lg shadow">-->
+
+  <nav class="navbar fixed-top navbar-light navbar-expand-lg shadow">
     <!--toggle only visible for screens smaller than lg-->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -30,24 +33,24 @@
         </ul>
 
         <!-- right aligned links-->
-        <ul class="navbar-nav justify-contend-end">
+        <ul class="navbar-nav ml-auto">
           <!--dropdown menu-->
           <li class="nav-item dropdown">
             <!--showing english or german language, via checking whether english language was clicked or not -->
-            <a *ngIf="showEnglish; else elseBlock" class="nav-link dropdown-toggle border-right" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a *ngIf="showEnglish; else elseBlock" class="nav-link dropdown-toggle pointer-cursor border-right" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               En
             </a>
             <!--German language-->
             <ng-template #elseBlock>
-                <a class="dropdown-toggle  nav-link border-right" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="dropdown-toggle nav-link pointer-cursor border-right" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     De
                 </a>
             </ng-template>
             <!--dropdown links-->
             <div class="dropdown-menu">
-              <a class="dropdown-item" (click)="switchLanguage('de')">De</a>
+              <a class="dropdown-item pointer-cursor" (click)="switchLanguage('de')">De</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" (click)="switchLanguage('en')" >En</a>
+              <a class="dropdown-item pointer-cursor" (click)="switchLanguage('en')" >En</a>
             </div>
           </li>
 
@@ -58,7 +61,7 @@
 
           <!--Logout-->
           <li *ngIf="isLoggedIn()" class="nav-item border-left">
-            <a class="nav-link" (click)="logout()">{{ 'navbar.logout' | translate }}</a>
+            <a class="nav-link pointer-cursor" (click)="logout()">{{ 'navbar.logout' | translate }}</a>
           </li>
           <!--Login-->
           <li *ngIf="!isLoggedIn() " class="nav-item border-left">
