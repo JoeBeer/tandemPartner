@@ -21,10 +21,12 @@
             <div class="row">
               <div class="col-md-6 form-group">
                 <label for="registerFormSex">{{'register.sex' | translate }}*</label>
-                <select  class="form-control shadow-sm" id="registerFormSex">
-                  <option>1</option>
-                  <option>2</option>
-                </select>
+                <ng-multiselect-dropdown  class="form-control shadow-sm" id="registerFormSex"
+                  [placeholder]="'register.pleaseChoose' | translate"
+                  [data]="sexes"
+                  [(ngModel)]="selectedSex" [ngModelOptions]="{ standalone : true }"
+                  [settings]="selectSexSettings">
+                </ng-multiselect-dropdown>
               </div>
               <div class="col-md-6 form-group">
                   <label>{{'register.mail' | translate }}*</label>
@@ -34,24 +36,22 @@
 
             <div class="row">
               <div class="col-md-6 form-group">
-                <label for="registerFormOffer">{{'register.offers' | translate }}*</label>
-                <select  class="form-control shadow-sm" id="registerFormOffer">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </select>
+                <label for="registerFormOffers">{{'register.offers' | translate }}:*</label>
+                <ng-multiselect-dropdown  class="form-control shadow-sm" id="registerFormOffers"
+                   [placeholder]="'register.pleaseChoose' | translate"
+                   [data]="offers"
+                   [(ngModel)]="selectedOffers" [ngModelOptions]="{ standalone : true }"
+                   [settings]="selectOffersActivitiesSettings">
+                </ng-multiselect-dropdown>
               </div>
               <div class="col-md-6 form-group">
-                <label for="registerFormActivities">{{'register.activities' | translate }}*</label>
-                <select  class="form-control shadow-sm" id="registerFormActivities">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </select>
+                <label for="registerFormActivities">{{'register.activities' | translate }}:*</label>
+                <ng-multiselect-dropdown  class="form-control shadow-sm" id="registerFormActivities"
+                   [placeholder]="'register.pleaseChoose' | translate"
+                   [data]="activities"
+                   [(ngModel)]="selectedActivities" [ngModelOptions]="{ standalone : true }"
+                   [settings]="selectOffersActivitiesSettings">
+                </ng-multiselect-dropdown>
               </div>
             </div>
 
