@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserStoreService } from 'src/app/services/user-store.service';
 import { User } from 'src/app/models/user';
@@ -48,17 +48,23 @@ export class RegisterPageComponent implements OnInit {
   createRegisterForm() {
     // create the formGroup
     return this.formBuilder.group ({
-      registerFormFirstname: ['', Validators.required],
+      // the field only contains letters or spaces
+      registerFormFirstname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
 
-      registerFormLastname: ['', Validators.required],
+      // the field only contains letters or spaces
+      registerFormLastname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
 
-      registerFormMail: ['', Validators.required],
+      registerFormMail: ['', [Validators.required, Validators.email]],
 
-      registerFormPassword: ['', Validators.required],
+      // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
+      // tslint:disable-next-line:max-line-length
+      registerFormPassword: ['', [Validators.required, /*Validators.pattern('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$'),*/ Validators.minLength(6), Validators.maxLength(16)]],
 
-      registerFormPasswordConfirm: ['', Validators.required]
-
-    });
+      // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
+      // tslint:disable-next-line:max-line-length
+      registerFormPasswordConfirm: ['', [Validators.required, /*Validators.pattern('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$'),*/ Validators.minLength(6), Validators.maxLength(16)]]
+        // adds the custom validator for validating the passwords og their matching
+    }, { validator: this.passwordMatchValidator});
   }
 
   initializeMultiselectSettings() {
@@ -83,13 +89,19 @@ export class RegisterPageComponent implements OnInit {
     };
   }
 
+  // validate the passwords whether they are matching
+  passwordMatchValidator(control: AbstractControl): { invalid: boolean} {
+    if (control.get('registerFormPassword').value !== control.get('registerFormPasswordConfirm').value) {
+      return {invalid: true };
+    }
+  }
+
   // validate the input & select fields and send the mail & password to Firebase Authentication
   // after that the rest of userdata incl. the recieved UserID will be send to the API(Firebase Cloud Functions)
   registerFormSave() {
 
-    // validate the passwords
-    if (this.registerForm.value.registerFormPassword !== this.registerForm.value.registerFormPasswordConfirm) {
-      return alert('passwords not the same');
+    if (this.registerForm.invalid) {
+      return;
     }
     // get data from the inputfields
     const userdata = {
@@ -123,7 +135,7 @@ export class RegisterPageComponent implements OnInit {
     } else if (sex === 'female' || sex === 'weiblich') {
       return 'f';
     } else {
-      return 'there was no choice';
+      return 'there was no choice of sex';
     }
   }
 

@@ -43,5 +43,15 @@
     "passwordConfirm": "Passwort bestätigen",
     "saveButton": "Speichern",
     "quitButton": "Abbrechen"
+  },
+
+  "validators": {
+    "required": " muss ausgefüllt sein!",
+    "letterSpaces": "Nur Buchstaben sind erlaubt",
+    "email": "Nur E-Mail Format erlaubt!",
+    "passwordPattern": "mind. 6 Zeichen inkl. 1 Großbuchstabe, 1 Kleinbuchstabe, 1 Zahl!",
+    "passwordMismatch": "Passwörter stimmen nicht überein!",
+    "minOffers": "mind. ein  Angebot muss ausgewählt sein!",
+    "minActivities": "mind. eine Aktivität muss ausgewählt sein!"
   }
 }
