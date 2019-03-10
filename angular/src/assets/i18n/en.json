@@ -28,5 +28,30 @@
     "passwordPlaceholder": "Password",
     "loginButton": "Einloggen",
     "registerButton": "Register now"
+  },
+
+  "register": {
+    "headerTitle": "Register",
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "sex": "Sex",
+    "mail": "Mailadress",
+    "offers": "I'm offering",
+    "pleaseChoose": "choose an option",
+    "activities": "My activities",
+    "password": "Password",
+    "passwordConfirm": "Confirm your Password",
+    "saveButton": "Save",
+    "quitButton": "Quit"
+  },
+
+  "validators": {
+    "required": " is required!",
+    "letterSpaces": "Only letters are allowed",
+    "email": "E-Mail Format is required!",
+    "passwordPattern": "at least. 6 characters incl. 1 uppercase letter, 1 lowercase letter, 1 number!",
+    "passwordMismatch": "Passwords not match!",
+    "minOffers": "at least one offer is required!",
+    "minActivities": "at least one activity is required!"
   }
 }
