@@ -36,6 +36,8 @@
     "lastname": "Nachname",
     "sex": "Geschlecht",
     "mail": "E-Mail",
+    "city": "Wohnort",
+    "birthday": "Geburtstag",
     "offers": "Ich biete an",
     "pleaseChoose": "bitte wählen",
     "activities": "Meine Aktivitäten",
@@ -45,10 +47,18 @@
     "quitButton": "Abbrechen"
   },
 
+  "profile": {
+    "headerTitle": "Profil bearbeiten",
+    "newPassword": "Neues Passwort",
+    "newPasswordConfirm": "Neues Passwort bestätigen"
+  },
+
   "validators": {
     "required": " muss ausgefüllt sein!",
     "letterSpaces": "Nur Buchstaben sind erlaubt",
     "email": "Nur E-Mail Format erlaubt!",
+    "city": "Wohnort muss ausgewählt sein!",
+    "birthday": "Geburtstag muss ausgewählt sein!",
     "passwordPattern": "mind. 6 Zeichen inkl. 1 Großbuchstabe, 1 Kleinbuchstabe, 1 Zahl!",
     "passwordMismatch": "Passwörter stimmen nicht überein!",
     "minOffers": "mind. ein  Angebot muss ausgewählt sein!",

@@ -36,6 +36,8 @@
     "lastname": "Lastname",
     "sex": "Sex",
     "mail": "Mailadress",
+    "city": "Residence",
+    "birthday": "Birthday",
     "offers": "I'm offering",
     "pleaseChoose": "choose an option",
     "activities": "My activities",
@@ -45,10 +47,18 @@
     "quitButton": "Quit"
   },
 
+  "profile": {
+    "headerTitle": "Edit your Profile",
+    "newPassword": "New Password",
+    "newPasswordConfirm": "Confirm your new Password"
+  },
+
   "validators": {
     "required": " is required!",
     "letterSpaces": "Only letters are allowed",
     "email": "E-Mail Format is required!",
+    "city": "Residence is required!",
+    "birthday": "Birthday is required!",
     "passwordPattern": "at least. 6 characters incl. 1 uppercase letter, 1 lowercase letter, 1 number!",
     "passwordMismatch": "Passwords not match!",
     "minOffers": "at least one offer is required!",
