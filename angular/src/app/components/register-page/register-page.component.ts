@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { UserStoreService } from 'src/app/services/user-store.service';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActivitiesOffersService } from './../../services/activities-offers.service';
+import { ActivitiesOffersCitiesStoreService } from '../../services/activities-offers-cities-store.service';
 
 
 @Component({
@@ -19,28 +19,32 @@ export class RegisterPageComponent implements OnInit {
   sexes = ['female', 'male'];
   offers: any[];
   activities: any[];
+  cities: string[];
 
   selectedOffers: any[];
   selectedActivities: any[];
+  selectedCity: any[];
   selectedSex: any[];
 
   selectOffersActivitiesSettings = {};
   selectSexSettings = {};
+  selectCitySettings = {};
 
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private userStoreService: UserStoreService,
               private authService: AuthService,
-              private activitiesOffersService: ActivitiesOffersService) {
+              private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService) {
 
               this.registerForm = this.createRegisterForm();
   }
 
   ngOnInit() {
     // initialzie all available offers & activities
-    this.offers = this.activitiesOffersService.getAllOffers();
-    this.activities = this.activitiesOffersService.getAllActivities();
+    this.offers = this.activitiesOffersCitiesStoreService.getAllOffers();
+    this.activities = this.activitiesOffersCitiesStoreService.getAllActivities();
+    this.cities = this.activitiesOffersCitiesStoreService.getAllCities();
 
     this.initializeMultiselectSettings();
   }
@@ -56,6 +60,8 @@ export class RegisterPageComponent implements OnInit {
 
       registerFormMail: ['', [Validators.required, Validators.email]],
 
+      registerFormBirthday: ['', Validators.required],
+
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
       registerFormPassword: ['', [Validators.required, /*Validators.pattern('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$'),*/ Validators.minLength(6), Validators.maxLength(16)]],
@@ -70,6 +76,15 @@ export class RegisterPageComponent implements OnInit {
   initializeMultiselectSettings() {
     // selecting settings for the select fields of choosing the sex
     this.selectSexSettings = {
+      singleSelection: true,
+      idField: 'item_id',
+      textField: 'item_text',
+      enableCheckAll: false,
+      allowSearchFilter: false,
+      closeDropDownOnSelection: true
+    };
+
+    this.selectCitySettings = {
       singleSelection: true,
       idField: 'item_id',
       textField: 'item_text',
@@ -107,10 +122,12 @@ export class RegisterPageComponent implements OnInit {
     const userdata = {
       firstname: this.registerForm.value.registerFormFirstname,
       lastname: this.registerForm.value.registerFormLastname,
+      city: this.selectedCity[0],
+      dateOfBirth: this.registerForm.value.registerFormBirthday,
       // get the only one item from selectedSex-Array
       sex: this.parseSexValueForBackend(this.selectedSex[0]),
-      offers: this.selectedOffers,
-      activities: this.selectedActivities
+      activities: this.selectedActivities,
+      offers: this.selectedOffers
     };
 
     // mail and password are gonna be saved at Firebase Authentication and not in userdata
@@ -146,6 +163,10 @@ export class RegisterPageComponent implements OnInit {
 
   get registerFormLastname() {
     return this.registerForm.get('registerFormLastname');
+  }
+
+  get registerFormBirthday() {
+    return this.registerForm.get('registerFormBirthday');
   }
 
   get registerFormMail() {
