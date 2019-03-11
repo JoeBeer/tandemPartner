@@ -10,6 +10,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 // components
 import { RegisterPageComponent } from './components/register-page/register-page.component';
@@ -33,7 +34,7 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { UserStoreService } from './services/user-store.service';
 import { MatchStoreService } from './services/match-store.service';
-import { ActivitiesOffersService } from './services/activities-offers.service';
+import { ActivitiesOffersCitiesStoreService } from './services/activities-offers-cities-store.service';
 
 // imports for firebase
 import { AngularFireModule } from '@angular/fire';
@@ -81,14 +82,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     FontAwesomeModule,
     NgxPaginationModule,
     NgMultiSelectDropDownModule.forRoot(),
-    FormsModule
+    FormsModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [
     UserStoreService,
     AuthService,
     AuthGuard,
     MatchStoreService,
-    ActivitiesOffersService
+    ActivitiesOffersCitiesStoreService
   ],
   bootstrap: [AppComponent]
 })
