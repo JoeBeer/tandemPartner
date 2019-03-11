@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class ActivitiesOffersService {
+export class ActivitiesOffersCitiesStoreService {
 
   offers = ['spanisch', 'kochen'];
   activities = ['kochen', 'turnen', 'schwimmen', 'rudern'];
+  cities = ['Hamburg', 'Berlin', 'München', 'Hannover'];
 
   constructor() { }
 
@@ -16,5 +17,9 @@ export class ActivitiesOffersService {
 
   getAllActivities() {
     return this.activities;
+  }
+
+  getAllCities() {
+    return this.cities;
   }
 }

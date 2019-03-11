@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ActivitiesOffersService } from './activities-offers.service';
+import { ActivitiesOffersCitiesStoreService } from './activities-offers-cities-store.service';
 
 describe('ActivitiesOffersService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: ActivitiesOffersService = TestBed.get(ActivitiesOffersService);
+    const service: ActivitiesOffersCitiesStoreService = TestBed.get(ActivitiesOffersCitiesStoreService);
     expect(service).toBeTruthy();
   });
 });
