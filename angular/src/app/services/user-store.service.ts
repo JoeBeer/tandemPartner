@@ -24,20 +24,21 @@ export class UserStoreService {
      return this.http.get(`${this.apiUrl}/users/${id}`);
    }
 
-   createUser(id: string, user: any) {
+   createUser(user: any) {
      // generate new API-User
      const data = {
-       uid: id,
        firstname: user.firstname,
        lastname: user.lastname,
        dateOfBirth: user.dateOfBirth,
        sex: user.sex,
        city: user.city,
        activities: user.activities,
-       offers: user.offers
+       offers: user.offers,
+       mail: user.mail,
+       password: user.password
      };
 
-     return this.http.put(`${this.apiUrl}/users/${id}`, data);
+     return this.http.post(`${this.apiUrl}/users`, data);
    }
 
    updateUser(id: string, user: any) {
@@ -49,7 +50,9 @@ export class UserStoreService {
       sex: user.sex,
       city: user.city,
       activities: user.activities,
-      offers: user.offers
+      offers: user.offers,
+      mail: user.mail,
+      password: user.password
     };
 
     return this.http.put(`${this.apiUrl}/users/${id}`, data);
