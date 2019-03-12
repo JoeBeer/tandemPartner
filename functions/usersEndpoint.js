@@ -39,10 +39,11 @@ exports.getUserById = function(req,res){
 };
 
 exports.createUser = function(req,res){
-    userCollection.add(req.body)
-        .then(result => {
-            res.status(201).send(true);
+    const userRef = userCollection.doc(req.params.userId).set(req.body)
+        .then(function(){
+
             console.log('Succesfully inserted user');
+            return res.status(201).send(true);
         })
         .catch((error) => {
             res.send(false);
@@ -53,7 +54,7 @@ exports.createUser = function(req,res){
 exports.updateUser = function(req, res){
     userCollection.doc(req.params.userId).set(req.body)
         .then(result => {
-            res.status(201).send(true);
+            res.status(204).send(true);
             console.log('Succesfully updated user');
         })
         .catch((error) => {
