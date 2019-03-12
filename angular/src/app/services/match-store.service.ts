@@ -13,11 +13,13 @@ export class MatchStoreService {
       new Match(
       'kycsoFi1RPaNy3hJxwmFhbD032I3',
       'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-      0),
+      'kochen',
+      false),
       new Match(
       'a5WsJoGC2kbu0zto57mP',
       'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-      0)
+      'schwimmen',
+      false)
     ];
    }
 
