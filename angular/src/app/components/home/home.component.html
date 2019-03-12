@@ -51,7 +51,7 @@
 
 
 <!-- Modal -->
-<div class="modal-backdrop fade in" [ngStyle]="{'display':display}"></div>
+<div *ngIf="modalIsOpen" class="modal-backdrop fade in" [ngStyle]="{'display':display}"></div>
 <div class="modal" [ngStyle]="{'display': display}" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -62,7 +62,7 @@
           </button>
         </div>
         <div class="modal-body">
-            {{ user.firstname }}
+           <!-- {{ user.firstname }}-->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>

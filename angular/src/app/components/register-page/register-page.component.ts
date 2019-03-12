@@ -23,7 +23,7 @@ export class RegisterPageComponent implements OnInit {
 
   selectedOffers: any[];
   selectedActivities: any[];
-  selectedCity: any[];
+  selectedCity: any;
   selectedSex: any[];
 
   selectOffersActivitiesSettings = {};
@@ -122,7 +122,7 @@ export class RegisterPageComponent implements OnInit {
     const userdata = {
       firstname: this.registerForm.value.registerFormFirstname,
       lastname: this.registerForm.value.registerFormLastname,
-      city: this.selectedCity[0],
+      city: this.selectedCity,
       dateOfBirth: this.registerForm.value.registerFormBirthday,
       // get the only one item from selectedSex-Array
       sex: this.parseSexValueForBackend(this.selectedSex[0]),

@@ -24,35 +24,38 @@ export class UserStoreService {
      return this.http.get(`${this.apiUrl}/users/${id}`);
    }
 
-   createUser(id: string, user: User) {
+   createUser(id: string, user: any) {
      // generate new API-User
      const data = {
        uid: id,
        firstname: user.firstname,
        lastname: user.lastname,
-       city: user.city,
        dateOfBirth: user.dateOfBirth,
+       sex: user.sex,
+       city: user.city,
        activities: user.activities,
-       sex: user.sex
+       offers: user.offers
      };
 
-     return this.http.put(`${this.apiUrl}/users`, data);
+     return this.http.put(`${this.apiUrl}/users/${id}`, data);
    }
 
-   updateUser(id: any, user: User) {
+   updateUser(id: string, user: any) {
     const data = {
+      uid: id,
       firstname: user.firstname,
       lastname: user.lastname,
-      city: user.city,
       dateOfBirth: user.dateOfBirth,
+      sex: user.sex,
+      city: user.city,
       activities: user.activities,
-      sex: user.sex
+      offers: user.offers
     };
 
     return this.http.put(`${this.apiUrl}/users/${id}`, data);
   }
 
-  public deleteUser(id: any) {
+  public deleteUser(id: string) {
     return this.http.delete(`${this.apiUrl}/users/${id}`);
   }
 

@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
 
   // for modal
   display = 'none';
+  modalIsOpen = false;
 
   constructor(
     private userStoreService: UserStoreService,
@@ -39,7 +40,7 @@ export class HomeComponent implements OnInit {
 
   // when home-component was called, the written methods in ngOnInit gonna start
   ngOnInit() {
-    this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
+    this.showMatchRequestsForCurrentUser(this.authService.getUser().uid);
   }
 
 
@@ -74,6 +75,7 @@ export class HomeComponent implements OnInit {
 
   openModal(id: string) {
     console.log('id: ' + id);
+    this.modalIsOpen = true;
     this.display = 'block';
     this.userStoreService.getUserById(id).subscribe((recievedUser: User) => {
       this.requestUser = recievedUser;
@@ -82,6 +84,7 @@ export class HomeComponent implements OnInit {
 
   closeModal() {
     this.display = 'none';
+    this.modalIsOpen = false;
   }
 
 }
