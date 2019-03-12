@@ -5,7 +5,7 @@ import { UserStoreService } from 'src/app/services/user-store.service';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { ActivitiesOffersCitiesStoreService } from '../../services/activities-offers-cities-store.service';
-
+import { Md5 } from 'ts-md5';
 
 @Component({
   selector: 'app-register-page',
@@ -127,22 +127,18 @@ export class RegisterPageComponent implements OnInit {
       // get the only one item from selectedSex-Array
       sex: this.parseSexValueForBackend(this.selectedSex[0]),
       activities: this.selectedActivities,
-      offers: this.selectedOffers
+      offers: this.selectedOffers,
+      mail: this.registerForm.value.registerFormMail,
+      password: Md5.hashStr(this.registerForm.value.registerFormPassword)
     };
 
-    // mail and password are gonna be saved at Firebase Authentication and not in userdata
-    const mail = this.registerForm.value.registerFormMail;
-    const password = this.registerForm.value.registerFormPassword;
 
-    // create new user at Authentication
-    this.authService.signUpWithMailAndPassword(mail, password).then((res) => {
-      console.log('UID: ', res.user.uid);
       // create new user in cloud firestore and take the UID from the new created User
-      this.userStoreService.createUser(res.user.uid, userdata).subscribe(() => {
-        // then go to page 'home'
-        this.router.navigate(['/home']);
-      });
+    this.userStoreService.createUser(userdata).subscribe(() => {
+      // then go to page 'home'
+      this.router.navigate(['/home']);
     });
+
   }
 
   // shorten the male/female-word and return one letter or 'no choice'
