@@ -1,0 +1,67 @@
+{
+  "navbar": {
+    "homeLink": "Home",
+    "profileLink": "My Profile",
+    "searchLink": "Search",
+    "matchesLink": "Matches",
+    "chatLink": "Chats",
+    "logout": "Logout",
+    "login": "Login"
+  },
+
+  "footer": {
+    "legalDisclosure": "Legal Disclosure",
+    "aboutUs": "About Us"
+  },
+
+  "home": {
+    "openMatchrequests": "My currently not accepted Matchrequests",
+    "noRequests": "Currently there are no Matchrequests for you.",
+    "requestTitle": "Matchrequest for: ",
+    "previous": "Previous",
+    "next": "Next"
+  },
+
+  "login": {
+    "tandemSlogan": " - learn together",
+    "mailPlaceholder": "Mailadress",
+    "passwordPlaceholder": "Password",
+    "loginButton": "Einloggen",
+    "registerButton": "Register now"
+  },
+
+  "register": {
+    "headerTitle": "Register",
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "sex": "Sex",
+    "mail": "Mailadress",
+    "city": "Residence",
+    "birthday": "Birthday",
+    "offers": "I'm offering",
+    "pleaseChoose": "choose an option",
+    "activities": "My activities",
+    "password": "Password",
+    "passwordConfirm": "Confirm your Password",
+    "saveButton": "Save",
+    "quitButton": "Quit"
+  },
+
+  "profile": {
+    "headerTitle": "Edit your Profile",
+    "newPassword": "New Password",
+    "newPasswordConfirm": "Confirm your new Password"
+  },
+
+  "validators": {
+    "required": " is required!",
+    "letterSpaces": "Only letters are allowed",
+    "email": "E-Mail Format is required!",
+    "city": "Residence is required!",
+    "birthday": "Birthday is required!",
+    "passwordPattern": "at least. 6 characters incl. 1 uppercase letter, 1 lowercase letter, 1 number!",
+    "passwordMismatch": "Passwords not match!",
+    "minOffers": "at least one offer is required!",
+    "minActivities": "at least one activity is required!"
+  }
+}
