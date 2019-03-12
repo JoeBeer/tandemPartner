@@ -19,11 +19,9 @@ const chatrooms = express();
 matches.use(cors);
 let chatroomsEndpoint = require('./chatroomsEndpoint')
 
-
-
 users.get('/', usersEndpoint.getUsers); //Get all users
 users.get('/:userId', usersEndpoint.getUserById);// Get one user
-users.put('/:userId', usersEndpoint.createUser); // Create new user
+users.post('/', usersEndpoint.createUser); // Create new user
 //users.put('/:userId', usersEndpoint.updateUser); // Update user
 users.delete('/:userId', usersEndpoint.deleteUser); // Delete a user
 exports.users = functions.https.onRequest(users); //Enables function 'users' @ Cloud Functions
