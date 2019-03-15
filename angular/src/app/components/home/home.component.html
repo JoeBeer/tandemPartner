@@ -7,7 +7,7 @@
       <div *ngFor="let match of matchRequests | paginate: { itemsPerPage: 5, currentPage: pageNumber }">
         <div class="card shadow my-3">
             <h5 class="card-header">
-                {{ 'home.requestTitle' | translate}} Kochen
+                {{ 'home.requestTitle' | translate}} {{ match.matchedOffer }}
             </h5>
             <div class="card-body">
               <div class="card-text">
@@ -51,8 +51,8 @@
 
 
 <!-- Modal -->
-<div *ngIf="modalIsOpen" class="modal-backdrop fade in" [ngStyle]="{'display':display}"></div>
-<div class="modal" [ngStyle]="{'display': display}" tabindex="-1" role="dialog">
+<div class="modal-backdrop fade in" [ngStyle]="{'display':display}"></div>
+<div *ngIf="modalIsOpen" class="modal" [ngStyle]="{'display': display}" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">

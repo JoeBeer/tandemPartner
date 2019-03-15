@@ -50,7 +50,8 @@
   "profile": {
     "headerTitle": "Edit your Profile",
     "newPassword": "New Password",
-    "newPasswordConfirm": "Confirm your new Password"
+    "newPasswordConfirm": "Confirm your new Password",
+    "deleteButton": "Delete Profile"
   },
 
   "validators": {
