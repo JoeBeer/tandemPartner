@@ -8,7 +8,6 @@ import { SearchPageComponent } from './components/search-page/search-page.compon
 import { ChatroomListComponent } from './components/chatroom-list/chatroom-list.component';
 import { ChatroomItemComponent } from './components/chatroom-item/chatroom-item.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
-import { MatchItemComponent } from './components/match-item/match-item.component';
 import { MatchListComponent } from './components/match-list/match-list.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { ResultPageComponent } from './components/result-page/result-page.component';
@@ -18,7 +17,7 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/register',
+    redirectTo: '/login',
     pathMatch: 'full'
   },
   {
@@ -37,10 +36,6 @@ const routes: Routes = [
   {
     path: 'matches',
     component: MatchListComponent
-  },
-  {
-    path: 'matches/:id',
-    component: MatchItemComponent
   },
   {
     path: 'chats',
