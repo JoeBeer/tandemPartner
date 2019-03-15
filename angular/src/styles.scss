@@ -18,3 +18,12 @@
 .pointer-cursor{
   cursor: pointer;
 }
+
+/*--matchlist--*/
+.accepted-match-cards:hover {
+  background-color: #FBF9B4;
+}
+
+.unaccepted-match-cards:hover {
+  background-color: #95D9FB;
+}

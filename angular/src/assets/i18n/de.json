@@ -50,7 +50,8 @@
   "profile": {
     "headerTitle": "Profil bearbeiten",
     "newPassword": "Neues Passwort",
-    "newPasswordConfirm": "Neues Passwort bestätigen"
+    "newPasswordConfirm": "Neues Passwort bestätigen",
+    "deleteButton": "Profil löschen"
   },
 
   "validators": {
@@ -63,5 +64,15 @@
     "passwordMismatch": "Passwörter stimmen nicht überein!",
     "minOffers": "mind. ein  Angebot muss ausgewählt sein!",
     "minActivities": "mind. eine Aktivität muss ausgewählt sein!"
+  },
+
+  "matchlist": {
+    "matchHeaderTitle": "Übersicht aller Matches",
+    "accpetedMatches": "Akzeptierte Matches",
+    "matchedOffer": "Match für",
+    "unacceptedMatches": "Versendete Anfragen",
+    "matchrequestFor": "Anfrage für",
+    "contactTooltip": "Partner kontaktieren",
+    "deleteTooltip": "Anfrage zurückziehen"
   }
 }

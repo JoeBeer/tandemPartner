@@ -18,8 +18,10 @@ export class HomeComponent implements OnInit {
   users: User[];
   user: User;
   requestUser: User;
-  matchRequests: Match[];
+  matchRequests: any[];
   initiatorFirstname: string;
+
+  openedModal: any;
 
   // for fontawesome icons
   faCheck = faCheck;
@@ -45,7 +47,7 @@ export class HomeComponent implements OnInit {
 
 
   showMatchRequestsForCurrentUser(id: string) {
-    this.matchRequests = this.matchStoreService.getAllUnacceptedMatchesForUser(id);
+    this.matchStoreService.getAllUnacceptedMatchesForUser(id).then(matches => this.matchRequests = matches);
     // this.matchRequests.forEach((i: Match) => {
     //   console.log('PREinitiatorID: ' + i.initiatorID);
     //   this.getInitiatorFirstname(i.initiatorID);
@@ -77,8 +79,10 @@ export class HomeComponent implements OnInit {
     console.log('id: ' + id);
     this.modalIsOpen = true;
     this.display = 'block';
-    this.userStoreService.getUserById(id).subscribe((recievedUser: User) => {
-      this.requestUser = recievedUser;
+    this.matchRequests.forEach( match => {
+      if (match._id === id) {
+        this.openedModal = match;
+      }
     });
   }
 
