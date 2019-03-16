@@ -34,6 +34,7 @@ import { AuthGuard } from './services/auth-guard.service';
 import { UserStoreService } from './services/user-store.service';
 import { MatchStoreService } from './services/match-store.service';
 import { ActivitiesOffersCitiesStoreService } from './services/activities-offers-cities-store.service';
+import { SearchService } from './services/search.service';
 
 // imports for firebase
 import { AngularFireModule } from '@angular/fire';
@@ -91,7 +92,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatchStoreService,
     ActivitiesOffersCitiesStoreService,
     // In the newest firebase version the timestampsInSnapshots setting defaults to true therefore it no longer needs to be set.
-    { provide: FirestoreSettingsToken, useValue: {} }
+    { provide: FirestoreSettingsToken, useValue: {} },
+    SearchService
   ],
   bootstrap: [AppComponent]
 })

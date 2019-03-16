@@ -63,7 +63,8 @@
     "passwordPattern": "at least. 6 characters incl. 1 uppercase letter, 1 lowercase letter, 1 number!",
     "passwordMismatch": "Passwords not match!",
     "minOffers": "at least one offer is required!",
-    "minActivities": "at least one activity is required!"
+    "minActivities": "at least one activity is required!",
+    "ageMismatch": "The minimum Age has to be smaller than the maximum Age!"
   },
 
   "matchlist": {
@@ -74,5 +75,16 @@
     "matchrequestFor": "Request for",
     "contactTooltip": "Contact the Partner",
     "deleteTooltip": "Withdraw the Offer"
+  },
+
+  "search": {
+    "newSearch": "New Search",
+    "offer": "I want to learn",
+    "city": "City",
+    "activities": "Activities",
+    "minAge": "Minimum Age",
+    "maxAge": "Maximum Age",
+    "searchButton": "Start new Search",
+    "recentSearches": "Use recent Searchparametres"
   }
 }
