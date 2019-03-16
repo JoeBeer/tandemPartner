@@ -63,7 +63,8 @@
     "passwordPattern": "mind. 6 Zeichen inkl. 1 Großbuchstabe, 1 Kleinbuchstabe, 1 Zahl!",
     "passwordMismatch": "Passwörter stimmen nicht überein!",
     "minOffers": "mind. ein  Angebot muss ausgewählt sein!",
-    "minActivities": "mind. eine Aktivität muss ausgewählt sein!"
+    "minActivities": "mind. eine Aktivität muss ausgewählt sein!",
+    "ageMismatch": "Das Mindestalter muss kleiner als das Maximalalter sein!"
   },
 
   "matchlist": {
@@ -74,5 +75,16 @@
     "matchrequestFor": "Anfrage für",
     "contactTooltip": "Partner kontaktieren",
     "deleteTooltip": "Anfrage zurückziehen"
+  },
+
+  "search": {
+    "newSearch": "Neue Suche",
+    "offer": "Ich möchte lernen",
+    "city": "Stadt",
+    "activities": "Aktivitäten",
+    "minAge": "Mindestalter",
+    "maxAge": "Maximalalter",
+    "searchButton": "Neue Suche starten",
+    "recentSearches": "Alte Suchparamter verwenden"
   }
 }
