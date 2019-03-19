@@ -13,6 +13,7 @@
 # dependencies
 /node_modules
 /bower_components
+package-lock.json
 
 # IDEs and editors
 /.idea
@@ -107,10 +108,14 @@ local.properties
 .idea
 **/node_modules/*
 **/.firebaserc
+.firebaserc
 
 ### Firebase Patch ###
 .runtimeconfig.json
 .firebase/
+
+### Firebase JSON ###
+firebase.json
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
@@ -183,7 +188,7 @@ fabric.properties
 ### Intellij Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
-# *.iml
+*.iml
 # modules.xml
 # .idea/misc.xml
 # *.ipr
