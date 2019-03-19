@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { Searchrequest } from './../../models/searchrequest';
 import { ActivitiesOffersCitiesStoreService } from './../../services/activities-offers-cities-store.service';
 import { Component, OnInit } from '@angular/core';
@@ -30,13 +31,14 @@ export class SearchPageComponent implements OnInit {
   recentSearchrequests: Searchrequest[];
 
   // getting active & collapsed state
-  newSearchCollapsed = false;
+  newSearchCollapsed = true;
   recentRequestCollapsed = false;
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService,
-              private searchService: SearchService) {
+              private searchService: SearchService,
+              private authService: AuthService) {
     this.searchForm = this.createSearchForm();
               }
 
@@ -49,7 +51,10 @@ export class SearchPageComponent implements OnInit {
     this.initializeMultiselectSettings();
 
     // TODO: implement the currentUser
-    this.recentSearchrequests = this.searchService.getRecentSearchrequestsForSpecificUser('2');
+    // tslint:disable-next-line:max-line-length
+    this.searchService.getRecentSearchrequestsForSpecificUser(this.authService.currentUser.uid).subscribe((requests: Searchrequest[]) => {
+      this.recentSearchrequests = requests;
+    });
   }
 
   createSearchForm() {
@@ -92,17 +97,21 @@ export class SearchPageComponent implements OnInit {
 
     const searchdata = {
       offerParam: this.selectedOffer,
-      activities: this.selectedActivities,
       sexParam: this.parseSexValueForBackend(this.selectedSex),
       minAgeParam: this.searchForm.value.searchFormMinAge,
       maxAgeParam: this.searchForm.value.searchFormMaxAge
     };
 
-    this.searchService.createSearchrequest(searchdata);
+    this.searchService.createSearchrequest(this.authService.currentUser.uid, searchdata).subscribe(() => {
+      this.router.navigate(['/search/result']);
+    });
   }
 
   useRecentSearchrequest(request: Searchrequest) {
-    this.searchService.takeExistingSearchrequest(request);
+
+    this.searchService.takeExistingSearchrequest(this.authService.currentUser.uid, request).subscribe(() => {
+      this.router.navigate(['/search/result']);
+    });
   }
 
   // shorten the male/female-word and return one letter or 'no choice'
