@@ -9,20 +9,24 @@ const express = require('express');
 
 const users = express();
 users.use(cors);
-let usersEndpoint = require('./usersEndpoint')
+let usersEndpoint = require('./usersEndpoint');
 
 const matches = express();
 matches.use(cors);
-let matchesEndpoint = require('./matchesEndpoint')
+let matchesEndpoint = require('./matchesEndpoint');
 
 const chatrooms = express();
 matches.use(cors);
-let chatroomsEndpoint = require('./chatroomsEndpoint')
+let chatroomsEndpoint = require('./chatroomsEndpoint');
+
+const searches = express();
+matches.use(cors);
+let searchesEnpoint = require('./searchesEndpoint');
 
 users.get('/', usersEndpoint.getUsers); //Get all users
 users.get('/:userId', usersEndpoint.getUserById);// Get one user
 users.post('/', usersEndpoint.createUser); // Create new user
-//users.put('/:userId', usersEndpoint.updateUser); // Update user
+users.put('/:userId', usersEndpoint.updateUser); // Update user
 users.delete('/:userId', usersEndpoint.deleteUser); // Delete a user
 exports.users = functions.https.onRequest(users); //Enables function 'users' @ Cloud Functions
 
@@ -33,3 +37,6 @@ exports.matches = functions.https.onRequest(matches); //Enables function 'matche
 chatrooms.post('/', chatroomsEndpoint.createChatroom); // Create new chatroom
 chatrooms.get('/:chatroomId', chatroomsEndpoint.getChatroomById) // Get one chatroom
 exports.chatrooms = functions.https.onRequest(chatrooms); //Enables function 'chatrooms' @ Cloud Functions
+
+searches.post('/', searchesEnpoint.createSearch);
+exports.searches = functions.https.onRequest(searches); //Enables function 'searches' @ Cloud Functions

@@ -48,10 +48,8 @@ exports.getUserById = function (req, res) {
 
 exports.createUser = function (req, res) {
         const user = req.body;
-        console.log(user);
     firebase.auth().createUserWithEmailAndPassword(req.body.mail, req.body.password)
         .then(authRes => {
-            console.log("Bin hier");
             userCollection.doc(authRes.user.uid).set(user)
                 .then(function () {
 
@@ -59,8 +57,8 @@ exports.createUser = function (req, res) {
                     return res.status(201).send({uid: authRes.user.uid});
                 })
                 .catch((error) => {
-                    res.send(false);
                     console.log('Error creating new user', error);
+                    return res.send(false);
                 });
         })
 };
