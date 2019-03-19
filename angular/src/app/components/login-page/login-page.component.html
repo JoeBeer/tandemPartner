@@ -5,7 +5,7 @@
       <img class="card-img-top mb-4 mt-3 rounded-circle mx-auto shadow" src="../../../assets/images/tandemLogo.png">
       <div class="card-body">
         <div class="card-title text-center">tandemPartner<i class="text-muted">{{'login.tandemSlogan' | translate }}</i></div>
-        <form class="m-3" [formGroup]="loginForm" (ngSubmit)="login()">
+        <form class="m-3" [formGroup]="loginForm" (ngSubmit)="loginFormSave()">
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text" id="mailIcon">

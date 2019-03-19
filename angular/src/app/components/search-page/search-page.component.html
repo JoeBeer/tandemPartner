@@ -21,7 +21,7 @@
       </div><!--header-->
 
       <!--new search area-->
-      <div *ngIf="newSearchCollapsed" class="card-body collapse" id="collapseNewSearch">
+      <div *ngIf="newSearchCollapsed" class="card-body" id="collapseNewSearch">
         <form class="" [formGroup]="searchForm" (ngSubmit)="newSearchSave()" novalidate>
           <div class="row">
             <div class="form-group col-md-6">

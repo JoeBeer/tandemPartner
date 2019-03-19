@@ -9,7 +9,7 @@ import { User } from '../models/user';
 })
 export class AuthService {
   public firebaseUser: firebase.User = null;
-  public currentUser: User;
+  public currentUser: any;
 
   isLoggedIn = false;
    // store the URL so we can redirect after logging in
@@ -30,8 +30,8 @@ export class AuthService {
   }
 
   getUser() {
-    this.userStoreService.getUserById(this.firebaseUser.uid).subscribe( (recievedUser: User) => {
-      this.currentUser = recievedUser;
+    this.userStoreService.getUserById(this.firebaseUser.uid).subscribe( snapshot => {
+      this.currentUser = snapshot.data();
     });
 
     return this.currentUser;
@@ -66,7 +66,7 @@ export class AuthService {
     });
   }
 
-  async signInWithMailAndPassword(mail: string, password: string) {
+  async login(mail: string, password: string) {
     try {
       await this.angularFireAuth.auth.signInWithEmailAndPassword(mail, password);
       this.isLoggedIn = true;
