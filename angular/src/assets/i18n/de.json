@@ -3,6 +3,7 @@
     "homeLink": "Startseite",
     "profileLink": "Mein Profil",
     "searchLink": "Suchanfrage",
+    "searchResults": "Suchergebnisse",
     "matchesLink": "Matches",
     "chatLink": "Nachrichten",
     "logout": "Ausloggen",
@@ -86,5 +87,11 @@
     "maxAge": "Maximalalter",
     "searchButton": "Neue Suche starten",
     "recentSearches": "Alte Suchparamter verwenden"
+  },
+
+  "result": {
+    "sendMatchrequestTooltip": "Matchanfrage senden",
+    "results": "Suchergebnisse",
+    "age": "Jahre alt"
   }
 }

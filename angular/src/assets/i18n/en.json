@@ -3,6 +3,7 @@
     "homeLink": "Home",
     "profileLink": "My Profile",
     "searchLink": "Search",
+    "searchResults": "Searching Results",
     "matchesLink": "Matches",
     "chatLink": "Chats",
     "logout": "Logout",
@@ -86,5 +87,11 @@
     "maxAge": "Maximum Age",
     "searchButton": "Start new Search",
     "recentSearches": "Use recent Searchparametres"
+  },
+
+  "result": {
+    "sendMatchrequestTooltip": "Send Matchrequest",
+    "results": "Searching Results",
+    "age": "years old"
   }
 }
