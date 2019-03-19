@@ -39,7 +39,6 @@ export class AuthService {
 
   isloggedIn(): boolean {
     const user = this.angularFireAuth.auth.currentUser;
-
     if (user) {
       return this.isLoggedIn = true;
     } else {
