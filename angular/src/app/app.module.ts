@@ -31,14 +31,16 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 
 // services
 import { AuthService } from './services/auth.service';
-import { AuthGuard } from './services/auth-guard.service';
+import { AuthGuard } from './services/auth.guard';
 import { UserStoreService } from './services/user-store.service';
 import { MatchStoreService } from './services/match-store.service';
 import { ActivitiesOffersCitiesStoreService } from './services/activities-offers-cities-store.service';
+import { ChatService } from './services/chat.service';
 
 // imports for firebase
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 
 
@@ -79,6 +81,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    AngularFirestoreModule,
     FontAwesomeModule,
     NgxPaginationModule,
     NgMultiSelectDropDownModule.forRoot(),
@@ -90,7 +93,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AuthService,
     AuthGuard,
     MatchStoreService,
-    ActivitiesOffersCitiesStoreService
+    ActivitiesOffersCitiesStoreService,
+    ChatService,
+    { provide: FirestoreSettingsToken, useValue: {} } // To solve the timestampInSnapshot-Error
   ],
   bootstrap: [AppComponent]
 })

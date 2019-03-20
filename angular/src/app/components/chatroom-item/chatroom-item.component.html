@@ -1,3 +1,29 @@
-<p>
-  chatroom-item works!
-</p>
+<h1>TandemPartner Chat</h1>
+
+<ng-container *ngIf="chatroom$ | async as chat">
+  <ng-container *ngIf=" authService.user$ | async as user">
+
+    <div #chatBox class="chat">
+
+      <div class="msg animated zoomInUp" *ngFor="let message of chat.messages; trackBy: trackByCreated"> <!-- TODO trackBy seems not working.-->
+
+        <div class="user">
+          <!-- <img [src]="message.user?.photoURL" width="50px"> -->
+          <div><span class="tag is-dark"> {{ message.user?.firstname || message.user?.uid }}</span></div>
+
+        </div>
+
+        <p>{{ message.content }}</p>
+
+      </div>
+
+    </div>
+
+    <div class="form">
+      <input class="input" [(ngModel)]="newMessage" maxlength="100" (keydown.enter)="submit(chat.id)">
+
+      <button (click)="submit(chat.id)" class="button is-info" [disabled]="!newMessage">Send</button>
+
+    </div>
+  </ng-container>
+</ng-container>

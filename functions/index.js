@@ -16,7 +16,7 @@ matches.use(cors);
 let matchesEndpoint = require('./matchesEndpoint')
 
 const chatrooms = express();
-matches.use(cors);
+chatrooms.use(cors);
 let chatroomsEndpoint = require('./chatroomsEndpoint')
 
 
@@ -34,5 +34,5 @@ matches.get('/:match-id', matchesEndpoint.getMatch); //Get one match
 exports.matches = functions.https.onRequest(matches); //Enables function 'matches' @ Cloud Functions
 
 chatrooms.post('/', chatroomsEndpoint.createChatroom); // Create new chatroom
-chatrooms.get('/:chatroom-id', chatroomsEndpoint.getChatroomById) // Get one chatroom
+chatrooms.put('/:chatroomid', chatroomsEndpoint.updateChatroom) // Update chatroom
 exports.chatrooms = functions.https.onRequest(chatrooms); //Enables function 'chatrooms' @ Cloud Functions

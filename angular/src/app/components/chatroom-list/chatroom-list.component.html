@@ -1,3 +1,16 @@
 <p>
   chatroom-list works!
 </p>
+<div>
+  <button class="button is-info" (click)="createChatroom()">Create New Chat</button>
+  <hr>
+
+  <ul>
+    <li *ngFor="let chatroom of userChats$ | async">
+      <!-- TODO map the userA or userB (depending on the currentUser) to a modal to display profile pic and name  -->
+      <a [routerLink]="chatroom.id">{{ chatroom.id }} - {{ chatroom.messages.length }} Messages </a>
+    </li>
+  </ul>
+</div>
+
+

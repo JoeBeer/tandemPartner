@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
-import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
@@ -19,11 +17,11 @@ export class LoginPageComponent implements OnInit {
   faAt = faAt;
   faLock = faLock;
 
-  constructor(private formBuilder: FormBuilder,
-              private router: Router,
-              private authService: AuthService) {
-                this.loginForm = this.createLoginForm();
-               }
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService) {
+    this.loginForm = this.createLoginForm();
+  }
 
   ngOnInit() {
   }
@@ -39,7 +37,7 @@ export class LoginPageComponent implements OnInit {
     const mail = this.loginForm.value.loginFormMail;
     const password = this.loginForm.value.loginFormPassword;
 
-    this.authService.signInWithMailAndPassword(mail, password);
+    this.authService.login(mail, password);
   }
 
   get loginFormMail() {

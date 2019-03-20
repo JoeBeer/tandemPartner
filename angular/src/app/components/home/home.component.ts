@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
 
   // when home-component was called, the written methods in ngOnInit gonna start
   ngOnInit() {
-    this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
+    // this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
   }
 
 
@@ -54,10 +54,10 @@ export class HomeComponent implements OnInit {
   }
 
   getInitiatorFirstname(id: string) {
-    this.userStoreService.getUserById(id).subscribe((recievedUser: User) => {
-      this.initiatorFirstname = recievedUser.firstname;
-      console.log('initiatorFirstname: ' + this.initiatorFirstname);
-    });
+    // this.userStoreService.getUserById(id).subscribe((recievedUser: User) => {
+    //   this.initiatorFirstname = recievedUser.firstname;
+    //   console.log('initiatorFirstname: ' + this.initiatorFirstname);
+    // });
   }
 
   acceptMatch() {
@@ -73,11 +73,11 @@ export class HomeComponent implements OnInit {
   }
 
   openModal(id: string) {
-    console.log('id: ' + id);
-    this.display = 'block';
-    this.userStoreService.getUserById(id).subscribe((recievedUser: User) => {
-      this.requestUser = recievedUser;
-    });
+    // console.log('id: ' + id);
+    // this.display = 'block';
+    // this.userStoreService.getUserById(id).subscribe((recievedUser: User) => {
+    //   this.requestUser = recievedUser;
+    // });
   }
 
   closeModal() {
