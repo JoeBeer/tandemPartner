@@ -8,5 +8,6 @@ export class User {
     public city: string,
     public activities: string[],
     public offers: string[],
-    ) {}
+    public mail?: string
+  ) {}
 }

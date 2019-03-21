@@ -57,10 +57,10 @@ export class HomeComponent implements OnInit {
   }
 
   getInitiatorFirstname(id: string) {
-    this.userStoreService.getUserById(id).subscribe((recievedUser: User) => {
-      this.initiatorFirstname = recievedUser.firstname;
-      console.log('initiatorFirstname: ' + this.initiatorFirstname);
-    });
+    // this.userStoreService.getUserById(id).subscribe((recievedUser: User) => {
+    //   this.initiatorFirstname = recievedUser.firstname;
+    //   console.log('initiatorFirstname: ' + this.initiatorFirstname);
+    // });
   }
 
   acceptMatch() {

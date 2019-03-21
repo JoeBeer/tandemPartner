@@ -1,6 +1,8 @@
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Match } from './../models/match';
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AuthService } from './auth.service';
+import { switchMap, map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -11,7 +13,9 @@ export class MatchStoreService {
   unacceptedMatches: any[];
   allMatchesForSpecificUser: any[];
 
-  constructor(private angularFireStore: AngularFirestore) {
+  constructor(
+    private angularFirestore: AngularFirestore,
+    private authService: AuthService) {
  this.allMatchesForSpecificUser = [
    new Match(
    'kycsoFi1RPaNy3hJxwmFhbD032I3',
@@ -28,7 +32,7 @@ export class MatchStoreService {
 
   async getAllUnacceptedMatchesForUser(id: string) {
     try {
-        await this.angularFireStore.collection('matches').ref.where('partnerID', '==', id)
+        await this.angularFirestore.collection('matches').ref.where('partnerID', '==', id)
         .get().then( snapshot => {
           snapshot.docs.forEach( doc => {
             this.unacceptedMatches.push(doc.data());
@@ -43,7 +47,7 @@ export class MatchStoreService {
   async getAllMatchesForSpecificUser(id: string) {
     // get alle matches where initiatorID=currentUser.uid
     try {
-      await this.angularFireStore.collection<Match>('matches').ref.where('initiatorID', '==', id)
+      await this.angularFirestore.collection<Match>('matches').ref.where('initiatorID', '==', id)
       .get().then(snapshot => {
         snapshot.docs.forEach(doc => {
           this.allMatchesForSpecificUser.push(doc.data() as Match);
@@ -56,7 +60,7 @@ export class MatchStoreService {
 
     // get all matches where patnerID=currentUser.uid and accepted=true
     try {
-      await this.angularFireStore.collection<Match>('matches').ref.where('partnerID', '==', id).where('accepted', '==', true)
+      await this.angularFirestore.collection<Match>('matches').ref.where('partnerID', '==', id).where('accepted', '==', true)
       .get().then( snapshot => {
         snapshot.docs.forEach(doc => {
           this.allMatchesForSpecificUser.push(doc.data() as Match);
@@ -67,6 +71,29 @@ export class MatchStoreService {
       }
 
     return this.allMatchesForSpecificUser;
+
+  }
+
+  getAllUnAcceptedMatches() {
+    return this.authService.user$.pipe(
+      switchMap(user => {
+        return this.angularFirestore
+        .collection('machtes', ref => ref.where('partnerID', '==', user ? user.uid : ''))
+        .snapshotChanges()
+        .pipe(
+          map(actions => {
+            return actions.map(a => {
+              const data: Object = a.payload.doc.data();
+              const id = a.payload.doc.id;
+              return { id, ...data };
+            });
+          })
+        );
+      })
+    );
+  }
+
+  getAllAcceptedMatches() {
 
   }
 
