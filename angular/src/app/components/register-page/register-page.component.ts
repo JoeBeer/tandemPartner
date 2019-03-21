@@ -90,7 +90,7 @@ export class RegisterPageComponent implements OnInit {
       idField: 'item_id',
       textField: 'item_text',
       enableCheckAll: false,
-      allowSearchFilter: false,
+      allowSearchFilter: true,
       closeDropDownOnSelection: true
     };
 
@@ -101,7 +101,7 @@ export class RegisterPageComponent implements OnInit {
       textField: 'item_text',
       enableCheckAll: false,
       itemsShowLimit: 3,
-      allowSearchFilter: false
+      allowSearchFilter: true
     };
   }
 

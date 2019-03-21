@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
     private userStoreService: UserStoreService,
     private authService: AuthService,
     private matchStoreService: MatchStoreService
-    ) { }
+  ) { }
 
   // when home-component was called, the written methods in ngOnInit gonna start
   ngOnInit() {
@@ -66,24 +66,20 @@ export class HomeComponent implements OnInit {
   acceptMatch() {
     // TODO: add functionality - update the match
     console.log('accepted');
-  //  this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
+    //  this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
   }
 
   declineMatch() {
     // TODO: add delete functionality - delete the match
     console.log('deleted');
-   // this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
+    // this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
   }
 
   openModal(id: string) {
     console.log('id: ' + id);
     this.modalIsOpen = true;
     this.display = 'block';
-    this.matchRequests.forEach( match => {
-      if (match._id === id) {
-        this.openedModal = match;
-      }
-    });
+
   }
 
   closeModal() {

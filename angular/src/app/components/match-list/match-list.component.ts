@@ -13,6 +13,8 @@ import { Router } from '@angular/router';
 })
 export class MatchListComponent implements OnInit {
 
+  matchA: Match[];
+  matchB: Match[];
   allMatches: Match[];
   acceptedMatches: Match[];
   matchrequests: Match[];
@@ -24,6 +26,10 @@ export class MatchListComponent implements OnInit {
   // for pagination
   pageNumberAcceptedMatches = 1;
   pageNumberRequests = 1;
+
+  // getting active & collapsed state
+  acceptedCollapsed = true;
+  requestsCollapsed = false;
 
   // for modal
   display = 'none';
@@ -37,38 +43,49 @@ export class MatchListComponent implements OnInit {
             /* private chatservice: ChatService */ ) { }
 
   ngOnInit() {
-   // this.matchStoreService.getAllMatchesForSpecificUser(this.authService.currentUser.uid).then(matches => {
-   //   this.allMatches = matches;
-   // });
-  this.acceptedMatches = [
-       new Match(
-       'kycsoFi1RPaNy3hJxwmFhbD032I3',
-       'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-       'kochen',
-       true),
-       new Match(
-        'kycsoFi1RPaNy3hJxwmFhbD032I3',
-        'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-        'kochen',
-        true),
-       new Match(
-        'kycsoFi1RPaNy3hJxwmFhbD032I3',
-        'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-        'kochen',
-        true)];
-  this.matchrequests = [
-       new Match(
-       'a5WsJoGC2kbu0zto57mP',
-       'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-       'schwimmen',
-       false)
-     ];
- // this.pushMatchToAcceptedMatches();
- // this.pushMatchToMatchrequests();
+    this.matchStoreService.getAllMatchesForSpecificUserAsInitiator(this.authService.currentUser.uid).subscribe((matches: Match[]) => {
+      this.matchA = matches;
+      console.log(this.matchA);
+      // tslint:disable-next-line:max-line-length
+      this.matchStoreService.getAllAcceptedMatchesForSpecificUserAsPartner(this.authService.currentUser.uid).subscribe((matchesB: Match[]) => {
+        this.matchB = matchesB;
+        console.log(this.matchB);
+        this.allMatches = this.matchA.concat(this.matchB);
+        console.log(this.allMatches);
+        this.pushMatchToAcceptedMatches();
+        this.pushMatchToMatchrequests();
+      });
+    });
+
+// this.acceptedMatches = [
+//      new Match(
+//      'kycsoFi1RPaNy3hJxwmFhbD032I3',
+//      'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
+//      'kochen',
+//      true),
+//      new Match(
+//       'kycsoFi1RPaNy3hJxwmFhbD032I3',
+//       'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
+//       'kochen',
+//       true),
+//      new Match(
+//       'kycsoFi1RPaNy3hJxwmFhbD032I3',
+//       'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
+//       'kochen',
+//       true)];
+// this.matchrequests = [
+//      new Match(
+//      'a5WsJoGC2kbu0zto57mP',
+//      'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
+//      'schwimmen',
+//      false)
+//    ];
+
   }
 
   pushMatchToAcceptedMatches() {
-    for (let i = 0; i > this.allMatches.length; i++) {
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < this.allMatches.length; i++) {
       let j = 0;
       if (this.allMatches[i].accepted === true) {
         this.acceptedMatches[j] = this.allMatches[i];
@@ -78,7 +95,7 @@ export class MatchListComponent implements OnInit {
   }
 
   pushMatchToMatchrequests() {
-    for (let i = 0; i > this.allMatches.length; i++) {
+    for (let i = 0; i < this.allMatches.length; i++) {
       let j = 0;
       if (this.allMatches[i].accepted === false) {
         this.matchrequests[i] = this.allMatches[i];
@@ -87,6 +104,16 @@ export class MatchListComponent implements OnInit {
     }
   }
 
+// calculateAgeForEachUser() {
+//   // tslint:disable-next-line:prefer-for-of
+//   for (let i = 0; i < this.userForSpecificRequest.length; i++) {
+//     const birthdate = this.userForSpecificRequest[i].dateOfBirth;
+//     const timeDiff = Math.abs(Date.now() - birthdate);
+//     const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365);
+//     this.userForSpecificRequest[i].dateOfBirth = age;
+//   }
+// }
+//
   contactUser(initiatorID: string, partnerID: string) {
     // TODO: cretae new chatroom and redirect to the chatroom
     // tslint:disable-next-line:max-line-length
