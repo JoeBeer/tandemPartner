@@ -25,9 +25,9 @@
 
   "login": {
     "tandemSlogan": " - learn together",
-    "mailPlaceholder": "Mailadress",
+    "mailPlaceholder": "Mailaddress",
     "passwordPlaceholder": "Password",
-    "loginButton": "Einloggen",
+    "loginButton": "Sign In",
     "registerButton": "Register now"
   },
 
@@ -39,13 +39,15 @@
     "mail": "Mailadress",
     "city": "Residence",
     "birthday": "Birthday",
+    "birthdayShort": "dd.mm.yyyy",
     "offers": "I'm offering",
     "pleaseChoose": "choose an option",
     "activities": "My activities",
     "password": "Password",
     "passwordConfirm": "Confirm your Password",
     "saveButton": "Save",
-    "quitButton": "Quit"
+    "quitButton": "Quit",
+    "requiredExplanation": "These fields are required"
   },
 
   "profile": {
@@ -82,11 +84,10 @@
     "newSearch": "New Search",
     "offer": "I want to learn",
     "city": "City",
-    "activities": "Activities",
     "minAge": "Minimum Age",
     "maxAge": "Maximum Age",
     "searchButton": "Start new Search",
-    "recentSearches": "Use recent Searchparametres"
+    "recentSearches": "Use recent Searchrequest"
   },
 
   "result": {

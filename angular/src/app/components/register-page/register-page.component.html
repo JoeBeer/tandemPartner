@@ -2,153 +2,177 @@
   <div class="col-1"></div>
   <div class="col-10">
     <div class="card mx-auto my-5 shadow">
-        <div class="card-header bg-warning text-center h5">
-            {{'register.headerTitle' | translate }}
-          </div>
-      <div class="card-body">
-          <form class="" [formGroup]="registerForm" (ngSubmit)="registerFormSave()" novalidate>
-            <div class="row">
-              <div class="form-group col-md-6">
-                  <label for="registerFormFirstname">{{'register.firstname' | translate }}*</label>
-                  <input type="text" class="form-control shadow-sm" id="registerFormFirstname" formControlName="registerFormFirstname" placeholder="{{'register.firstname' | translate }}">
-              </div>
-              <div class="form-group col-md-6">
-                  <label for="registerFormLastname">{{'register.lastname' | translate }}*</label>
-                  <input type="text" class="form-control shadow-sm" id="registerFormLastname" formControlName="registerFormLastname" placeholder="{{'register.lastname' | translate }}">
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 form-group">
-                <label for="registerFormSex">{{'register.sex' | translate }}*</label>
-                <ng-multiselect-dropdown  class="form-control shadow-sm" id="registerFormSex" #registerFormSex="ngModel"
-                  [placeholder]="'register.pleaseChoose' | translate"
-                  [data]="sexes"
-                  [(ngModel)]="selectedSex" [ngModelOptions]="{ standalone : true }"
-                  [settings]="selectSexSettings" required>
-                </ng-multiselect-dropdown>
-
-              </div>
-              <div class="col-md-6 form-group">
-                  <label>{{'register.mail' | translate }}*</label>
-                  <input type="text" class="form-control shadow-sm" id="registerFormMail" formControlName="registerFormMail" placeholder="name@example.com">
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 form-group">
-                <label for="registerFormCity">{{'register.city' | translate }}*</label>
-                <ng-multiselect-dropdown  class="form-control shadow-sm" id="registerFormCity" #registerFormCity="ngModel"
-                  [placeholder]="'register.pleaseChoose' | translate"
-                  [data]="cities"
-                  [(ngModel)]="selectedCity" [ngModelOptions]="{ standalone : true }"
-                  [settings]="selectCitySettings" required>
-                </ng-multiselect-dropdown>
-              </div>
-              <div class="col-md-6 form-group">
-                  <label for="registerFormBirthday">{{'register.birthday' | translate }}*</label>
-                  <input type="text"
-                  [placeholder]="'dd.mm.yyyy'"
-                  class="form-control shadow-sm"
-                  bsDatepicker id="registerFormBirthday" formControlName="registerFormBirthday"
-                  [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', colorTheme: 'theme-orange' }">
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 form-group">
-                <label for="registerFormOffers">{{'register.offers' | translate }}:*</label>
-                <ng-multiselect-dropdown  class="form-control shadow-sm" id="registerFormOffers" #registerFormOffers="ngModel"
-                   [placeholder]="'register.pleaseChoose' | translate"
-                   [data]="offers"
-                   [(ngModel)]="selectedOffers" [ngModelOptions]="{ standalone : true }"
-                   [settings]="selectOffersActivitiesSettings" required>
-                </ng-multiselect-dropdown>
-              </div>
-              <div class="col-md-6 form-group">
-                <label for="registerFormActivities">{{'register.activities' | translate }}:*</label>
-                <ng-multiselect-dropdown  class="form-control shadow-sm" id="registerFormActivities" #registerFormActivities="ngModel"
-                   [placeholder]="'register.pleaseChoose' | translate"
-                   [data]="activities"
-                   [(ngModel)]="selectedActivities" [ngModelOptions]="{ standalone : true }"
-                   [settings]="selectOffersActivitiesSettings" required>
-                </ng-multiselect-dropdown>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 form-group">
-                  <label>{{'register.password' | translate }}*</label>
-                  <input type="password" class="form-control shadow-sm" id="registerFormPassword" formControlName="registerFormPassword" placeholder="{{'register.password' | translate }}">
-              </div>
-              <div class="col-md-6 form-group">
-                  <label>{{'register.passwordConfirm' | translate }}*</label>
-                  <input type="password" class="form-control shadow-sm" id="registerFormPasswordConfirm" formControlName="registerFormPasswordConfirm" placeholder="{{'register.passwordConfirm' | translate }}">
-              </div>
-            </div>
-
-            <!--Validator messages-->
-            <div class="alert-danger pl-2" *ngIf="registerFormFirstname.errors && (registerFormFirstname.touched || registerFormFirstname.dirty)">
-                <div *ngIf="registerFormFirstname.errors.required">{{'register.firstname' | translate }} {{'validators.required' | translate }}</div>
-                <div *ngIf="registerFormFirstname.errors.pattern">{{'validators.letterSpaces' | translate }}</div>
-              </div>
-
-              <div class="alert-danger pl-2" *ngIf="registerFormLastname.errors && (registerFormLastname.touched || registerFormLastname.dirty)">
-                <div *ngIf="registerFormLastname.errors.required">{{'register.lastname' | translate }} {{'validators.required' | translate }}</div>
-                <div *ngIf="registerFormLastname.errors.pattern">{{'validators.letterSpaces' | translate }}</div>
-              </div>
-
-              <div class="alert-danger pl-2" *ngIf="registerFormMail.errors && (registerFormMail.touched || registerFormMail.dirty)">
-                <div *ngIf="registerFormMail.errors.required">{{'register.mail' | translate }} {{'validators.required' | translate }}</div>
-                <div *ngIf="registerFormMail.errors.email">{{'validators.email' | translate }}</div>
-              </div>
-
-              <div class="alert-danger pl-2" *ngIf="registerFormPassword.errors && (registerFormPassword.touched || registerFormPassword.dirty)">
-                <div *ngIf="registerFormPassword.errors.required">{{'register.password' | translate }} {{'validators.required' | translate }}</div>
-                <div *ngIf="registerFormPassword.errors.minlength">{{'validators.passwordPattern' | translate }}</div>
-              </div>
-
-              <div class="alert-danger pl-2" *ngIf="registerFormPasswordConfirm.errors && (registerFormPasswordConfirm.touched || registerFormPasswordConfirm.dirty)">
-                <div *ngIf="registerFormPasswordConfirm.errors.required">{{'register.passwordConfirm' | translate }} {{'validators.required' | translate }}</div>
-                <div *ngIf="registerFormPasswordConfirm.errors.minlength">{{'validators.passwordPattern' | translate }}</div>
-              </div>
-
-              <div class="alert-danger pl-2" *ngIf="registerFormPassword.value != registerFormPasswordConfirm.value && registerFormPasswordConfirm.value != null">
-                  {{'validators.passwordMismatch' | translate }}
-              </div>
-
-              <div class="alert-danger pl-2" *ngIf="registerFormSex.errors && (registerFormSex.touched || registerFormSex.dirty)">
-                  <div *ngIf="registerFormSex.errors.required" class="alert-danger">{{'register.sex' | translate }} {{'validators.required' | translate }}</div>
-              </div>
-
-              <div class="alert-danger pl-2" *ngIf="registerFormOffers.errors && (registerFormOffers.touched || registerFormOffers.dirty)">
-                  <div *ngIf="registerFormOffers.errors.required" class="alert-danger">{{'validators.minOffers' | translate }}</div>
-              </div>
-
-              <div class="alert-danger pl-2" *ngIf="registerFormActivities.errors && (registerFormActivities.touched || registerFormActivities.dirty)">
-                  <div *ngIf="registerFormActivities.errors.required" class="alert-danger">{{'validators.minActivities' | translate }}</div>
-              </div>
-
-              <div class="alert-danger pl-2" *ngIf="registerFormCity.errors && (registerFormCity.touched || registerFormCity.dirty)">
-                <div *ngIf="registerFormCity.errors.required" class="alert-danger">{{'validators.city' | translate }}</div>
-              </div>
-
-              <div class="alert-danger pl-2" *ngIf="registerFormBirthday.errors && (registerFormBirthday.touched || registerFormBirthday.dirty)">
-                <div *ngIf="registerFormBirthday.errors.required" class="alert-danger">{{'validators.birthday' | translate }}</div>
-              </div>
-              <!--End-Validator messages-->
-
-              <div class="btn-toolbar d-flex justify-content-center" role="toolbar">
-              <div class="btn-group mr-1 mr-md-3">
-                <button type="button" type="submit" class="btn btn-warning d-flex mx-auto mt-2" [disabled]="(!registerForm.valid || !registerFormOffers.valid || !registerFormActivities.valid || !registerFormCity.valid)">{{'register.saveButton' | translate }}</button>
-              </div>
-              <div class="btn-group ml-md-3">
-                <button type="button" [routerLink]="['/login']" class="btn btn-outline-warning d-flex mx-auto mt-2" >{{'register.quitButton' | translate }}</button>
-              </div>
-            </div>
-          </form>
+      <div class="card-header bg-warning text-center h5">
+        {{'register.headerTitle' | translate }}
       </div>
+      <div class="card-body">
+        <form class="" [formGroup]="registerForm" (ngSubmit)="registerFormSave()" novalidate>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="registerFormFirstname">{{'register.firstname' | translate }}*</label>
+              <input type="text" class="form-control shadow-sm" id="registerFormFirstname"
+                formControlName="registerFormFirstname" placeholder="{{'register.firstname' | translate }}">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="registerFormLastname">{{'register.lastname' | translate }}*</label>
+              <input type="text" class="form-control shadow-sm" id="registerFormLastname"
+                formControlName="registerFormLastname" placeholder="{{'register.lastname' | translate }}">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label for="registerFormSex">{{'register.sex' | translate }}*</label>
+              <ng-multiselect-dropdown class="form-control shadow-sm" id="registerFormSex" #registerFormSex="ngModel"
+                [placeholder]="'register.pleaseChoose' | translate" [data]="sexes" [(ngModel)]="selectedSex"
+                [ngModelOptions]="{ standalone : true }" [settings]="selectSexSettings" required>
+              </ng-multiselect-dropdown>
+
+            </div>
+            <div class="col-md-6 form-group">
+              <label>{{'register.mail' | translate }}*</label>
+              <input type="text" class="form-control shadow-sm" id="registerFormMail" formControlName="registerFormMail"
+                placeholder="name@example.com">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label for="registerFormCity">{{'register.city' | translate }}*</label>
+              <ng-multiselect-dropdown class="form-control shadow-sm" id="registerFormCity" #registerFormCity="ngModel"
+                [placeholder]="'register.pleaseChoose' | translate" [data]="cities" [(ngModel)]="selectedCity"
+                [ngModelOptions]="{ standalone : true }" [settings]="selectCitySettings" required>
+              </ng-multiselect-dropdown>
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="registerFormBirthday">{{'register.birthday' | translate }}*</label>
+              <input type="text" [placeholder]="'register.birthdayShort' | translate" class="form-control shadow-sm" bsDatepicker
+                id="registerFormBirthday" formControlName="registerFormBirthday"
+                [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', colorTheme: 'theme-orange' }">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label for="registerFormOffers">{{'register.offers' | translate }}:*</label>
+              <ng-multiselect-dropdown class="form-control shadow-sm" id="registerFormOffers"
+                #registerFormOffers="ngModel" [placeholder]="'register.pleaseChoose' | translate" [data]="offers"
+                [(ngModel)]="selectedOffers" [ngModelOptions]="{ standalone : true }"
+                [settings]="selectOffersActivitiesSettings" required>
+              </ng-multiselect-dropdown>
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="registerFormActivities">{{'register.activities' | translate }}:*</label>
+              <ng-multiselect-dropdown class="form-control shadow-sm" id="registerFormActivities"
+                #registerFormActivities="ngModel" [placeholder]="'register.pleaseChoose' | translate"
+                [data]="activities" [(ngModel)]="selectedActivities" [ngModelOptions]="{ standalone : true }"
+                [settings]="selectOffersActivitiesSettings" required>
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label>{{'register.password' | translate }}*</label>
+              <input type="password" class="form-control shadow-sm" id="registerFormPassword"
+                formControlName="registerFormPassword" placeholder="{{'register.password' | translate }}">
+            </div>
+            <div class="col-md-6 form-group">
+              <label>{{'register.passwordConfirm' | translate }}*</label>
+              <input type="password" class="form-control shadow-sm" id="registerFormPasswordConfirm"
+                formControlName="registerFormPasswordConfirm" placeholder="{{'register.passwordConfirm' | translate }}">
+            </div>
+          </div>
+
+          <!--Validator messages-->
+          <div class="alert-danger pl-2"
+            *ngIf="registerFormFirstname.errors && (registerFormFirstname.touched || registerFormFirstname.dirty)">
+            <div *ngIf="registerFormFirstname.errors.required">{{'register.firstname' | translate }}
+              {{'validators.required' | translate }}</div>
+            <div *ngIf="registerFormFirstname.errors.pattern">{{'validators.letterSpaces' | translate }}</div>
+          </div>
+
+          <div class="alert-danger pl-2"
+            *ngIf="registerFormLastname.errors && (registerFormLastname.touched || registerFormLastname.dirty)">
+            <div *ngIf="registerFormLastname.errors.required">{{'register.lastname' | translate }}
+              {{'validators.required' | translate }}</div>
+            <div *ngIf="registerFormLastname.errors.pattern">{{'validators.letterSpaces' | translate }}</div>
+          </div>
+
+          <div class="alert-danger pl-2"
+            *ngIf="registerFormMail.errors && (registerFormMail.touched || registerFormMail.dirty)">
+            <div *ngIf="registerFormMail.errors.required">{{'register.mail' | translate }}
+              {{'validators.required' | translate }}</div>
+            <div *ngIf="registerFormMail.errors.email">{{'validators.email' | translate }}</div>
+          </div>
+
+          <div class="alert-danger pl-2"
+            *ngIf="registerFormPassword.errors && (registerFormPassword.touched || registerFormPassword.dirty)">
+            <div *ngIf="registerFormPassword.errors.required">{{'register.password' | translate }}
+              {{'validators.required' | translate }}</div>
+            <div *ngIf="registerFormPassword.errors.minlength">{{'validators.passwordPattern' | translate }}</div>
+          </div>
+
+          <div class="alert-danger pl-2"
+            *ngIf="registerFormPasswordConfirm.errors && (registerFormPasswordConfirm.touched || registerFormPasswordConfirm.dirty)">
+            <div *ngIf="registerFormPasswordConfirm.errors.required">{{'register.passwordConfirm' | translate }}
+              {{'validators.required' | translate }}</div>
+            <div *ngIf="registerFormPasswordConfirm.errors.minlength">{{'validators.passwordPattern' | translate }}
+            </div>
+          </div>
+
+          <div class="alert-danger pl-2"
+            *ngIf="registerFormPassword.value != registerFormPasswordConfirm.value && registerFormPasswordConfirm.value != null">
+            {{'validators.passwordMismatch' | translate }}
+          </div>
+
+          <div class="alert-danger pl-2"
+            *ngIf="registerFormSex.errors && (registerFormSex.touched || registerFormSex.dirty)">
+            <div *ngIf="registerFormSex.errors.required" class="alert-danger">{{'register.sex' | translate }}
+              {{'validators.required' | translate }}</div>
+          </div>
+
+          <div class="alert-danger pl-2"
+            *ngIf="registerFormOffers.errors && (registerFormOffers.touched || registerFormOffers.dirty)">
+            <div *ngIf="registerFormOffers.errors.required" class="alert-danger">{{'validators.minOffers' | translate }}
+            </div>
+          </div>
+
+          <div class="alert-danger pl-2"
+            *ngIf="registerFormActivities.errors && (registerFormActivities.touched || registerFormActivities.dirty)">
+            <div *ngIf="registerFormActivities.errors.required" class="alert-danger">
+              {{'validators.minActivities' | translate }}</div>
+          </div>
+
+          <div class="alert-danger pl-2"
+            *ngIf="registerFormCity.errors && (registerFormCity.touched || registerFormCity.dirty)">
+            <div *ngIf="registerFormCity.errors.required" class="alert-danger">{{'validators.city' | translate }}</div>
+          </div>
+
+          <div class="alert-danger pl-2"
+            *ngIf="registerFormBirthday.errors && (registerFormBirthday.touched || registerFormBirthday.dirty)">
+            <div *ngIf="registerFormBirthday.errors.required" class="alert-danger">
+              {{'validators.birthday' | translate }}</div>
+          </div>
+          <!--End-Validator messages-->
+
+          <div class="btn-toolbar d-flex justify-content-center" role="toolbar">
+            <div class="btn-group mr-1 mr-md-3">
+              <button type="button" type="submit" class="btn btn-warning d-flex mx-auto mt-2"
+                [disabled]="(!registerForm.valid || !registerFormOffers.valid || !registerFormActivities.valid || !registerFormCity.valid)">{{'register.saveButton' | translate }}</button>
+            </div>
+            <div class="btn-group ml-md-3">
+              <button type="button" [routerLink]="['/login']"
+                class="btn btn-outline-warning d-flex mx-auto mt-2">{{'register.quitButton' | translate }}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <p class="d-flex justify-content-end text-black-50 mr-4"><small>*
+          {{'register.requiredExplanation' | translate }}</small></p>
     </div>
+    <!--card-->
   </div>
+  <!--col-10-->
   <div class="col-1"></div>
 </div>

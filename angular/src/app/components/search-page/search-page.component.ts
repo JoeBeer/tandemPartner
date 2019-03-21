@@ -15,18 +15,19 @@ export class SearchPageComponent implements OnInit {
 
   searchForm: FormGroup;
 
+  // where the data for the select fields comes from
   sexes = ['female', 'male', 'both'];
   offers: string[];
-  activities: string[];
   cities: string[];
 
+  // where the selected data will be saved
   selectedOffer: string;
-  selectedActivities: string[];
   selectedCity: string;
   selectedSex: string;
 
+  // settings for select fields
   selectOnlyOneSettings = {};
-  selectActivitiesSettings = {};
+  selectSexSettings = {};
 
   recentSearchrequests: Searchrequest[];
 
@@ -43,14 +44,12 @@ export class SearchPageComponent implements OnInit {
               }
 
   ngOnInit() {
-    // initialzie all available offers & activities
+    // initialzie all available offers & cities
     this.offers = this.activitiesOffersCitiesStoreService.getAllOffers();
-    this.activities = this.activitiesOffersCitiesStoreService.getAllActivities();
     this.cities = this.activitiesOffersCitiesStoreService.getAllCities();
 
     this.initializeMultiselectSettings();
 
-    // TODO: implement the currentUser
     // tslint:disable-next-line:max-line-length
     this.searchService.getRecentSearchrequestsForSpecificUser(this.authService.currentUser.uid).subscribe((requests: Searchrequest[]) => {
       this.recentSearchrequests = requests;
@@ -67,24 +66,23 @@ export class SearchPageComponent implements OnInit {
   }
 
   initializeMultiselectSettings() {
-  this.selectOnlyOneSettings = {
-    singleSelection: true,
-    idField: 'item_id',
-    textField: 'item_text',
-    enableCheckAll: false,
-    allowSearchFilter: false,
-    closeDropDownOnSelection: true
-  };
+    this.selectOnlyOneSettings = {
+      singleSelection: true,
+      idField: 'item_id',
+      textField: 'item_text',
+      enableCheckAll: false,
+      allowSearchFilter: true,
+      closeDropDownOnSelection: true
+    };
 
-  // selecting settings for the select fields of offers and activities
-  this.selectActivitiesSettings = {
-    singleSelection: false,
-    idField: 'item_id',
-    textField: 'item_text',
-    enableCheckAll: false,
-    itemsShowLimit: 3,
-    allowSearchFilter: false
-  };
+    this.selectSexSettings = {
+      singleSelection: true,
+      idField: 'item_id',
+      textField: 'item_text',
+      enableCheckAll: false,
+      allowSearchFilter: false,
+      closeDropDownOnSelection: true,
+    };
   }
 
   ageCheckValidator(control: AbstractControl): { invalid: boolean} {
