@@ -90,7 +90,7 @@ export class ProfilePageComponent implements OnInit {
       idField: 'item_id',
       textField: 'item_text',
       enableCheckAll: false,
-      allowSearchFilter: false,
+      allowSearchFilter: true,
       closeDropDownOnSelection: true
     };
     // selecting settings for the select fields of offers and activities
@@ -100,7 +100,7 @@ export class ProfilePageComponent implements OnInit {
       textField: 'item_text',
       enableCheckAll: false,
       itemsShowLimit: 3,
-      allowSearchFilter: false
+      allowSearchFilter: true
     };
   }
 
