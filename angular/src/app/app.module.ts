@@ -17,7 +17,6 @@ import { RegisterPageComponent } from './components/register-page/register-page.
 import { HomeComponent } from './components/home/home.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { MatchListComponent } from './components/match-list/match-list.component';
-import { MatchItemComponent } from './components/match-item/match-item.component';
 import { ChatroomListComponent } from './components/chatroom-list/chatroom-list.component';
 import { ChatroomItemComponent } from './components/chatroom-item/chatroom-item.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
@@ -35,12 +34,13 @@ import { AuthGuard } from './services/auth-guard.service';
 import { UserStoreService } from './services/user-store.service';
 import { MatchStoreService } from './services/match-store.service';
 import { ActivitiesOffersCitiesStoreService } from './services/activities-offers-cities-store.service';
+import { SearchService } from './services/search.service';
 
 // imports for firebase
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
-
+import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -53,7 +53,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     HomeComponent,
     LoginPageComponent,
     MatchListComponent,
-    MatchItemComponent,
     ChatroomListComponent,
     ChatroomItemComponent,
     ProfilePageComponent,
@@ -79,6 +78,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    AngularFirestoreModule,
     FontAwesomeModule,
     NgxPaginationModule,
     NgMultiSelectDropDownModule.forRoot(),
@@ -90,7 +90,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     AuthService,
     AuthGuard,
     MatchStoreService,
-    ActivitiesOffersCitiesStoreService
+    ActivitiesOffersCitiesStoreService,
+    // In the newest firebase version the timestampsInSnapshots setting defaults to true therefore it no longer needs to be set.
+    { provide: FirestoreSettingsToken, useValue: {} },
+    SearchService
   ],
   bootstrap: [AppComponent]
 })

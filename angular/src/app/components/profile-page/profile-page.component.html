@@ -21,7 +21,7 @@
             <div class="row">
               <div class="col-md-6 form-group">
                 <label for="editFormSex">{{'register.sex' | translate }}*</label>
-                <div class="form-control shadow-sm"id="editFormSex" disabled>{{sex}}</div>
+                <div class="form-control shadow-sm bg-light"id="editFormSex" disabled>{{sex}}</div>
 
               </div>
               <div class="col-md-6 form-group">
@@ -44,7 +44,7 @@
                   <label for="editFormBirthday">{{'register.birthday' | translate }}*</label>
                   <input type="text"
                   [placeholder]="'register.birthday' | translate"
-                  class="form-control shadow-sm"
+                  class="form-control shadow-sm bg-light"
                   bsDatepicker id="editFormBirthday" formControlName="editFormBirthday"
                   [bsConfig]="{ dateInputFormat: 'MM.DD.YYYY', colorTheme: 'theme-orange' }">
               </div>
@@ -127,11 +127,11 @@
               <div class="btn-group mr-1 mr-md-3">
                 <button type="button" type="submit" class="btn btn-warning d-flex mx-auto mt-2" [disabled]="(!editForm.valid || !editFormOffers.valid || !editFormActivities.valid || !editFormCity.valid)">{{'register.saveButton' | translate }}</button>
               </div>
-              <div class="btn-group ml-md-3">
+              <div class="btn-group ml-md-3 mr-1 mr-md-3">
                 <button type="button" [routerLink]="['/home']" class="btn btn-outline-warning d-flex mx-auto mt-2" >{{'register.quitButton' | translate }}</button>
               </div>
               <div class="btn-group ml-md-3">
-                <button type="button"  class="btn btn-outline-danger d-flex mx-auto mt-2" >löschen</button>
+                <button type="button"  class="btn btn-outline-danger d-flex mx-auto mt-2" >{{'profile.deleteButton' | translate }}</button>
               </div>
             </div>
           </form>

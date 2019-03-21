@@ -23,7 +23,7 @@ export class ProfilePageComponent implements OnInit {
   // for loading/saving the selected fields
   selectedOffers: any[];
   selectedActivities: any[];
-  selectedCity: any[];
+  selectedCity: any;
   sex: string;
 
   // for selecting fields
@@ -46,16 +46,15 @@ export class ProfilePageComponent implements OnInit {
     this.activities = this.activitiesOffersCitiesStoreService.getAllActivities();
     this.cities = this.activitiesOffersCitiesStoreService.getAllCities();
 
-    this.userStoreService.getUserById(this.authService.currentUser.uid).subscribe((recievedUser: User) => {
-      this.sex = this.parseSexValueForFrontend(recievedUser.sex);
-      this.selectedActivities = recievedUser.activities;
-      this.selectedOffers = recievedUser.offers,
-      this.selectedCity[0] = recievedUser.city;
-      this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
-      this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
-      this.editForm.get('editFormMail').setValue(this.authService.currentUser.email);
-      this.editForm.get('editFormBirthday').setValue(recievedUser.dateOfBirth);
-    });
+
+    this.sex = this.parseSexValueForFrontend(this.authService.getUser().sex);
+    this.selectedActivities = this.authService.getUser().activities;
+    this.selectedOffers = this.authService.getUser().offers,
+    this.selectedCity = this.authService.getUser().city;
+    this.editForm.get('editFormFirstname').setValue(this.authService.getUser().firstname);
+    this.editForm.get('editFormLastname').setValue(this.authService.getUser().lastname);
+    this.editForm.get('editFormMail').setValue(this.authService.firebaseUser.email);
+    this.editForm.get('editFormBirthday').setValue(this.authService.getUser().dateOfBirth);
 
     this.initializeMultiselectSettings();
   }
@@ -158,12 +157,12 @@ export class ProfilePageComponent implements OnInit {
 
     if (password === !null || password === !undefined || password === !'' ) {
       console.log('ausgefülltes password');
-      // this.authService.currentUser.updatePassword(password).then();
+      // this.authService.firebaseUser.updatePassword(password).then();
     }
 
     if (mail === !null || mail === !undefined || mail === !'' ) {
       console.log('ausgefüllte mail');
-      // this.authService.currentUser.updateEmail(mail).then();
+      // this.authService.firebaseUser.updateEmail(mail).then();
     }
 
    // // create new user in cloud firestore and take the UID from the new created User

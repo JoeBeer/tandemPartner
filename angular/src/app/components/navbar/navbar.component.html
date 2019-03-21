@@ -2,7 +2,7 @@
   <!--when the bug of new logging in is solved, we can use the following line
   <nav *ngIf="router.url !== '/login'" class="navbar navbar-light navbar-expand-lg shadow">-->
 
-  <nav class="navbar fixed-top navbar-light navbar-expand-lg shadow">
+  <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-white shadow">
     <!--toggle only visible for screens smaller than lg-->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -22,7 +22,10 @@
             <a class="nav-link" [routerLink]="['/profile']" [routerLinkActive]="['active']">{{ 'navbar.profileLink' | translate }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/search']" [routerLinkActive]="['active']">{{ 'navbar.searchLink' | translate }}</a>
+            <a *ngIf="router.url !== '/search/result', else resultBlock" class="nav-link" [routerLink]="['/search']" [routerLinkActive]="['active']">{{ 'navbar.searchLink' | translate }}</a>
+            <ng-template #resultBlock>
+              <a class="nav-link active">{{ 'navbar.searchResults' | translate }}</a>
+            </ng-template>
           </li>
           <li class="nav-item">
             <a class="nav-link" [routerLink]="['/matches']" [routerLinkActive]="['active']">{{ 'navbar.matchesLink' | translate }}</a>

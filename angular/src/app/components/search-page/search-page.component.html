@@ -1,3 +1,123 @@
-<p>
-  search-page works!
-</p>
+<div class="row">
+  <div class="col-1"></div>
+  <div class="col-10">
+    <div class="card mx-auto my-5 shadow">
+      <!--header-->
+      <div class="card-header h5 bg-transparent d-flex justify-content-between border-warning p-0">
+        <div class="col-md-6 font-weight-light text-center pointer-cursor align-self-center border-right btn-outline-warning py-3"
+          data-toggle="collapse" href="#collapseNewSearch"
+          [ngClass]="{'active':newSearchCollapsed === true}"
+          role="button" aria-expanded="false"
+          aria-controls="collapseNewSearch" (click)="recentRequestCollapsed=false" (click)="newSearchCollapsed=true">
+          {{'search.newSearch' | translate }}
+        </div>
+        <div class="col-md-6 font-weight-light text-center pointer-cursor btn-outline-warning py-3"
+            [ngClass]="{'active':recentRequestCollapsed === true}"
+            data-toggle="collapse" href="#collapseRecentSearches"
+            role="button" aria-expanded="false" aria-controls="collapseRecentSearches"
+            (click)="newSearchCollapsed=false" (click)="recentRequestCollapsed=true">
+            {{'search.recentSearches' | translate }}
+        </div>
+      </div><!--header-->
+
+      <!--new search area-->
+      <div *ngIf="newSearchCollapsed" class="card-body" id="collapseNewSearch">
+        <form class="" [formGroup]="searchForm" (ngSubmit)="newSearchSave()" novalidate>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="searchFormOffer">{{'search.offer' | translate }}:*</label>
+              <ng-multiselect-dropdown  class="form-control shadow-sm" id="searchFormOffer" #searchFormOffer="ngModel"
+                [placeholder]="'search.offer' | translate"
+                [data]="offers"
+                [(ngModel)]="selectedOffer" [ngModelOptions]="{ standalone : true }"
+                [settings]="selectOnlyOneSettings" required>
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label for="searchFormCity">{{'search.city' | translate }}</label>
+              <ng-multiselect-dropdown  class="form-control shadow-sm" id="searchFormCity" #searchFormCity="ngModel"
+                [placeholder]="'register.pleaseChoose' | translate"
+                [data]="cities"
+                [(ngModel)]="selectedCity" [ngModelOptions]="{ standalone : true }"
+                [settings]="selectOnlyOneSettings">
+              </ng-multiselect-dropdown>
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="searchFormActivities">{{'search.activities' | translate }}:</label>
+              <ng-multiselect-dropdown  class="form-control shadow-sm" id="searchFormActivities" #searchFormActivities="ngModel"
+                 [placeholder]="'register.pleaseChoose' | translate"
+                 [data]="activities"
+                 [(ngModel)]="selectedActivities" [ngModelOptions]="{ standalone : true }"
+                 [settings]="selectActivitiesSettings">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label for="searchFormSex">{{'register.sex' | translate }}:</label>
+              <ng-multiselect-dropdown  class="form-control shadow-sm" id="searchFormSex" #searchFormSex="ngModel"
+                [placeholder]="'register.pleaseChoose' | translate"
+                [data]="sexes"
+                [(ngModel)]="selectedSex" [ngModelOptions]="{ standalone : true }"
+                [settings]="selectOnlyOneSettings">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 form-group">
+                <label>{{'search.minAge' | translate }}</label>
+                <input type="number" class="form-control shadow-sm" id="searchFormMinAge" formControlName="searchFormMinAge" placeholder="{{'search.minAge' | translate }}">
+            </div>
+            <div class="col-md-6 form-group">
+                <label>{{'search.maxAge' | translate }}</label>
+                <input type="number" class="form-control shadow-sm" id="searchFormMaxAge" formControlName="searchFormMaxAge" placeholder="{{'search.maxAge' | translate }}">
+            </div>
+          </div>
+
+          <div class="alert-danger pl-2" *ngIf="searchFormOffer.errors && (searchFormOffer.touched || searchFormOffer.dirty)">
+            <div *ngIf="searchFormOffer.errors.required" class="alert-danger">{{'validators.minOffers' | translate }}</div>
+          </div>
+
+          <div class="alert-danger pl-2" *ngIf="searchFormMinAge.value > searchFormMaxAge.value">
+            {{'validators.ageMismatch' | translate }}
+          </div>
+
+          <div class="row" role="toolbar">
+            <div class="col-md-6">
+              <button type="button" type="submit" class="btn btn-warning d-flex mx-auto ml-md-auto mt-2"
+                      [disabled]="!searchFormOffer.valid || (searchFormMinAge.value > searchFormMaxAge.value)">
+                      {{'search.searchButton' | translate }}
+              </button>
+            </div>
+            <div class="col-md-6">
+              <button type="button" [routerLink]="['/home']" class="btn btn-outline-warning d-flex mx-auto mr-md-auto mt-2" >{{'register.quitButton' | translate }}</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <!--recent searchrequests area-->
+      <div *ngIf="recentRequestCollapsed" class="card-body collapse" id="collapseRecentSearches">
+        <div *ngFor="let request of recentSearchrequests">
+          <div class="card">
+            <div class="card-body">
+              <a class="pointer-cursor" (click)="useRecentSearchrequest(request)">
+                <h5 class="font-weight-light">{{request.offerParam}}</h5>
+                <h6 class="font-weight-light">{{request.minAgeParam}} - {{request.maxAgeParam}} Jahre </h6>
+                <h6 class="font-weight-light">{{request.sexParam}}</h6>
+              </a>
+            </div>
+          </div>
+        </div><!--ngfor-->
+      </div><!--recent searchrequests-->
+
+    </div>
+  </div><!--col-10-->
+  <div class="col-1"></div>
+</div>

@@ -18,8 +18,10 @@ export class HomeComponent implements OnInit {
   users: User[];
   user: User;
   requestUser: User;
-  matchRequests: Match[];
+  matchRequests: any[];
   initiatorFirstname: string;
+
+  openedModal: any;
 
   // for fontawesome icons
   faCheck = faCheck;
@@ -30,6 +32,7 @@ export class HomeComponent implements OnInit {
 
   // for modal
   display = 'none';
+  modalIsOpen = false;
 
   constructor(
     private userStoreService: UserStoreService,
@@ -39,12 +42,12 @@ export class HomeComponent implements OnInit {
 
   // when home-component was called, the written methods in ngOnInit gonna start
   ngOnInit() {
-    this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
+    this.showMatchRequestsForCurrentUser(this.authService.getUser().uid);
   }
 
 
   showMatchRequestsForCurrentUser(id: string) {
-    this.matchRequests = this.matchStoreService.getAllUnacceptedMatchesForUser(id);
+    this.matchStoreService.getAllUnacceptedMatchesForUser(id).then(matches => this.matchRequests = matches);
     // this.matchRequests.forEach((i: Match) => {
     //   console.log('PREinitiatorID: ' + i.initiatorID);
     //   this.getInitiatorFirstname(i.initiatorID);
@@ -74,14 +77,18 @@ export class HomeComponent implements OnInit {
 
   openModal(id: string) {
     console.log('id: ' + id);
+    this.modalIsOpen = true;
     this.display = 'block';
-    this.userStoreService.getUserById(id).subscribe((recievedUser: User) => {
-      this.requestUser = recievedUser;
+    this.matchRequests.forEach( match => {
+      if (match._id === id) {
+        this.openedModal = match;
+      }
     });
   }
 
   closeModal() {
     this.display = 'none';
+    this.modalIsOpen = false;
   }
 
 }

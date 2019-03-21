@@ -35,11 +35,11 @@ export class LoginPageComponent implements OnInit {
     });
   }
 
-  login() {
+  loginFormSave() {
     const mail = this.loginForm.value.loginFormMail;
     const password = this.loginForm.value.loginFormPassword;
 
-    this.authService.signInWithMailAndPassword(mail, password);
+    this.authService.login(mail, password);
   }
 
   get loginFormMail() {

@@ -1,27 +1,40 @@
+import { UserStoreService } from 'src/app/services/user-store.service';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  public currentUser: firebase.User = null;
+  public firebaseUser: firebase.User = null;
+  public currentUser: any;
+
   isLoggedIn = false;
    // store the URL so we can redirect after logging in
    redirectUrl: string;
 
   constructor(public angularFireAuth: AngularFireAuth,
-              public router: Router) {
+              public router: Router,
+              private userStoreService: UserStoreService) {
     this.angularFireAuth.authState.subscribe( user => {
       if (user) {
-        this.currentUser = user;
+        this.firebaseUser = user;
         localStorage.setItem('user', JSON.stringify(this.currentUser));
       } else {
         localStorage.setItem('user', null);
       }
     });
 
+  }
+
+  getUser() {
+    this.userStoreService.getUserById(this.firebaseUser.uid).subscribe( snapshot => {
+      this.currentUser = snapshot.data();
+    });
+
+    return this.currentUser;
   }
 
   isloggedIn(): boolean {
@@ -53,7 +66,7 @@ export class AuthService {
     });
   }
 
-  async signInWithMailAndPassword(mail: string, password: string) {
+  async login(mail: string, password: string) {
     try {
       await this.angularFireAuth.auth.signInWithEmailAndPassword(mail, password);
       this.isLoggedIn = true;

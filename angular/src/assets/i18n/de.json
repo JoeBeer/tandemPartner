@@ -3,6 +3,7 @@
     "homeLink": "Startseite",
     "profileLink": "Mein Profil",
     "searchLink": "Suchanfrage",
+    "searchResults": "Suchergebnisse",
     "matchesLink": "Matches",
     "chatLink": "Nachrichten",
     "logout": "Ausloggen",
@@ -50,7 +51,8 @@
   "profile": {
     "headerTitle": "Profil bearbeiten",
     "newPassword": "Neues Passwort",
-    "newPasswordConfirm": "Neues Passwort bestätigen"
+    "newPasswordConfirm": "Neues Passwort bestätigen",
+    "deleteButton": "Profil löschen"
   },
 
   "validators": {
@@ -62,6 +64,34 @@
     "passwordPattern": "mind. 6 Zeichen inkl. 1 Großbuchstabe, 1 Kleinbuchstabe, 1 Zahl!",
     "passwordMismatch": "Passwörter stimmen nicht überein!",
     "minOffers": "mind. ein  Angebot muss ausgewählt sein!",
-    "minActivities": "mind. eine Aktivität muss ausgewählt sein!"
+    "minActivities": "mind. eine Aktivität muss ausgewählt sein!",
+    "ageMismatch": "Das Mindestalter muss kleiner als das Maximalalter sein!"
+  },
+
+  "matchlist": {
+    "matchHeaderTitle": "Übersicht aller Matches",
+    "accpetedMatches": "Akzeptierte Matches",
+    "matchedOffer": "Match für",
+    "unacceptedMatches": "Versendete Anfragen",
+    "matchrequestFor": "Anfrage für",
+    "contactTooltip": "Partner kontaktieren",
+    "deleteTooltip": "Anfrage zurückziehen"
+  },
+
+  "search": {
+    "newSearch": "Neue Suche",
+    "offer": "Ich möchte lernen",
+    "city": "Stadt",
+    "activities": "Aktivitäten",
+    "minAge": "Mindestalter",
+    "maxAge": "Maximalalter",
+    "searchButton": "Neue Suche starten",
+    "recentSearches": "Alte Suchparamter verwenden"
+  },
+
+  "result": {
+    "sendMatchrequestTooltip": "Matchanfrage senden",
+    "results": "Suchergebnisse",
+    "age": "Jahre alt"
   }
 }
