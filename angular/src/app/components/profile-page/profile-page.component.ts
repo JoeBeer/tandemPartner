@@ -5,7 +5,6 @@ import { UserStoreService } from 'src/app/services/user-store.service';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { ActivitiesOffersCitiesStoreService } from '../../services/activities-offers-cities-store.service';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile-page',

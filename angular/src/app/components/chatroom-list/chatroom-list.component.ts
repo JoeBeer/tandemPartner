@@ -1,4 +1,3 @@
-import { UserStoreService } from 'src/app/services/user-store.service';
 import { ChatService } from './../../services/chat.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
@@ -28,8 +27,7 @@ export class ChatroomListComponent implements OnInit {
 
   async createChatroom() {
     const { uid } = await this.authService.getUser(); // uid of the currentUser
-    // const userA = 'asdaasasddasgege'; // TODO debug purpose
-    const userB = 'ajqfqQmaasdasasdasdsdNasdas'; // TODO get the userB from the list of users with occured matches
+    const userB = 'sasdasdsasdadas'; // TODO get the userB from the list of users with accepted matches
     console.log(uid);
 
     this.chatService.create(uid, userB)

@@ -7,6 +7,7 @@ export class User {
     public activities: string[],
     public offers: string[],
     public sex: string,
-    public mail?: string
+    public uid: string,
+    public mail?: string,
   ) {}
 }

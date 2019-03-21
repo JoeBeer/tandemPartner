@@ -16,7 +16,6 @@ export class ChatService {
   private apiUrl2 = 'http://localhost:5000/livechattandem/us-central1/chatrooms';
   private headers: Headers = new Headers();
 
-  // TODO check if public or private
   constructor(
     private authService: AuthService,
     private angularFirestore: AngularFirestore,
@@ -30,39 +29,20 @@ export class ChatService {
     const data = {
       userA,
       userB,
-      createdAt: Date.now(),
+      updated: Date.now(),
       messages: []
     };
     return this.http.post<ChatroomResponse>(`${this.apiUrl2}`, data);
   }
 
-
-  // async sendMessage(chatroomId, content) {
-  //   console.log(chatroomId);
-  //   console.log(content);
-  //   const { uid } = await this.authService.getUser();
-  //   console.log(uid);
-  //   const data = {
-  //     uid,
-  //     content,
-  //     createdAt: Date.now()
-  //   };
-  //   console.log(data);
-  //   return this.http.put(`${this.apiUrl2}/${chatroomId}`, data);
-  // }
-
+  // Send a message to the Cloud Firestore database by valling the corresponding endpoint.
   sendMessage(chatroomId, content) {
-    console.log(chatroomId);
-    console.log(content);
     const uid = this.authService.currentUserID;
-    console.log(uid);
     const data = {
       uid,
       content,
       createdAt: Date.now()
     };
-    console.log(data);
-    console.log(`${this.apiUrl2}/${chatroomId}`);
     return this.http.put(`${this.apiUrl2}/${chatroomId}`, data);
   }
 
@@ -106,7 +86,7 @@ export class ChatService {
       map(([users, otherUsers]) => users.concat(otherUsers)));
   }
 
-  // Get an chatroom by his doc-id and return it as an observable with realtime changes.
+  // Get an chatroom by it's doc-id and return it as an observable with realtime changes.
   getChatroomById(chatroomId: string) {
     return this.angularFirestore
       .collection<any>(`chatrooms`)
@@ -119,6 +99,7 @@ export class ChatService {
       );
   }
 
+  // Get the corresponding user to every message as an observable with realtime changes.
   joinUsers(chat$: Observable<any>) {
     let chat;
     const joinKeys = {};
@@ -128,7 +109,6 @@ export class ChatService {
         // Unique User IDs
         chat = c;
         const uids = Array.from(new Set(c.messages.map(value => value.uid)));
-
         // Firestore User Doc Reads
         const userDocs = uids.map(u =>
           this.angularFirestore.doc(`users/${u}`).valueChanges()

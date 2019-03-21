@@ -3,6 +3,7 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { Md5 } from 'ts-md5';
 
 @Component({
   selector: 'app-login-page',
@@ -11,6 +12,7 @@ import { faLock } from '@fortawesome/free-solid-svg-icons';
 })
 export class LoginPageComponent implements OnInit {
 
+  md5 = new Md5();
   loginForm: FormGroup;
 
   // for icons
@@ -35,7 +37,9 @@ export class LoginPageComponent implements OnInit {
 
   login() {
     const mail = this.loginForm.value.loginFormMail;
-    const password = this.loginForm.value.loginFormPassword;
+    const password = this.md5.appendStr(this.loginForm.value.loginFormMail)
+                    .appendStr(this.loginForm.value.loginFormPassword).end() as string;
+    // const password = this.loginForm.value.loginFormPassword;
 
     this.authService.login(mail, password);
   }

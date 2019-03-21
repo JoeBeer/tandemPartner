@@ -3,16 +3,6 @@ const db = admin.firestore();
 const userCollection = db.collection("users");
 const matchesCollection = db.collection("matches");
 
-// const admin = require('firebase-admin');
-// const firebase = require('firebase');
-// const db = admin.firestore();
-// const userCollection = db.collection("users");
-// var config = {
-//     apiKey: "AIzaSyA60SCLQd6f7KOT_UmUml5RgMnAC3F5E_A",
-//     authDomain: "livechattandem.firebaseapp.com"
-// };
-// firebase.initializeApp(config);
-
 exports.getUsers = function (req, res) {
     let users = [];
     userCollection.get()
@@ -48,8 +38,8 @@ exports.getUserById = function (req, res) {
         });
 };
 
+// 
 exports.createUser = async (req, res) => {
-
     try {
         const user = req.body;
         console.log(user.password);
@@ -75,57 +65,56 @@ exports.createUser = async (req, res) => {
                 offers: user.offers
             })
           })
-
           console.log("Successfully created new user:");
-
           return res.status(200).send(userRecord); 
-          
     }
     catch (error) {
         console.log("Error creating new user:", error);
             return res.send(false);
     }
-
-
-    // const user = req.body;
-    // firebase.auth().createUser(req.body.mail, req.body.password)
-    //     .then(authRes => {
-    //         userCollection.doc(authRes.user.uid).set(user)
-    //             .then(function () {
-
-    //                 console.log('Succesfully inserted user');
-    //                 return res.status(201).send({ uid: authRes.user.uid });
-    //             })
-    //             .catch((error) => {
-    //                 console.log('Error creating new user', error);
-    //                 return res.send(false);
-    //             });
-    //     })
 };
 
-// exports.createUser = function(req,res){
-//     userCollection.add(req.body)
+exports.updateUser = function (req, res) {
+    const updatedUser = req.body;
+
+    admin.auth().updateUser(uid, {
+        email: updatedUser.mail,
+        emailVerified: false,
+        password: updatedUser.password,
+        displayName: updatedUser.firstname + ' ' + updatedUser.lastname,
+        photoURL: "http://www.example.com/12345678/photo.png",
+      })
+      .then(async (userRecord) => {
+        console.log(userRecord.password);
+        console.log(userRecord);
+        return  await userCollection.doc(userRecord.uid).update({
+            uid: userRecord.uid,
+            firstname: updatedUser.firstname,
+            lastname: updatedUser.lastname,
+            photoURL: userRecord.photoURL,
+            dateOfBirth: updatedUser.dateOfBirth,
+            sex: updatedUser.sex,
+            city: updatedUser.city,
+            activities: updatedUser.activities,
+            offers: updatedUser.offers
+        })
+      })
+        .catch(function(error) {
+          console.log("Error updating user:", error);
+        });
+};
+
+// exports.updateUser = function (req, res) {
+//     userCollection.doc(req.params.userId).set(req.body)
 //         .then(result => {
 //             res.status(201).send(true);
-//             console.log('Succesfully inserted user');
+//             console.log('Succesfully updated user');
 //         })
 //         .catch((error) => {
 //             res.send(false);
-//             console.log('Error creating new user', error);
+//             console.log('Error updating user', error);
 //         });
 // };
-
-exports.updateUser = function (req, res) {
-    userCollection.doc(req.params.userId).set(req.body)
-        .then(result => {
-            res.status(201).send(true);
-            console.log('Succesfully updated user');
-        })
-        .catch((error) => {
-            res.send(false);
-            console.log('Error updating user', error);
-        });
-};
 
 exports.deleteUser = function (req, res) {
     userCollection.doc(req.params.userId).delete()

@@ -2,8 +2,12 @@ const admin = require('firebase-admin');
 const db = admin.firestore();
 const chatroomsCollection = db.collection("chatrooms");
 
+// Validation of the request to create a new chatroom.
+// Then create a new chatroom document in the database with the Firebase Admin SDK.
 exports.createChatroom = async (req, res) => {
     try {
+        const chatroom = req.body;
+
         if (req.body.userA === req.body.userB) {
             console.log("Error - Can't create Chatroom with two identical userID's!")
             return res.send(false);
@@ -21,7 +25,12 @@ exports.createChatroom = async (req, res) => {
         alreadyExistingB = !resultB.empty;
 
         if (!alreadyExistingA && !alreadyExistingB) {
-            const chatRef = await chatroomsCollection.add(req.body);
+            const chatRef = await chatroomsCollection.add({
+                userA: chatroom.userA,
+                userB: chatroom.userB,
+                createdAt: chatroom.updated,
+                messages: chatroom.messages
+            });
             console.log('Successfully added chatroom');
             return res.status(201).send({ result: true, chatroomId: chatRef.id });
         }
@@ -37,11 +46,19 @@ exports.createChatroom = async (req, res) => {
     }
 }
 
+// Validation of the request to write a new message in the message field of the chatroom document.
+// Then updating the chatroom document.
 exports.updateChatroom = function (req, res) {
-    console.log(req.body)
+    const message = req.body
+    // console.log(req.body)
     return chatroomsCollection.doc(req.params.chatroomid)
         .update({
-            messages: admin.firestore.FieldValue.arrayUnion(req.body)
+            updated: Date.now(),
+            messages: admin.firestore.FieldValue.arrayUnion({
+                uid: message.uid,
+                content: message.content,
+                createdAt: message.createdAt
+            })
         })
         .then(() => {
             console.log('Successfully added message');
@@ -52,4 +69,5 @@ exports.updateChatroom = function (req, res) {
             return res.send(false);
         })
 }
+
 //TODO add delete()
