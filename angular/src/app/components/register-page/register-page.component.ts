@@ -33,12 +33,12 @@ export class RegisterPageComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder,
-              private router: Router,
-              private userStoreService: UserStoreService,
-              private authService: AuthService,
-              private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService) {
+    private router: Router,
+    private userStoreService: UserStoreService,
+    private authService: AuthService,
+    private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService) {
 
-              this.registerForm = this.createRegisterForm();
+    this.registerForm = this.createRegisterForm();
   }
 
   ngOnInit() {
@@ -52,7 +52,7 @@ export class RegisterPageComponent implements OnInit {
 
   createRegisterForm() {
     // create the formGroup
-    return this.formBuilder.group ({
+    return this.formBuilder.group({
       // the field only contains letters or spaces
       registerFormFirstname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
 
@@ -70,8 +70,8 @@ export class RegisterPageComponent implements OnInit {
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
       registerFormPasswordConfirm: ['', [Validators.required, /*Validators.pattern('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$'),*/ Validators.minLength(6), Validators.maxLength(16)]]
-        // adds the custom validator for validating the passwords og their matching
-    }, { validator: this.passwordMatchValidator});
+      // adds the custom validator for validating the passwords og their matching
+    }, { validator: this.passwordMatchValidator });
   }
 
   initializeMultiselectSettings() {
@@ -106,9 +106,9 @@ export class RegisterPageComponent implements OnInit {
   }
 
   // validate the passwords whether they are matching
-  passwordMatchValidator(control: AbstractControl): { invalid: boolean} {
+  passwordMatchValidator(control: AbstractControl): { invalid: boolean } {
     if (control.get('registerFormPassword').value !== control.get('registerFormPasswordConfirm').value) {
-      return {invalid: true };
+      return { invalid: true };
     }
   }
 
@@ -132,9 +132,9 @@ export class RegisterPageComponent implements OnInit {
       mail: this.registerForm.value.registerFormMail,
       // password: Md5.hashStr(this.registerForm.value.registerFormPassword)
       password: this.md5.appendStr(this.registerForm.value.registerFormMail)
-                .appendStr(this.registerForm.value.registerFormPassword).end()
+        .appendStr(this.registerForm.value.registerFormPassword).end()
     };
-      // create new user in cloud firestore and take the UID from the new created User
+    // create new user in Firebase Authentication and Cloud Firestore
     this.userStoreService.createUser(userdata).subscribe(() => {
       // then go to page 'home'
       this.router.navigate(['/login']);
