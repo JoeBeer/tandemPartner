@@ -1,13 +1,6 @@
 const admin = require('firebase-admin');
-const firebase = require('firebase');
 const db = admin.firestore();
 const userCollection = db.collection("users");
-var config = {
-    apiKey: "AIzaSyBxiXuAZtfccGZDvZY0A-MbYnD45820tZE",
-    authDomain: "tandemdurchstichtest.firebaseapp.com"
-};
-firebase.initializeApp(config);
-
 
 exports.getUsers = function (req, res) {
     let users = [];
