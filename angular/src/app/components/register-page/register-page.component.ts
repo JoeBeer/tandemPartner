@@ -23,7 +23,7 @@ export class RegisterPageComponent implements OnInit {
 
   selectedOffers: any[];
   selectedActivities: any[];
-  selectedCity: any;
+  selectedCity: any;     // TODO check if this is seen as an array.
   selectedSex: any[];
 
   selectOffersActivitiesSettings = {};

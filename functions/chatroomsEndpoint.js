@@ -20,9 +20,39 @@ exports.createChatroom = async (req, res) => {
             .where("userB", "==", req.body.userB).limit(1).get();
         alreadyExistingA = !resultA.empty;
 
+        let IDResultB;
+        await chatroomsCollection.where("userA", "==", req.body.userB)
+        .where("userB", "==", req.body.userA).limit(1).get().then(snapshot => {
+            snapshot.forEach(doc => {
+                IDResultB = doc.id
+            })
+        });
+
+        let IDResultA;
+        await chatroomsCollection.where("userA", "==", req.body.userA)
+        .where("userB", "==", req.body.userB).limit(1).get().then(snapshot => {
+            snapshot.forEach(doc => {
+                IDResultA =  doc.id
+            })
+        });
+
         var resultB = await chatroomsCollection.where("userA", "==", req.body.userB)
             .where("userB", "==", req.body.userA).limit(1).get();
         alreadyExistingB = !resultB.empty;
+        
+        var IDresultB = await chatroomsCollection.where("userA", "==", req.body.userB)
+            .where("userB", "==", req.body.userA).limit(1).get().docs.map(doc => {
+                return doc.id
+            });
+        alreadyExistingB = !resultB.empty;
+
+
+        const IDresultA = await resultA.docs.map(doc => {
+            return doc.id
+        })
+
+        console.log(IDResultA)
+        console.log(IDResultB)
 
         if (!alreadyExistingA && !alreadyExistingB) {
             const chatRef = await chatroomsCollection.add({
@@ -51,7 +81,7 @@ exports.createChatroom = async (req, res) => {
 exports.updateChatroom = function (req, res) {
     const message = req.body
     // console.log(req.body)
-    return chatroomsCollection.doc(req.params.chatroomid)
+    return chatroomsCollection.doc(req.params.chatroomId)
         .update({
             updated: Date.now(),
             messages: admin.firestore.FieldValue.arrayUnion({
@@ -65,9 +95,14 @@ exports.updateChatroom = function (req, res) {
             return res.status(200).send(true);
         })
         .catch((error) => {
-            console.log('Error creating new chatroom', error)
-            return res.send(false);
+            console.log('Error creating new message', error)
+            return res.status(500).send(false);
         })
 }
 
-//TODO add delete()
+exports.deleteChatroom = (req, res) => {
+    chatroomsCollection.doc(req.params.chatroomId).delete()
+    .then(() => {
+        console.log('Success - chatroom')
+    })
+}

@@ -51,26 +51,26 @@ export class MatchListComponent implements OnInit {
     this.acceptedMatches$ = this.matchStoreService.getAllAcceptedMatches();
   }
 
-  pushMatchToAcceptedMatches() {
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.allMatches.length; i++) {
-      let j = 0;
-      if (this.allMatches[i].accepted === true) {
-        this.acceptedMatches[j] = this.allMatches[i];
-        j++;
-      }
-    }
-  }
+  // pushMatchToAcceptedMatches() {
+  //   // tslint:disable-next-line:prefer-for-of
+  //   for (let i = 0; i < this.allMatches.length; i++) {
+  //     let j = 0;
+  //     if (this.allMatches[i].accepted === true) {
+  //       this.acceptedMatches[j] = this.allMatches[i];
+  //       j++;
+  //     }
+  //   }
+  // }
 
-  pushMatchToMatchrequests() {
-    for (let i = 0; i < this.allMatches.length; i++) {
-      let j = 0;
-      if (this.allMatches[i].accepted === false) {
-        this.matchrequests[i] = this.allMatches[i];
-        j++;
-      }
-    }
-  }
+  // pushMatchToMatchrequests() {
+  //   for (let i = 0; i < this.allMatches.length; i++) {
+  //     let j = 0;
+  //     if (this.allMatches[i].accepted === false) {
+  //       this.matchrequests[i] = this.allMatches[i];
+  //       j++;
+  //     }
+  //   }
+  // }
 
 // calculateAgeForEachUser() {
 //   // tslint:disable-next-line:prefer-for-of

@@ -35,7 +35,8 @@ export class MatchStoreService {
           .pipe(
             map(actions => {
               return actions.map(a => {
-                const data: Object = a.payload.doc.data();
+                // TODO check if it works without the 'Object'  const data: Object = a.payload.doc.data();
+                const data = a.payload.doc.data();
                 const id = a.payload.doc.id;
                 return { id, ...data };
               });
@@ -55,7 +56,7 @@ export class MatchStoreService {
           .pipe(
             map(actions => {
               return actions.map(a => {
-                const data: Object = a.payload.doc.data();
+                const data = a.payload.doc.data();
                 const id = a.payload.doc.id;
                 return { id, ...data };
               });
@@ -73,7 +74,7 @@ export class MatchStoreService {
           .pipe(
             map(actions => {
               return actions.map(a => {
-                const data: Object = a.payload.doc.data();
+                const data = a.payload.doc.data();
                 const id = a.payload.doc.id;
                 return { id, ...data };
               });
@@ -96,7 +97,7 @@ export class MatchStoreService {
           .pipe(
             map(actions => {
               return actions.map(a => {
-                const data: Object = a.payload.doc.data();
+                const data = a.payload.doc.data();
                 const id = a.payload.doc.id;
                 return { id, ...data };
               });

@@ -28,15 +28,16 @@ let searchesEnpoint = require('./searchesEndpoint');
 // users.get('/:userId', usersEndpoint.getUserById);// Get one user
 users.post('/', usersEndpoint.createUser); // Create new user
 users.put('/:userId', usersEndpoint.updateUser); // Update user
-users.delete('/:userId', usersEndpoint.deleteUser); // Delete a user
+users.delete('/:userId', usersEndpoint.deleteUser); // Delete user
 exports.users = functions.https.onRequest(users); //Enables function 'users' @ Cloud Functions
 
 matches.post('/', matchesEndpoint.createMatch); //Create new match
-// matches.get('/:matchId', matchesEndpoint.getMatch); //Get one match
+matches.delete('/:matchId', matchesEndpoint.deleteMatch); //Delete match
 exports.matches = functions.https.onRequest(matches); //Enables function 'matches' @ Cloud Functions
 
 chatrooms.post('/', chatroomsEndpoint.createChatroom); // Create new chatroom
-chatrooms.put('/:chatroomid', chatroomsEndpoint.updateChatroom) // Update chatroom
+chatrooms.put('/:chatroomId', chatroomsEndpoint.updateChatroom) // Update chatroom
+chatrooms.delete('/:chatroomId', chatroomsEndpoint.deleteChatroom) // Delete chatroom
 exports.chatrooms = functions.https.onRequest(chatrooms); //Enables function 'chatrooms' @ Cloud Functions
 
 searches.post('/', searchesEnpoint.createSearch);
