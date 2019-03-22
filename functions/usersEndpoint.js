@@ -2,43 +2,6 @@ const admin = require('firebase-admin');
 const db = admin.firestore();
 const userCollection = db.collection("users");
 
-// exports.getUsers = function (req, res) {
-//     let users = [];
-//     userCollection.get()
-//         .then((snapshot) => {
-//             // get for each user the data
-//             snapshot.docs.forEach(user => {
-//                 // add each user to the users[]
-//                 users.push(user.data());
-//             })
-//             // send the users[] via the respond
-//             console.log('Succesfully got all users');
-//             return res.status(200).send(users);
-//         })
-//         .catch((error) => {
-//             console.log('Error getting users', error);
-//             return res.send(false);
-//         });
-// };
-
-// exports.getUserById = function (req, res) {
-//     userCollection.doc(req.params.userId).get()
-//         .then(user => {
-//             if (!user.exists) {
-//                 console.log('No such user!');
-//                 return res.status(404).send('No such user!');
-//             } else {
-//                 return res.status(200).send(user.data());
-//             }
-//         })
-//         .catch(error => {
-//             console.log('Error getting user', error);
-//             return res.send(false);
-
-//         });
-// };
-
-// 
 exports.createUser = async (req, res) => {
     try {
         const user = req.body;
@@ -128,7 +91,3 @@ exports.deleteUser = function (req, res) {
             return res.send(false);
         });
 };
-
-// exports.getMatches = function (req, res) {
-//     //TODO: Adding implementation
-// };

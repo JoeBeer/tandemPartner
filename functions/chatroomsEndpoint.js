@@ -12,49 +12,23 @@ exports.createChatroom = async (req, res) => {
             console.log("Error - Can't create Chatroom with two identical userID's!")
             return res.send(false);
         }
-
-        var alreadyExistingA;
-        var alreadyExistingB;
-
         var resultA = await chatroomsCollection.where("userA", "==", req.body.userA)
             .where("userB", "==", req.body.userB).limit(1).get();
         alreadyExistingA = !resultA.empty;
-
-        let IDResultB;
-        await chatroomsCollection.where("userA", "==", req.body.userB)
-        .where("userB", "==", req.body.userA).limit(1).get().then(snapshot => {
-            snapshot.forEach(doc => {
-                IDResultB = doc.id
-            })
-        });
-
         let IDResultA;
-        await chatroomsCollection.where("userA", "==", req.body.userA)
-        .where("userB", "==", req.body.userB).limit(1).get().then(snapshot => {
-            snapshot.forEach(doc => {
-                IDResultA =  doc.id
-            })
-        });
+        resultA.forEach(doc => {
+            IDResultA = doc.id;
+        })
 
         var resultB = await chatroomsCollection.where("userA", "==", req.body.userB)
             .where("userB", "==", req.body.userA).limit(1).get();
         alreadyExistingB = !resultB.empty;
-        
-        var IDresultB = await chatroomsCollection.where("userA", "==", req.body.userB)
-            .where("userB", "==", req.body.userA).limit(1).get().docs.map(doc => {
-                return doc.id
-            });
-        alreadyExistingB = !resultB.empty;
-
-
-        const IDresultA = await resultA.docs.map(doc => {
-            return doc.id
+        let IDResultB;
+        resultB.forEach(doc => {
+            IDResultB = doc.id;
         })
 
-        console.log(IDResultA)
-        console.log(IDResultB)
-
-        if (!alreadyExistingA && !alreadyExistingB) {
+        if (!IDResultA && !IDResultB) {
             const chatRef = await chatroomsCollection.add({
                 userA: chatroom.userA,
                 userB: chatroom.userB,
@@ -67,7 +41,12 @@ exports.createChatroom = async (req, res) => {
         else {
             const err = 'Error creating new chatroom - Chatroom aready exists';
             console.log(err)
-            return res.send(false);
+            if (IDResultA) {
+                return res.send({ result: false, chatroomId: IDResultA });
+            } else {
+                return res.send({ result: false, chatroomId: IDResultB });
+            }
+
         }
     }
     catch (error) {
@@ -100,9 +79,15 @@ exports.updateChatroom = function (req, res) {
         })
 }
 
+// Deleting a chatroom by using the chatroomId.
 exports.deleteChatroom = (req, res) => {
     chatroomsCollection.doc(req.params.chatroomId).delete()
-    .then(() => {
-        console.log('Success - chatroom')
-    })
+        .then(() => {
+            console.log('Success - chatroom deleted')
+            return res.status(200).send(true)
+        })
+        .catch ((error) => {
+            console.log('Error - deleting chatroom failed')
+            return res.status(500).send(false)
+        })
 }

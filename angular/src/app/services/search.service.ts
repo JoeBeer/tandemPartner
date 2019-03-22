@@ -20,7 +20,9 @@ export class SearchService {
   private apiUrl = 'https://us-central1-experimentaltandem.cloudfunctions.net';
   private headers: Headers = new Headers();
 
-  constructor(private http: HttpClient, private angularFirestore: AngularFirestore) {
+  constructor(
+    private http: HttpClient,
+    private angularFirestore: AngularFirestore) {
     this.headers.append('Content-Type', 'application/json');
    }
 
@@ -38,4 +40,7 @@ export class SearchService {
   takeExistingSearchrequest(userId: string, searchdata: any) {
     return this.http.post(`${this.apiUrl}/users/${userId}/searches`, searchdata);
   }
+
+
+
 }

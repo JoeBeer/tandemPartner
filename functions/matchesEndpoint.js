@@ -21,20 +21,14 @@ exports.createMatch = function (req, res) {
 };
 
 exports.deleteMatch = (req, res) => {
-    
+    matchesCollection.doc(req.params.matchId).delete()
+        .then(() => {
+            console.log('Success - match deleted')
+            return res.status(200).send(true)
+        })
+        .catch ((error) => {
+            console.log('Error - deleting match failed')
+            return res.status(500).send(false)
+        })
 }
-// exports.createMatch = function (req, res) {
-//     matchesCollection.add(req.body)
-
-//     //TODO: Add 'match-id' to users attributes 'matches'
-//     //TODO: Implement query parameters
-//         .then(result => {
-//             console.log('Succesfully inserted user');
-//             return res.status(201).send("Match funktioniert");
-//         })
-//         .catch((error) => {
-//             console.log('Error creating new user', error);
-//             return res.send(false);
-//         });
-// };
 

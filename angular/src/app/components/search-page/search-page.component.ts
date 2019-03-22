@@ -106,7 +106,6 @@ export class SearchPageComponent implements OnInit {
   }
 
   useRecentSearchrequest(request: Searchrequest) {
-
     this.searchService.takeExistingSearchrequest(this.authService.currentUserID, request).subscribe(() => {
       this.router.navigate(['/search/result']);
     });

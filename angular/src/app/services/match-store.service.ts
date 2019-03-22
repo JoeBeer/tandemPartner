@@ -112,6 +112,6 @@ export class MatchStoreService {
   }
 
   deleteMatch(matchId: string) {
-    // TOD: add functionality
+    return this.http.delete(`${this.apiUrl}/matches/${matchId}`);
   }
 }
