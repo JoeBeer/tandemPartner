@@ -20,10 +20,10 @@
                         </a>
                       </div>
                       <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
-                        <button type="button" class="btn btn-success mr-2 homebutton" (click)="acceptMatch()">
+                        <button type="button" class="btn btn-success mr-2 homebutton" (click)="acceptMatch(match.id)">
                           <fa-icon [icon]="faCheck"></fa-icon>
                         </button>
-                        <button type="button" class="btn btn-outline-danger homebutton" (click)="declineMatch()">
+                        <button type="button" class="btn btn-outline-danger homebutton" (click)="declineMatch(match.id)">
                           <fa-icon [icon]="faTimes"></fa-icon>
                         </button>
                       </div>
@@ -70,4 +70,4 @@
         </div>
       </div>
     </div>
-  </div> -->
+  </div>

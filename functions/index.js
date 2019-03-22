@@ -32,6 +32,7 @@ users.delete('/:userId', usersEndpoint.deleteUser); // Delete user
 exports.users = functions.https.onRequest(users); //Enables function 'users' @ Cloud Functions
 
 matches.post('/', matchesEndpoint.createMatch); //Create new match
+matches.put('/:matchId', matchesEndpoint.updateMatch); //Update match
 matches.delete('/:matchId', matchesEndpoint.deleteMatch); //Delete match
 exports.matches = functions.https.onRequest(matches); //Enables function 'matches' @ Cloud Functions
 

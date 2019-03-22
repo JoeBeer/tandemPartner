@@ -95,6 +95,7 @@ export class SearchPageComponent implements OnInit {
 
     const searchdata = {
       offerParam: this.selectedOffer,
+      cityParam: this.selectedCity,
       sexParam: this.parseSexValueForBackend(this.selectedSex),
       minAgeParam: this.searchForm.value.searchFormMinAge,
       maxAgeParam: this.searchForm.value.searchFormMaxAge

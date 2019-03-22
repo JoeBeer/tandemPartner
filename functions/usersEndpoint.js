@@ -40,7 +40,7 @@ exports.createUser = async (req, res) => {
 exports.updateUser = function (req, res) {
     const updatedUser = req.body;
 
-    admin.auth().updateUser(uid, {
+    admin.auth().updateUser(updatedUser.uid, {
         email: updatedUser.mail,
         emailVerified: false,
         password: updatedUser.password,
@@ -51,7 +51,7 @@ exports.updateUser = function (req, res) {
             console.log(userRecord.password);
             console.log(userRecord);
             return await userCollection.doc(userRecord.uid).update({
-                uid: userRecord.uid,
+                uid: updatedUser.uid,
                 firstname: updatedUser.firstname,
                 lastname: updatedUser.lastname,
                 photoURL: userRecord.photoURL,

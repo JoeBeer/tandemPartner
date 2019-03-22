@@ -12,8 +12,6 @@ import { combineLatest } from 'rxjs';
 export class MatchStoreService {
 
   private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
-  unacceptedMatches: any[];
-  allMatchesForSpecificUser: any[];
 
   constructor(
     private http: HttpClient,
@@ -107,8 +105,8 @@ export class MatchStoreService {
     );
   }
 
-  updateMatch(id: string, data: any) {
-    // TOD: add functionality
+  updateMatch(matchId: string, data: any) {
+    return this.http.put(`${this.apiUrl}/matches/${matchId}`, data);
   }
 
   deleteMatch(matchId: string) {

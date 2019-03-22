@@ -54,16 +54,17 @@ export class HomeComponent implements OnInit {
     // });
   }
 
-  acceptMatch() {
-    // TODO: add functionality - update the match
-    console.log('accepted');
-    //  this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
+  acceptMatch(matchId) {
+    const data = {
+      accepted: true
+    }
+    this.matchStoreService.updateMatch(matchId, data)
+    .subscribe();
   }
 
-  declineMatch() {
-    // TODO: add delete functionality - delete the match
-    console.log('deleted');
-    // this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
+  declineMatch(matchId) {
+    this.matchStoreService.deleteMatch(matchId)
+    .subscribe();
   }
 
   openModal(id: string) {
