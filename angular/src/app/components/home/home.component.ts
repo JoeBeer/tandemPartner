@@ -21,6 +21,8 @@ export class HomeComponent implements OnInit {
   matchRequests: any[];
   initiatorFirstname: string;
 
+  matchRequests$;
+
   openedModal: any;
 
   // for fontawesome icons
@@ -42,7 +44,9 @@ export class HomeComponent implements OnInit {
 
   // when home-component was called, the written methods in ngOnInit gonna start
   ngOnInit() {
-    this.showMatchRequestsForCurrentUser(this.authService.currentUserID);
+    // this.showMatchRequestsForCurrentUser(this.authService.currentUserID);
+    this.matchRequests$ = this.matchStoreService.getAllUnAcceptedMatches();
+    console.log(this.matchRequests$);
   }
 
 

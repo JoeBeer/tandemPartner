@@ -71,7 +71,7 @@
 
         <!-- show all unaccepted matchrequests which are saved in matchrequests[]-->
         <div
-          *ngFor="let matchrequest of matchrequests | paginate: { itemsPerPage: 5, currentPage: pageNumberRequests, id: 'secondPagination' }">
+          *ngFor="let matchrequest of matchRequests$ | async | paginate: { itemsPerPage: 5, currentPage: pageNumberRequests, id: 'secondPagination' }">
           <div class="card shadow my-3">
             <h5 class="card-header bg-white border-info font-italic">
               {{ 'matchlist.matchrequestFor' | translate }}: {{ matchrequest.matchedOffer }}

@@ -61,7 +61,7 @@ export class ResultPageComponent implements OnInit {
   }
 
   sendMatchrequest(partner: User) {
-    const newMatch: Match = new Match(this.authService.currentUser.uid, partner.uid, 'rudern', false);
+    const newMatch: Match = new Match(this.authService.currentUserID, partner.uid, 'rudern', false);
 
     this.matchStoreService.createMatch(newMatch).subscribe(() => {
       // find index of requested user in the array

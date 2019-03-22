@@ -36,14 +36,6 @@ export class AuthService {
       );
   }
 
-  // getUser() {
-  //   this.userStoreService.getUserById(this.firebaseUser.uid).subscribe( (recievedUser: User) => {
-  //     this.currentUser = recievedUser;
-  //   });
-
-  //   return this.currentUser;
-  // }
-
   isloggedIn(): boolean {
     const user = this.angularFireAuth.auth.currentUser;
     // console.log(this.user$);
@@ -58,25 +50,11 @@ export class AuthService {
     return this.user$.pipe(first()).toPromise();
   }
 
-  // isloggedIn(): boolean {
-  //   return this.isLoggedIn;
-  // }
-
   async logout() {
     await this.angularFireAuth.auth.signOut();
     this.isLoggedIn = false;
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
-  }
-
-  signUpWithMailAndPassword(mail: string, password: string) {
-    return new Promise<any>((resolve, reject) => {
-      this.angularFireAuth.auth.createUserWithEmailAndPassword(mail, password)
-        .then(res => {
-          this.isLoggedIn = true;
-          resolve(res);
-        }, error => reject(error));
-    });
   }
 
   async login(mail: string, password: string) {

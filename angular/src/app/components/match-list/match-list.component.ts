@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { faTrash, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { ChatService } from 'src/app/services/chat.service';
 // import { ChatService } from './../../services/chat.service';
 
 @Component({
@@ -18,6 +19,8 @@ export class MatchListComponent implements OnInit {
   allMatches: Match[];
   acceptedMatches: Match[];
   matchrequests: Match[];
+
+  matchRequests$;
 
   // for fontawesome icons
   faTrash = faTrash;
@@ -40,47 +43,24 @@ export class MatchListComponent implements OnInit {
   constructor(private authService: AuthService,
               private matchStoreService: MatchStoreService,
               private router: Router,
-            /* private chatservice: ChatService */ ) { }
+              private chatservice: ChatService ) { }
 
   ngOnInit() {
-    this.matchStoreService.getAllMatchesForSpecificUserAsInitiator(this.authService.currentUser.uid).subscribe((matches: Match[]) => {
-      this.matchA = matches;
-      console.log(this.matchA);
-      // tslint:disable-next-line:max-line-length
-      this.matchStoreService.getAllAcceptedMatchesForSpecificUserAsPartner(this.authService.currentUser.uid).subscribe((matchesB: Match[]) => {
-        this.matchB = matchesB;
-        console.log(this.matchB);
-        this.allMatches = this.matchA.concat(this.matchB);
-        console.log(this.allMatches);
-        this.pushMatchToAcceptedMatches();
-        this.pushMatchToMatchrequests();
-      });
-    });
-
-// this.acceptedMatches = [
-//      new Match(
-//      'kycsoFi1RPaNy3hJxwmFhbD032I3',
-//      'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-//      'kochen',
-//      true),
-//      new Match(
-//       'kycsoFi1RPaNy3hJxwmFhbD032I3',
-//       'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-//       'kochen',
-//       true),
-//      new Match(
-//       'kycsoFi1RPaNy3hJxwmFhbD032I3',
-//       'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-//       'kochen',
-//       true)];
-// this.matchrequests = [
-//      new Match(
-//      'a5WsJoGC2kbu0zto57mP',
-//      'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-//      'schwimmen',
-//      false)
-//    ];
-
+    // this.matchStoreService.getAllMatchesForSpecificUserAsInitiator(this.authService.currentUserID).subscribe((matches: Match[]) => {
+    //   this.matchA = matches;
+    //   console.log(this.matchA);
+    //   // tslint:disable-next-line:max-line-length
+    //   this.matchStoreService.getAllAcceptedMatchesForSpecificUserAsPartner(this.authService.currentUserID).subscribe((matchesB: Match[]) => {
+    //     this.matchB = matchesB;
+    //     console.log(this.matchB);
+    //     this.allMatches = this.matchA.concat(this.matchB);
+    //     console.log(this.allMatches);
+    //     this.pushMatchToAcceptedMatches();
+    //     this.pushMatchToMatchrequests();
+    //   });
+    // });
+    this.matchRequests$ = this.matchStoreService.getAllMatchrequests();
+    console.log(this.matchRequests$);
   }
 
   pushMatchToAcceptedMatches() {
