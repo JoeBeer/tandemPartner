@@ -48,7 +48,7 @@ export class ProfilePageComponent implements OnInit {
     this.activities = this.activitiesOffersCitiesStoreService.getAllActivities();
     this.cities = this.activitiesOffersCitiesStoreService.getAllCities();
 
-    const user = await this.authService.getUser();
+    const user = await this.authService.getCurrentUser();
 
     this.userStoreService.getUserById(user.uid).subscribe((recievedUser: User) => {
       this.sex = this.parseSexValueForFrontend(recievedUser.sex);

@@ -23,31 +23,11 @@ export class UserStoreService {
      return this.http.get(`${this.apiUrl}/users`);
    }
 
-
-  //  getUserById(id: string) {
-  //    return this.http.get<User>(`${this.apiUrl}/users/${id}`);
-  //  }
-
    getUserById(id) {
     return this.angularFirestore
     .collection<any>(`users`)
     .doc<User>(id).valueChanges();
    }
-
-  //  createUser(id: string, user: User) {
-  //    // generate new API-User
-  //    const data = {
-  //      uid: id,
-  //      firstname: user.firstname,
-  //      lastname: user.lastname,
-  //      city: user.city,
-  //      dateOfBirth: user.dateOfBirth,
-  //      activities: user.activities,
-  //      sex: user.sex
-  //    };
-
-  //    return this.http.put(`${this.apiUrl}/users`, data);
-  //  }
 
    createUser(user: any) {
     // generate new API-User
@@ -87,7 +67,7 @@ export class UserStoreService {
     return this.http.delete(`${this.apiUrl}/users/${id}`);
   }
 
-  private errorHandler(error: Error | any) {
-    return Observable.throw(error);
-  }
+  // private errorHandler(error: Error | any) {
+  //   return Observable.throw(error);
+  // }
 }

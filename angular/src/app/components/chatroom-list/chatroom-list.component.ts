@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class ChatroomListComponent implements OnInit {
 
-  currentUser = this.authService.getUser();
+  currentUser = this.authService.getCurrentUser();
   userChats$;
 
   constructor(
@@ -25,8 +25,9 @@ export class ChatroomListComponent implements OnInit {
     this.userChats$ = this.chatService.getAllChatrooms();
   }
 
+  // TODO Do we need this? I think it's enough to be able to contact the user through matches.
   async createChatroom() {
-    const { uid } = await this.authService.getUser(); // uid of the currentUser
+    const { uid } = await this.authService.getCurrentUser(); // uid of the currentUser
     const userB = 'sasdasdsasdadas'; // TODO get the userB from the list of users with accepted matches
     console.log(uid);
 
