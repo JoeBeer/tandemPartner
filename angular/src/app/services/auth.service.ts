@@ -10,6 +10,7 @@ import { User } from '../models/user';
 export class AuthService {
   public firebaseUser: firebase.User = null;
   public currentUser: User;
+  public currentUid: string;
 
   isLoggedIn = false;
    // store the URL so we can redirect after logging in
@@ -26,6 +27,8 @@ export class AuthService {
         localStorage.setItem('user', null);
       }
     });
+
+
 
   }
 

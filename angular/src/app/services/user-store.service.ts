@@ -8,7 +8,7 @@ import { User } from '../models/user';
 })
 export class UserStoreService {
 
-  private apiUrl = 'https://us-central1-experimentaltandem.cloudfunctions.net';
+  private apiUrl = 'https://us-central1-tandemdurchstichtest.cloudfunctions.net';
   private headers: Headers = new Headers();
 
   constructor(private http: HttpClient) {
@@ -38,7 +38,7 @@ export class UserStoreService {
        password: user.password
      };
 
-     return this.http.post(`${this.apiUrl}/users`, data);
+     return this.http.post(`${this.apiUrl}/users/`, data);
    }
 
    updateUser(id: string, user: any) {

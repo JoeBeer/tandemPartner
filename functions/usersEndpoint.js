@@ -1,12 +1,8 @@
 const admin = require('firebase-admin');
-const firebase = require('firebase');
+
 const db = admin.firestore();
 const userCollection = db.collection("users");
-var config = {
-    apiKey: "AIzaSyBxiXuAZtfccGZDvZY0A-MbYnD45820tZE",
-    authDomain: "tandemdurchstichtest.firebaseapp.com"
-};
-firebase.initializeApp(config);
+
 
 
 exports.getUsers = function (req, res) {
@@ -19,8 +15,9 @@ exports.getUsers = function (req, res) {
                 users.push(user.data());
             })
             // send the users[] via the respond
-            res.status(200).send(users);
             console.log('Succesfully got all users');
+            return res.status(200).send(users);
+
         })
         .catch((error) => {
             console.log('Error getting users', error);
@@ -36,7 +33,7 @@ exports.getUserById = function (req, res) {
                 console.log('No such user!');
                 return res.status(404).send('No such user!');
             } else {
-                res.status(200).send(user.data());
+                return res.status(200).send(user.data());
             }
         })
         .catch(error => {
@@ -46,45 +43,53 @@ exports.getUserById = function (req, res) {
         });
 };
 
-exports.createUser = function (req, res) {
+/*exports.createUser = function (req, res) {
         const user = req.body;
-    firebase.auth().createUserWithEmailAndPassword(req.body.mail, req.body.password)
+    firebase.auth().createUserWithEmailAndPassword(user.mail, user.password)
         .then(authRes => {
-            userCollection.doc(authRes.user.uid).set(user)
+            return userCollection.doc(authRes.user.uid).set(user)
                 .then(function () {
 
+                    console.log("AuthRes: "+authRes);
                     console.log('Succesfully inserted user');
-                    return res.status(201).send({uid: authRes.user.uid});
+                    return res.status(201).send(authRes);
                 })
                 .catch((error) => {
                     console.log('Error creating new user', error);
                     return res.send(false);
                 });
-        })
-};
+        }).catch((error) => {
+        console.log('Error creating new user', error);
+        return res.send(false);
+    })
+};*/
 
 
 exports.updateUser = function (req, res) {
     userCollection.doc(req.params.userId).set(req.body)
-        .then(result => {
-            res.status(204).send(true);
+        .then(() => {
             console.log('Succesfully updated user');
+            return res.status(204).send(true);
+
         })
         .catch((error) => {
-            res.send(false);
             console.log('Error updating user', error);
+            return res.send(false);
+
         });
 };
 
 exports.deleteUser = function (req, res) {
     userCollection.doc(req.params.userId).delete()
         .then(() => {
-            res.status(204).send(true);
             console.log('Succesfully deleted user');
+            return res.status(204).send(true);
+
         })
         .catch((error) => {
-            res.send(false);
             console.log('Error deleted user', error);
+            return res.send(false);
+
         });
 };
 

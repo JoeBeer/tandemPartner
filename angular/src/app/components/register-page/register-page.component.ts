@@ -134,7 +134,11 @@ export class RegisterPageComponent implements OnInit {
 
 
       // create new user in cloud firestore and take the UID from the new created User
-    this.userStoreService.createUser(userdata).subscribe(() => {
+    this.userStoreService.createUser(userdata).subscribe(response => {
+
+      console.log(response);
+      //console.log(response.uid);
+      //this.authService.firebaseUser = response;
       // then go to page 'home'
       this.router.navigate(['/home']);
     });

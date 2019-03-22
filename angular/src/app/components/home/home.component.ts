@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
 
   // when home-component was called, the written methods in ngOnInit gonna start
   ngOnInit() {
-    this.showMatchRequestsForCurrentUser(this.authService.getUser().uid);
+    //this.showMatchRequestsForCurrentUser(this.authService.getUser().uid);
   }
 
 
