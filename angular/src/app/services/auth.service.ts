@@ -46,7 +46,8 @@ export class AuthService {
     }
   }
 
-  getUser() {
+  // TODO Should it be renamed to getCurrentUser?
+  getCurrentUser() {
     return this.user$.pipe(first()).toPromise();
   }
 

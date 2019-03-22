@@ -21,6 +21,7 @@ export class MatchListComponent implements OnInit {
   matchrequests: Match[];
 
   matchRequests$;
+  acceptedMatches$;
 
   // for fontawesome icons
   faTrash = faTrash;
@@ -46,21 +47,8 @@ export class MatchListComponent implements OnInit {
               private chatservice: ChatService ) { }
 
   ngOnInit() {
-    // this.matchStoreService.getAllMatchesForSpecificUserAsInitiator(this.authService.currentUserID).subscribe((matches: Match[]) => {
-    //   this.matchA = matches;
-    //   console.log(this.matchA);
-    //   // tslint:disable-next-line:max-line-length
-    //   this.matchStoreService.getAllAcceptedMatchesForSpecificUserAsPartner(this.authService.currentUserID).subscribe((matchesB: Match[]) => {
-    //     this.matchB = matchesB;
-    //     console.log(this.matchB);
-    //     this.allMatches = this.matchA.concat(this.matchB);
-    //     console.log(this.allMatches);
-    //     this.pushMatchToAcceptedMatches();
-    //     this.pushMatchToMatchrequests();
-    //   });
-    // });
     this.matchRequests$ = this.matchStoreService.getAllMatchrequests();
-    console.log(this.matchRequests$);
+    this.acceptedMatches$ = this.matchStoreService.getAllAcceptedMatches();
   }
 
   pushMatchToAcceptedMatches() {
@@ -96,8 +84,24 @@ export class MatchListComponent implements OnInit {
 //
   contactUser(initiatorID: string, partnerID: string) {
     // TODO: cretae new chatroom and redirect to the chatroom
-    // tslint:disable-next-line:max-line-length
-    // this.chatservice.create(initiatorID, partnerID).subscribe( this.router.navigate(['/'])).catch( this.router.navigate(['/']);) currently only pseudocode
+    const currentUserID = this.authService.currentUserID;
+    let userB;
+
+    if (initiatorID === currentUserID) {
+      userB = partnerID;
+    }
+    if (partnerID=== currentUserID) {
+      userB = initiatorID;
+    }
+
+    this.chatservice.create(currentUserID, userB)
+    .subscribe(response => {
+      if (response.result) {
+        this.router.navigate([`chats/${response.chatroomId}`]);
+      } else {
+        console.error('Error - Chatroom couldn\'t be created!');
+      }
+    });
   }
 
   deleteMatchrequest(matchId: string) {

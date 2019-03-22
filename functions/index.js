@@ -21,18 +21,18 @@ let chatroomsEndpoint = require('./chatroomsEndpoint')
 
 
 const searches = express();
-matches.use(cors);
+searches.use(cors);
 let searchesEnpoint = require('./searchesEndpoint');
 
-users.get('/', usersEndpoint.getUsers); //Get all users
-users.get('/:userId', usersEndpoint.getUserById);// Get one user
+// users.get('/', usersEndpoint.getUsers); //Get all users
+// users.get('/:userId', usersEndpoint.getUserById);// Get one user
 users.post('/', usersEndpoint.createUser); // Create new user
 users.put('/:userId', usersEndpoint.updateUser); // Update user
 users.delete('/:userId', usersEndpoint.deleteUser); // Delete a user
 exports.users = functions.https.onRequest(users); //Enables function 'users' @ Cloud Functions
 
 matches.post('/', matchesEndpoint.createMatch); //Create new match
-matches.get('/:matchId', matchesEndpoint.getMatch); //Get one match
+// matches.get('/:matchId', matchesEndpoint.getMatch); //Get one match
 exports.matches = functions.https.onRequest(matches); //Enables function 'matches' @ Cloud Functions
 
 chatrooms.post('/', chatroomsEndpoint.createChatroom); // Create new chatroom

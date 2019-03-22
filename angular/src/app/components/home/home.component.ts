@@ -44,20 +44,7 @@ export class HomeComponent implements OnInit {
 
   // when home-component was called, the written methods in ngOnInit gonna start
   ngOnInit() {
-    // this.showMatchRequestsForCurrentUser(this.authService.currentUserID);
     this.matchRequests$ = this.matchStoreService.getAllUnAcceptedMatches();
-    console.log(this.matchRequests$);
-  }
-
-
-  showMatchRequestsForCurrentUser(id: string) {
-    this.matchStoreService.getAllUnacceptedMatchesForUser(id).then(matches => this.matchRequests = matches);
-    // this.matchRequests.forEach((i: Match) => {
-    //   console.log('PREinitiatorID: ' + i.initiatorID);
-    //   this.getInitiatorFirstname(i.initiatorID);
-    //   i.initiatorID = this.initiatorFirstname;
-    //   console.log('initiatorID: ' + i.initiatorID);
-    // });
   }
 
   getInitiatorFirstname(id: string) {
