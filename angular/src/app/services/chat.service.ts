@@ -56,7 +56,7 @@ export class ChatService {
           .pipe(
             map(actions => {
               return actions.map(a => {
-                const data: Object = a.payload.doc.data();
+                const data = a.payload.doc.data();
                 const id = a.payload.doc.id;
                 return { id, ...data };
               });
@@ -73,7 +73,7 @@ export class ChatService {
           .pipe(
             map(actions => {
               return actions.map(a => {
-                const data: Object = a.payload.doc.data();
+                const data = a.payload.doc.data();
                 const id = a.payload.doc.id;
                 return { id, ...data };
               });
@@ -125,6 +125,10 @@ export class ChatService {
         return chat;
       })
     );
+  }
+
+  deleteChatroom(chatroomId: string) {
+    return this.http.delete(`${this.apiUrl}/${chatroomId}`);
   }
 
 }

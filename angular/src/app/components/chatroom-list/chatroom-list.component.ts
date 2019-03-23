@@ -1,8 +1,9 @@
+import { UserStoreService } from './../../services/user-store.service';
 import { ChatService } from './../../services/chat.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
-
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -15,31 +16,56 @@ export class ChatroomListComponent implements OnInit {
   currentUser = this.authService.getCurrentUser();
   userChats$;
 
+  faTimes = faTimes;
+
+  // for modal
+  display = 'none';
+  modalIsOpen = false;
+  roomToBeDeleted: string;
+
   constructor(
     private authService: AuthService,
     private chatService: ChatService,
-    private router: Router,
+    private userStoreService: UserStoreService
   ) { }
 
   ngOnInit() {
     this.userChats$ = this.chatService.getAllChatrooms();
+    this.getPartnerName();
   }
 
-  // TODO Do we need this? I think it's enough to be able to contact the user through matches.
-  async createChatroom() {
-    const { uid } = await this.authService.getCurrentUser(); // uid of the currentUser
-    const userB = 'saddasdsdaasdassdssdsdssdsadas'; // TODO get the userB from the list of users with accepted matches
-    console.log(uid);
-
-    this.chatService.create(uid, userB)
-      .subscribe((response) => {
-        if (response.result) {
-          this.router.navigate([`chats/${response.chatroomId}`]);
-        } else {
-          console.error('Error - Chatroom couldn\'t be created!');
-        }
-      });
+  getPartnerName() {
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < this.userChats$.length; i++) {
+      let partnerID = this.userChats$[i].userB;
+      if (partnerID === this.authService.currentUserID) {
+        partnerID = this.userChats$[i].userA;
+        this.userStoreService.getUserById(partnerID).subscribe(user => {
+          this.userChats$[i].userA = user.firstname;
+        });
+      } else {
+        this.userStoreService.getUserById(partnerID).subscribe(user => {
+          this.userChats$[i].userB = user.firstname;
+        });
+      }
+    }
   }
 
+  deleteChatroom() {
+    this.chatService.deleteChatroom(this.roomToBeDeleted).subscribe();
+  }
+
+  openModal(chatroomId: string) {
+    console.log('id: ' + chatroomId);
+    this.modalIsOpen = true;
+    this.display = 'block';
+    this.roomToBeDeleted = chatroomId;
+
+  }
+
+  closeModal() {
+    this.display = 'none';
+    this.modalIsOpen = false;
+  }
 
 }
