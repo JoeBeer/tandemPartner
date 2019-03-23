@@ -3,6 +3,7 @@ export class Searchrequest {
   public minAgeParam: number,
   public maxAgeParam: number,
   public sexParam: string,
-  public offerParam: string
+  public offerParam: string,
+  public cityParam?: string
   ) {}
 }

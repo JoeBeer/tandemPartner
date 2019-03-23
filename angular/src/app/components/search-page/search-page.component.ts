@@ -51,7 +51,8 @@ export class SearchPageComponent implements OnInit {
     this.initializeMultiselectSettings();
 
     // tslint:disable-next-line:max-line-length
-    this.searchService.getRecentSearchrequestsForSpecificUser(this.authService.currentUserID).subscribe((requests: Searchrequest[]) => {
+    this.searchService.getRecentSearchrequestsForSpecificUser(this.authService.currentUserID)
+    .subscribe((requests: Searchrequest[]) => {
       this.recentSearchrequests = requests;
     });
   }
@@ -101,13 +102,15 @@ export class SearchPageComponent implements OnInit {
       maxAgeParam: this.searchForm.value.searchFormMaxAge
     };
 
-    this.searchService.createSearchrequest(this.authService.currentUserID, searchdata).subscribe(() => {
+    this.searchService.createSearchrequest(this.authService.currentUserID, searchdata)
+    .subscribe(() => {
       this.router.navigate(['/search/result']);
     });
   }
 
   useRecentSearchrequest(request: Searchrequest) {
-    this.searchService.takeExistingSearchrequest(this.authService.currentUserID, request).subscribe(() => {
+    this.searchService.takeExistingSearchrequest(this.authService.currentUserID, request)
+    .subscribe(() => {
       this.router.navigate(['/search/result']);
     });
   }

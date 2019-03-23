@@ -30,7 +30,7 @@ export class SearchService {
    }
 
   createSearchrequest(userId: string, searchdata: any) {
-    return this.http.post(`${this.apiUrl}/users/${userId}/searches`, searchdata);
+    return this.http.post<Searchrequest>(`${this.apiUrl}/users/${userId}/searches`, searchdata);
   }
 
   getRecentSearchrequestsForSpecificUser(userId: string) {
