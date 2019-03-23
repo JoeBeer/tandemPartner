@@ -95,5 +95,10 @@
     "sendMatchrequestTooltip": "Matchanfrage senden",
     "results": "Suchergebnisse",
     "age": "Jahre alt"
+  },
+
+  "chatroomList": {
+    "messages": "Nachrichten",
+    "deleteTooltip": "Chat löschen"
   }
 }
