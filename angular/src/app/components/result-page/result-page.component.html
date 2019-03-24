@@ -9,7 +9,7 @@
         <div class="card-body mx-5">
           <!-- show all accepted matches which are saved in acceptedMatches[]-->
           <div
-            *ngFor="let user of userForSpecificRequest | paginate: { itemsPerPage: 5, currentPage: pageNumber }">
+            *ngFor="let user of searchResults$ | async"> <!-- | paginate: { itemsPerPage: 5, currentPage: pageNumber } -->
             <div class="card shadow my-3">
               <div class="card-body accepted-match-cards">
                 <div class="card-text">

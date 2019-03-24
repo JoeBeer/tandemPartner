@@ -5,7 +5,6 @@ const userCollection = db.collection("users");
 exports.createUser = async (req, res) => {
     try {
         const user = req.body;
-        console.log(user.password);
         const userRecord = await admin.auth().createUser({
             email: user.mail,
             emailVerified: false,
@@ -14,8 +13,6 @@ exports.createUser = async (req, res) => {
             photoURL: "http://www.example.com/12345678/photo.png",
             disabled: false
         }).then(async (userRecord) => {
-            console.log(userRecord.password);
-            console.log(userRecord);
             return await userCollection.doc(userRecord.uid).set({
                 uid: userRecord.uid,
                 firstname: user.firstname,

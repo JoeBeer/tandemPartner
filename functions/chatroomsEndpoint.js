@@ -14,7 +14,6 @@ exports.createChatroom = async (req, res) => {
         }
         var resultA = await chatroomsCollection.where("userA", "==", req.body.userA)
             .where("userB", "==", req.body.userB).limit(1).get();
-        alreadyExistingA = !resultA.empty;
         let IDResultA;
         resultA.forEach(doc => {
             IDResultA = doc.id;
@@ -22,7 +21,6 @@ exports.createChatroom = async (req, res) => {
 
         var resultB = await chatroomsCollection.where("userA", "==", req.body.userB)
             .where("userB", "==", req.body.userA).limit(1).get();
-        alreadyExistingB = !resultB.empty;
         let IDResultB;
         resultB.forEach(doc => {
             IDResultB = doc.id;
@@ -36,15 +34,24 @@ exports.createChatroom = async (req, res) => {
                 messages: chatroom.messages
             });
             console.log('Successfully added chatroom');
-            return res.status(201).send({ result: true, chatroomId: chatRef.id });
+            return res.status(201).send({
+                result: true,
+                id: chatRef.id
+            });
         }
         else {
             const err = 'Error creating new chatroom - Chatroom aready exists';
             console.log(err)
             if (IDResultA) {
-                return res.send({ result: false, chatroomId: IDResultA });
+                return res.send({
+                    result: false,
+                    id: IDResultA
+                });
             } else {
-                return res.send({ result: false, chatroomId: IDResultB });
+                return res.send({
+                    result: false,
+                    id: IDResultB
+                });
             }
 
         }
@@ -86,7 +93,7 @@ exports.deleteChatroom = (req, res) => {
             console.log('Success - chatroom deleted')
             return res.status(200).send(true)
         })
-        .catch ((error) => {
+        .catch((error) => {
             console.log('Error - deleting chatroom failed')
             return res.status(500).send(false)
         })

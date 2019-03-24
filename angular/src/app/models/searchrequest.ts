@@ -4,6 +4,7 @@ export class Searchrequest {
   public maxAgeParam: number,
   public sexParam: string,
   public offerParam: string,
+  public createdAt: Date,
   public cityParam?: string
   ) {}
 }

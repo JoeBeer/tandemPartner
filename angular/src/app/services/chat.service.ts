@@ -1,4 +1,4 @@
-import { ChatroomResponse } from './../models/chatroomResponse';
+import { IdResponse } from '../models/idResponse';
 import { combineLatest, Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { Injectable } from '@angular/core';
@@ -32,7 +32,7 @@ export class ChatService {
       updated: Date.now(),
       messages: []
     };
-    return this.http.post<ChatroomResponse>(`${this.apiUrl2}`, data);
+    return this.http.post<IdResponse>(`${this.apiUrl2}`, data);
   }
 
   // Send a message to the Cloud Firestore database by valling the corresponding endpoint.
@@ -47,43 +47,73 @@ export class ChatService {
   }
 
   // Get all chatrooms of the current user and return it as an observable array with realtime changes.
-  getAllChatrooms() {
-    const resultA = this.authService.user$.pipe(
-      switchMap(user => {
-        return this.angularFirestore
-          .collection('chatrooms', ref => ref.where('userA', '==', user ? user.uid : ''))
-          .snapshotChanges()
-          .pipe(
-            map(actions => {
-              return actions.map(a => {
-                const data: Object = a.payload.doc.data();
-                const id = a.payload.doc.id;
-                return { id, ...data };
-              });
-            })
-          );
-      })
-    );
+  // getAllChatrooms() {
+  //   const resultA = this.authService.user$.pipe(
+  //     switchMap(user => {
+  //       return this.angularFirestore
+  //         .collection('chatrooms', ref => ref.where('userA', '==', user ? user.uid : ''))
+  //         .snapshotChanges()
+  //         .pipe(
+  //           map(actions => {
+  //             return actions.map(a => {
+  //               const data: Object = a.payload.doc.data();
+  //               const id = a.payload.doc.id;
+  //               return { id, ...data };
+  //             });
+  //           })
+  //         );
+  //     })
+  //   );
 
-    const resultB = this.authService.user$.pipe(
-      switchMap(user => {
-        return this.angularFirestore
-          .collection('chatrooms', ref => ref.where('userB', '==', user ? user.uid : ''))
-          .snapshotChanges()
-          .pipe(
-            map(actions => {
-              return actions.map(a => {
-                const data: Object = a.payload.doc.data();
-                const id = a.payload.doc.id;
-                return { id, ...data };
-              });
-            })
-          );
-      })
-    );
+  //   const resultB = this.authService.user$.pipe(
+  //     switchMap(user => {
+  //       return this.angularFirestore
+  //         .collection('chatrooms', ref => ref.where('userB', '==', user ? user.uid : ''))
+  //         .snapshotChanges()
+  //         .pipe(
+  //           map(actions => {
+  //             return actions.map(a => {
+  //               const data: Object = a.payload.doc.data();
+  //               const id = a.payload.doc.id;
+  //               return { id, ...data };
+  //             });
+  //           })
+  //         );
+  //     })
+  //   );
+
+  //   return combineLatest(resultA, resultB).pipe(
+  //     map(([users, otherUsers]) => users.concat(otherUsers)));
+  // }
+
+  // Get all chatrooms of the current user and return it as an observable array with realtime changes.
+  getAllChatrooms() {
+    const resultA = this.queryChatrooms('userA');
+
+    const resultB = this.queryChatrooms('userB');
 
     return combineLatest(resultA, resultB).pipe(
       map(([users, otherUsers]) => users.concat(otherUsers)));
+  }
+
+  // Query chatrooms by field name.
+  private queryChatrooms(fieldName) {
+    return this.authService.user$.pipe(
+      switchMap(user => {
+        return this.angularFirestore
+          .collection('chatrooms', ref => ref.where(fieldName, '==', user ? user.uid : ''))
+          .snapshotChanges()
+          .pipe(
+            map(actions => {
+              return actions.map(a => {
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+                return { id, ...data };
+              });
+            })
+          );
+      })
+    );
   }
 
   // Get an chatroom by it's doc-id and return it as an observable with realtime changes.
@@ -117,7 +147,7 @@ export class ChatService {
         return userDocs.length ? combineLatest(userDocs) : of([]);
       }),
       map(array => {
-        array.forEach(value => (joinKeys[(value as any).uid] = value));
+        array.forEach(v => (joinKeys[(v as any).uid] = v));
         chat.messages = chat.messages.map(v => {
           return { ...v, user: joinKeys[v.uid] };
         });

@@ -1,3 +1,6 @@
+import { Searchrequest } from './../../models/searchrequest';
+import { ActivatedRoute } from '@angular/router';
+import { SearchService } from './../../services/search.service';
 import { AuthService } from './../../services/auth.service';
 import { MatchStoreService } from './../../services/match-store.service';
 import { Component, OnInit } from '@angular/core';
@@ -20,16 +23,35 @@ export class ResultPageComponent implements OnInit {
 
   userForSpecificRequest: any[];
 
-  constructor(private matchStoreService: MatchStoreService,
-              private authService: AuthService) {
+  searchResults$;
+
+  constructor(
+    private matchStoreService: MatchStoreService,
+    private authService: AuthService,
+    private searchService: SearchService,
+    private route: ActivatedRoute
+  ) {
     this.userForSpecificRequest = [
       new User('1234', 'paul', 'test', new Date(1999, 3, 25), 'm', 'hamburg', ['kochen', 'schwimmen', 'ruder'], ['rudern']),
       new User('1234', 'hannes', 'test', new Date(1999, 3, 25), 'm', 'hamburg', ['kochen', 'schwimmen', 'ruder'], ['rudern'])
     ];
-               }
+  }
 
   ngOnInit() {
-    this.showAllUsersForSpecificRequest();
+    // this.showAllUsersForSpecificRequest();
+    const searchRequestId = this.route.snapshot.paramMap.get('id');
+    console.log(searchRequestId);
+    // this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
+    //   this.searchService.getSearchResult(searchRequest).subscribe()
+    // })
+
+    this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
+      console.log(searchRequest);
+      this.searchResults$ = this.searchService.getSearchResult(searchRequest);
+      this.searchService.getSearchResult(searchRequest).subscribe(docs => {
+        console.log(docs);
+      });
+    });
   }
 
   showAllUsersForSpecificRequest() {
@@ -47,9 +69,9 @@ export class ResultPageComponent implements OnInit {
   }
 
   calculateAgeForEachUser(birthdate: any) {
-      const timeDiff = Math.abs(Date.now() - birthdate);
-      const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365);
-      return age;
+    const timeDiff = Math.abs(Date.now() - birthdate);
+    const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365);
+    return age;
   }
 
   parseSexValueForFrontend(sex: string): string {

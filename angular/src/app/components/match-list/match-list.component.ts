@@ -49,6 +49,13 @@ export class MatchListComponent implements OnInit {
   ngOnInit() {
     this.matchRequests$ = this.matchStoreService.getAllMatchrequests();
     this.acceptedMatches$ = this.matchStoreService.getAllAcceptedMatches();
+    console.log(this.matchRequests$);
+    this.matchStoreService.getAllAcceptedMatches().subscribe(response => {
+      console.log(response);
+      response.map(match => {
+        console.log(match.initiatorID);
+      })
+    });
   }
 
 // calculateAgeForEachUser() {
@@ -69,16 +76,16 @@ export class MatchListComponent implements OnInit {
     if (initiatorID === currentUserID) {
       userB = partnerID;
     }
-    if (partnerID=== currentUserID) {
+    if (partnerID === currentUserID) {
       userB = initiatorID;
     }
 
     this.chatservice.create(currentUserID, userB)
     .subscribe(response => {
       if (response.result) {
-        this.router.navigate([`chats/${response.chatroomId}`]);
+        this.router.navigate([`chats/${response.id}`]);
       } else if (!response.result) {
-        this.router.navigate([`chats/${response.chatroomId}`]);
+        this.router.navigate([`chats/${response.id}`]);
       }
     });
   }

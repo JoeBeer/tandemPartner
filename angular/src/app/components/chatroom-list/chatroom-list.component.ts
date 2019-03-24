@@ -34,7 +34,7 @@ export class ChatroomListComponent implements OnInit {
     this.chatService.create(uid, userB)
       .subscribe((response) => {
         if (response.result) {
-          this.router.navigate([`chats/${response.chatroomId}`]);
+          this.router.navigate([`chats/${response.id}`]);
         } else {
           console.error('Error - Chatroom couldn\'t be created!');
         }

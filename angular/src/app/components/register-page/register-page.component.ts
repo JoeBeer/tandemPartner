@@ -123,20 +123,19 @@ export class RegisterPageComponent implements OnInit {
     const userdata = {
       firstname: this.registerForm.value.registerFormFirstname,
       lastname: this.registerForm.value.registerFormLastname,
-      city: this.selectedCity,
+      city: this.selectedCity[0],
       dateOfBirth: this.registerForm.value.registerFormBirthday,
       // get the only one item from selectedSex-Array
       sex: this.parseSexValueForBackend(this.selectedSex[0]),
       activities: this.selectedActivities,
       offers: this.selectedOffers,
       mail: this.registerForm.value.registerFormMail,
-      // password: Md5.hashStr(this.registerForm.value.registerFormPassword)
       password: this.md5.appendStr(this.registerForm.value.registerFormMail)
         .appendStr(this.registerForm.value.registerFormPassword).end()
     };
     // create new user in Firebase Authentication and Cloud Firestore
     this.userStoreService.createUser(userdata).subscribe(() => {
-      // then go to page 'home'
+      // then go to page 'login'
       this.router.navigate(['/login']);
     });
 
