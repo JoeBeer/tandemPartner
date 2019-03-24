@@ -8,7 +8,7 @@ import { map, switchMap, filter } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { User } from '../models/user';
 import { IdResponse } from '../models/idResponse';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +25,7 @@ export class SearchService {
     private matchStoreService: MatchStoreService
   ) {
     this.headers.append('Content-Type', 'application/json');
+    // this.getUsersToBeExcludedArray();
   }
 
   createSearchrequest(searchdata: any) {
@@ -66,8 +67,6 @@ export class SearchService {
             map(actions => {
               return actions.map(a => {
                 const data = a.payload.doc.data() as User;
-                // const id = a.payload.doc.id;
-                // return { id, ...data };
                 return { ...data };
               });
             })
@@ -77,42 +76,87 @@ export class SearchService {
     );
   }
 
+  // TODO validation for duplicates have to be done after the subscribtion
   getUsersToBeExcludedArray() {
-    const UsersToBeExcludedId: string[] = [];
+    const allAcceptedMatches = this.matchStoreService.getAllAcceptedMatches().pipe(
+      map(matches => {
+        const userArray: string[] = [];
+        matches.map(match => {
+            userArray.push(match.initiatorID);
+            userArray.push(match.partnerID);
+        });
+        return userArray;
+      })
+    );
 
-    this.matchStoreService.getAllAcceptedMatches().subscribe(matches => {
-      matches.map(match => {
-        if (UsersToBeExcludedId.includes(match.initiatorID) === false) {
-          UsersToBeExcludedId.push(match.initiatorID);
-        }
-        if (UsersToBeExcludedId.includes(match.partnerID) === false) {
-          UsersToBeExcludedId.push(match.partnerID);
-        }
-      });
-    });
+    const allUnAcceptedMatches = this.matchStoreService.getAllUnAcceptedMatches().pipe(
+      map(matches => {
+        const userArray: string[] = [];
+        matches.map(match => {
+            userArray.push(match.initiatorID);
+            userArray.push(match.partnerID);
+        });
+        return userArray;
+      })
+    );
 
-    this.matchStoreService.getAllUnAcceptedMatches().subscribe(matches => {
-      matches.map(match => {
-        if (UsersToBeExcludedId.includes(match.initiatorID) === false) {
-          UsersToBeExcludedId.push(match.initiatorID);
-        }
-        if (UsersToBeExcludedId.includes(match.partnerID) === false) {
-          UsersToBeExcludedId.push(match.partnerID);
-        }
-      });
-    });
+    const matchRequests = this.matchStoreService.getAllMatchrequests().pipe(
+      map(matches => {
+        const userArray: string[] = [];
+        matches.map(match => {
+            userArray.push(match.initiatorID);
+            userArray.push(match.partnerID);
+        });
+        return userArray;
+      })
+    );
 
-    this.matchStoreService.getAllMatchrequests().subscribe(matches => {
-      matches.map(match => {
-        if (UsersToBeExcludedId.includes(match.initiatorID) === false) {
-          UsersToBeExcludedId.push(match.initiatorID);
-        }
-        if (UsersToBeExcludedId.includes(match.partnerID) === false) {
-          UsersToBeExcludedId.push(match.partnerID);
-        }
-      });
-    });
+    const resultA = combineLatest(allAcceptedMatches, allUnAcceptedMatches).pipe(
+      map(([acceptedUser, unAcceptedUser]) => acceptedUser.concat(unAcceptedUser))
+    );
 
-    return UsersToBeExcludedId;
+    return combineLatest(resultA, matchRequests).pipe(
+      map(([resultAUser, matchRequestUser]) => resultAUser.concat(matchRequestUser))
+    );
+
   }
+
+  // getUsersToBeExcludedArray() {
+  //   const UsersToBeExcludedId: string[] = [];
+
+  //   this.matchStoreService.getAllAcceptedMatches().subscribe(matches => {
+  //     matches.map(match => {
+  //       if (UsersToBeExcludedId.includes(match.initiatorID) === false) {
+  //         UsersToBeExcludedId.push(match.initiatorID);
+  //       }
+  //       if (UsersToBeExcludedId.includes(match.partnerID) === false) {
+  //         UsersToBeExcludedId.push(match.partnerID);
+  //       }
+  //     });
+  //   });
+
+  //   this.matchStoreService.getAllUnAcceptedMatches().subscribe(matches => {
+  //     matches.map(match => {
+  //       if (UsersToBeExcludedId.includes(match.initiatorID) === false) {
+  //         UsersToBeExcludedId.push(match.initiatorID);
+  //       }
+  //       if (UsersToBeExcludedId.includes(match.partnerID) === false) {
+  //         UsersToBeExcludedId.push(match.partnerID);
+  //       }
+  //     });
+  //   });
+
+  //   this.matchStoreService.getAllMatchrequests().subscribe(matches => {
+  //     matches.map(match => {
+  //       if (UsersToBeExcludedId.includes(match.initiatorID) === false) {
+  //         UsersToBeExcludedId.push(match.initiatorID);
+  //       }
+  //       if (UsersToBeExcludedId.includes(match.partnerID) === false) {
+  //         UsersToBeExcludedId.push(match.partnerID);
+  //       }
+  //     });
+  //   });
+
+  //   return UsersToBeExcludedId;
+  // }
 }

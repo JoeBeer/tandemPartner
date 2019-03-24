@@ -39,13 +39,15 @@ export class SearchPageComponent implements OnInit {
   newSearchCollapsed = true;
   recentRequestCollapsed = false;
 
-  constructor(private formBuilder: FormBuilder,
-              private router: Router,
-              private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService,
-              private searchService: SearchService,
-              private authService: AuthService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService,
+    private searchService: SearchService,
+    private authService: AuthService
+  ) {
     this.searchForm = this.createSearchForm();
-              }
+  }
 
   ngOnInit() {
     // initialzie all available offers & cities
@@ -63,12 +65,12 @@ export class SearchPageComponent implements OnInit {
   }
 
   createSearchForm() {
-     // create the formGroup
-     return this.formBuilder.group ({
-       searchFormMinAge: [''],
+    // create the formGroup
+    return this.formBuilder.group({
+      searchFormMinAge: [''],
 
-       searchFormMaxAge: ['']
-     }, {validator: this.ageCheckValidator});
+      searchFormMaxAge: ['']
+    }, { validator: this.ageCheckValidator });
   }
 
   initializeMultiselectSettings() {
@@ -91,9 +93,9 @@ export class SearchPageComponent implements OnInit {
     };
   }
 
-  ageCheckValidator(control: AbstractControl): { invalid: boolean} {
+  ageCheckValidator(control: AbstractControl): { invalid: boolean } {
     if (control.get('searchFormMinAge').value > control.get('searchFormMaxAge').value) {
-      return {invalid: true };
+      return { invalid: true };
     }
   }
 
@@ -110,9 +112,9 @@ export class SearchPageComponent implements OnInit {
     };
 
     this.searchService.createSearchrequest(searchdata)
-    .subscribe(response => {
-      this.router.navigate([`/search/result/${response.id}`]);
-    });
+      .subscribe(response => {
+        this.router.navigate([`/search/result/${response.id}`]);
+      });
   }
 
   useRecentSearchrequest(searchRequestId) {

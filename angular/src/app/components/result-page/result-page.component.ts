@@ -21,37 +21,45 @@ export class ResultPageComponent implements OnInit {
   // for pagination the array
   pageNumber: 1;
 
-  userForSpecificRequest: any[];
+  userForSpecificRequest: User[] = [];
+  usersToBeExcludedArray: string[] = [];
 
-  searchResults$;
+  matchedOffer;
 
   constructor(
     private matchStoreService: MatchStoreService,
     private authService: AuthService,
     private searchService: SearchService,
     private route: ActivatedRoute
-  ) {
-    this.userForSpecificRequest = [
-      new User('1234', 'paul', 'test', new Date(1999, 3, 25), 'm', 'hamburg', ['kochen', 'schwimmen', 'ruder'], ['rudern']),
-      new User('1234', 'hannes', 'test', new Date(1999, 3, 25), 'm', 'hamburg', ['kochen', 'schwimmen', 'ruder'], ['rudern'])
-    ];
-  }
+  ) { }
 
   ngOnInit() {
-    // this.showAllUsersForSpecificRequest();
-    const searchRequestId = this.route.snapshot.paramMap.get('id');
-    console.log(searchRequestId);
-    // this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
-    //   this.searchService.getSearchResult(searchRequest).subscribe()
-    // })
-
-    this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
-      console.log(searchRequest);
-      this.searchResults$ = this.searchService.getSearchResult(searchRequest);
-      this.searchService.getSearchResult(searchRequest).subscribe(docs => {
-        console.log(docs);
+    this.searchService.getUsersToBeExcludedArray().subscribe(userArray => {
+      userArray.map(user => {
+        if (this.usersToBeExcludedArray.includes(user) === false) {
+          this.usersToBeExcludedArray.push(user);
+        }
+      });
+      const searchRequestId = this.route.snapshot.paramMap.get('id');
+      this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
+        this.matchedOffer = searchRequest.offerParam;
+        this.searchService.getSearchResult(searchRequest).subscribe(users => {
+          users.map(user => {
+            if (this.usersToBeExcludedArray.includes(user.uid) === false) {
+              this.userForSpecificRequest.push(user);
+            }
+          });
+        });
       });
     });
+
+    // this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
+    //   console.log(searchRequest);
+    //   this.searchResults$ = this.searchService.getSearchResult(searchRequest);
+    //   this.searchService.getSearchResult(searchRequest).subscribe(docs => {
+    //     console.log(docs);
+    //   });
+    // });
   }
 
   showAllUsersForSpecificRequest() {
@@ -82,11 +90,12 @@ export class ResultPageComponent implements OnInit {
     }
   }
 
-  sendMatchrequest(partner: User, matchedOffer) {
-    const newMatch: Match = new Match(this.authService.currentUserID, partner.uid, matchedOffer, false);
-
+  sendMatchrequest(partner: User) {
+    const newMatch: Match = new Match(this.authService.currentUserID, partner.uid, this.matchedOffer, false);
+    console.log(partner);
     this.matchStoreService.createMatch(newMatch).subscribe(() => {
       // find index of requested user in the array
+      console.log('in subscribe');
       const index = this.userForSpecificRequest.indexOf(partner);
       // delete the requested user and shorten the array - showing the remaining users will be updated automatically
       this.userForSpecificRequest.splice(index, 1);
