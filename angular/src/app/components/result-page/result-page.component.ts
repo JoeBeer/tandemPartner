@@ -38,7 +38,8 @@ export class ResultPageComponent implements OnInit {
   ngOnInit() {
     const searchRequestId = this.route.snapshot.paramMap.get('id');
     this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
-      this.matchedOffer = searchRequest.offerParam;
+      console.log(searchRequest);
+      this.matchedOffer = searchRequest.offerParam; // TODO check, if the error message occures again
       this.searchResults$ = this.searchService.getSearchResult(searchRequest);
       this.searchService.getSearchResult(searchRequest).subscribe();
     });
