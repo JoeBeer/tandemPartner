@@ -6,6 +6,7 @@
     "searchResults": "Suchergebnisse",
     "matchesLink": "Matches",
     "chatLink": "Nachrichten",
+    "lang": "De",
     "logout": "Ausloggen",
     "login": "Einloggen"
   },
@@ -95,5 +96,10 @@
     "results": "Suchergebnisse",
     "age": "Jahre alt",
     "activities": "Aktivitäten"
+  },
+
+  "chatroomList": {
+    "messages": "Nachrichten",
+    "deleteTooltip": "Chat löschen"
   }
 }

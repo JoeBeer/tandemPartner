@@ -117,4 +117,8 @@ export class ChatService {
     );
   }
 
+  deleteChatroom(chatroomId: string) {
+    return this.http.delete(`${this.apiUrl}/${chatroomId}`);
+  }
+
 }
