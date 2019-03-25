@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { faTrash, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { ChatService } from 'src/app/services/chat.service';
 // import { ChatService } from './../../services/chat.service';
 
 @Component({
@@ -13,9 +14,14 @@ import { Router } from '@angular/router';
 })
 export class MatchListComponent implements OnInit {
 
+  matchA: Match[];
+  matchB: Match[];
   allMatches: Match[];
   acceptedMatches: Match[];
   matchrequests: Match[];
+
+  matchRequests$;
+  acceptedMatches$;
 
   // for fontawesome icons
   faTrash = faTrash;
@@ -24,6 +30,10 @@ export class MatchListComponent implements OnInit {
   // for pagination
   pageNumberAcceptedMatches = 1;
   pageNumberRequests = 1;
+
+  // getting active & collapsed state
+  acceptedCollapsed = true;
+  requestsCollapsed = false;
 
   // for modal
   display = 'none';
@@ -34,68 +44,49 @@ export class MatchListComponent implements OnInit {
   constructor(private authService: AuthService,
               private matchStoreService: MatchStoreService,
               private router: Router,
-            /* private chatservice: ChatService */ ) { }
+              private chatservice: ChatService ) { }
 
   ngOnInit() {
-   // this.matchStoreService.getAllMatchesForSpecificUser(this.authService.currentUser.uid).then(matches => {
-   //   this.allMatches = matches;
-   // });
-  this.acceptedMatches = [
-       new Match(
-       'kycsoFi1RPaNy3hJxwmFhbD032I3',
-       'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-       'kochen',
-       true),
-       new Match(
-        'kycsoFi1RPaNy3hJxwmFhbD032I3',
-        'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-        'kochen',
-        true),
-       new Match(
-        'kycsoFi1RPaNy3hJxwmFhbD032I3',
-        'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-        'kochen',
-        true)];
-  this.matchrequests = [
-       new Match(
-       'a5WsJoGC2kbu0zto57mP',
-       'xMFp4LlYHPXZ3ntVWvRsq0cwzl02',
-       'schwimmen',
-       false)
-     ];
- // this.pushMatchToAcceptedMatches();
- // this.pushMatchToMatchrequests();
+    this.matchRequests$ = this.matchStoreService.getAllMatchrequests();
+    this.acceptedMatches$ = this.matchStoreService.getAllAcceptedMatches();
   }
 
-  pushMatchToAcceptedMatches() {
-    for (let i = 0; i > this.allMatches.length; i++) {
-      let j = 0;
-      if (this.allMatches[i].accepted === true) {
-        this.acceptedMatches[j] = this.allMatches[i];
-        j++;
-      }
-    }
-  }
-
-  pushMatchToMatchrequests() {
-    for (let i = 0; i > this.allMatches.length; i++) {
-      let j = 0;
-      if (this.allMatches[i].accepted === false) {
-        this.matchrequests[i] = this.allMatches[i];
-        j++;
-      }
-    }
-  }
-
+// calculateAgeForEachUser() {
+//   // tslint:disable-next-line:prefer-for-of
+//   for (let i = 0; i < this.userForSpecificRequest.length; i++) {
+//     const birthdate = this.userForSpecificRequest[i].dateOfBirth;
+//     const timeDiff = Math.abs(Date.now() - birthdate);
+//     const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365);
+//     this.userForSpecificRequest[i].dateOfBirth = age;
+//   }
+// }
+//
   contactUser(initiatorID: string, partnerID: string) {
     // TODO: cretae new chatroom and redirect to the chatroom
-    // tslint:disable-next-line:max-line-length
-    // this.chatservice.create(initiatorID, partnerID).subscribe( this.router.navigate(['/'])).catch( this.router.navigate(['/']);) currently only pseudocode
+    const currentUserID = this.authService.currentUserID;
+    let userB;
+
+    if (initiatorID === currentUserID) {
+      userB = partnerID;
+    }
+    if (partnerID=== currentUserID) {
+      userB = initiatorID;
+    }
+
+    this.chatservice.create(currentUserID, userB)
+    .subscribe(response => {
+      if (response.result) {
+        this.router.navigate([`chats/${response.chatroomId}`]);
+      } else if (!response.result) {
+        this.router.navigate([`chats/${response.chatroomId}`]);
+      }
+    });
   }
 
   deleteMatchrequest(matchId: string) {
-    // TODO: delete the specific matchrequest
-    this.matchStoreService.deleteMatch(matchId);
+    console.log(matchId);
+    this.matchStoreService.deleteMatch(matchId)
+    .subscribe();
   }
 
   openModal(id: string) {

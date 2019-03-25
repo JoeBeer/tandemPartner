@@ -1,17 +1,21 @@
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserStoreService {
 
-  private apiUrl = 'https://us-central1-experimentaltandem.cloudfunctions.net';
+  private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
   private headers: Headers = new Headers();
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private angularFirestore: AngularFirestore) {
     this.headers.append('Content-Type', 'application/json');
    }
 
@@ -19,29 +23,30 @@ export class UserStoreService {
      return this.http.get(`${this.apiUrl}/users`);
    }
 
-
-   getUserById(id: string) {
-     return this.http.get(`${this.apiUrl}/users/${id}`);
+   getUserById(id) {
+    return this.angularFirestore
+    .collection<any>(`users`)
+    .doc<User>(id).valueChanges();
    }
 
    createUser(user: any) {
-     // generate new API-User
-     const data = {
-       firstname: user.firstname,
-       lastname: user.lastname,
-       dateOfBirth: user.dateOfBirth,
-       sex: user.sex,
-       city: user.city,
-       activities: user.activities,
-       offers: user.offers,
-       mail: user.mail,
-       password: user.password
-     };
+    // generate new API-User
+    const data = {
+      firstname: user.firstname,
+      lastname: user.lastname,
+      dateOfBirth: user.dateOfBirth,
+      sex: user.sex,
+      city: user.city,
+      activities: user.activities,
+      offers: user.offers,
+      mail: user.mail,
+      password: user.password
+    };
 
-     return this.http.post(`${this.apiUrl}/users`, data);
-   }
+    return this.http.post(`${this.apiUrl}/users/`, data);
+  }
 
-   updateUser(id: string, user: any) {
+   updateUser(id: any, user: any) {
     const data = {
       uid: id,
       firstname: user.firstname,
@@ -62,7 +67,7 @@ export class UserStoreService {
     return this.http.delete(`${this.apiUrl}/users/${id}`);
   }
 
-  private errorHandler(error: Error | any) {
-    return Observable.throw(error);
-  }
+  // private errorHandler(error: Error | any) {
+  //   return Observable.throw(error);
+  // }
 }

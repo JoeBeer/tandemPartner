@@ -1,112 +1,120 @@
-<h1 class="text-center font-weight-light mb-3 mt-4">{{ 'matchlist.matchHeaderTitle' | translate }}</h1>
-<div class="row mb-3">
+<div class="row">
   <div class="col-1"></div>
   <div class="col-10 px-0">
-    <div ><!--*ngIf="allMatches, else ElseBlock"-->
-      <div class="accordion shadow" id="matchAccordion">
-        <div class="card">
-          <div class="card-header pointer-cursor bg-white border-warning" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            <h3 class="mb-0 font-weight-light">
-              {{ 'matchlist.accpetedMatches' | translate }}
-            </h3>
-          </div>
-          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#matchAccordion">
-            <div class="card-body">
-              <!-- show all accepted matches which are saved in acceptedMatches[]-->
-              <div *ngFor="let match of acceptedMatches | paginate: { itemsPerPage: 5, currentPage: pageNumberAcceptedMatches, id: 'firstPagination' }">
-                <div class="card shadow my-3">
-                  <h5 class="card-header bg-white border-warning font-italic">
-                    {{ 'matchlist.matchedOffer' | translate }}: {{ match.matchedOffer }}
-                  </h5>
-                  <div class="card-body accepted-match-cards">
-                    <div class="card-text">
-                      <div class="row">
-                        <div class="col-8 col-md-10">
-                          <a class="pointer-cursor" (click)="openModal(match.initiatorID)">
-                            <p class="my-0"><small>{{ match.initiatorID }}</small></p>
-                            <p class="my-0"><small>Age:</small></p>
-                            <p class="my-0"><small>Aktivitäten:</small></p>
-                          </a>
-                        </div>
-                        <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
-                          <button type="button" class="btn btn-outline-warning homebutton"
-                                  (click)="contactUser(match.initiatorID, match.partnerID)"
-                                  data-toggle="tooltip" data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
-                            <fa-icon [icon]="faEnvelope"></fa-icon>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+    <div class="card mx-auto my-5 shadow">
+      <div class="card-header h5 bg-transparent d-flex justify-content-between border-warning p-0">
+        <div
+          class="col-md-6 font-weight-light text-center pointer-cursor align-self-center border-right btn-outline-warning py-3"
+          data-toggle="collapse" href="#collapseAccepted" [ngClass]="{'active':acceptedCollapsed === true}"
+          role="button" aria-expanded="false" aria-controls="collapseAccepted" (click)="requestsCollapsed=false"
+          (click)="acceptedCollapsed=true">
+          {{ 'matchlist.accpetedMatches' | translate }}
+        </div>
+        <div class="col-md-6 font-weight-light text-center pointer-cursor btn-outline-warning py-3"
+          [ngClass]="{'active':requestsCollapsed === true}" data-toggle="collapse" href="#collapseRequests"
+          role="button" aria-expanded="false" aria-controls="collapseRequests" (click)="acceptedCollapsed=false"
+          (click)="requestsCollapsed=true">
+          {{ 'matchlist.unacceptedMatches' | translate }}
+        </div>
+      </div>
+      <!--card-header-->
+
+      <!--show all accepted Matches-->
+      <div *ngIf="acceptedCollapsed" class="card-body" id="collapseAccepted">
+        <!-- show all accepted matches which are saved in acceptedMatches[]-->
+        <div
+          *ngFor="let match of acceptedMatches$ | async | paginate: { itemsPerPage: 5, currentPage: pageNumberAcceptedMatches, id: 'firstPagination' }">
+          <div class="card shadow my-3">
+            <h5 class="card-header bg-white border-warning font-italic">
+              {{ 'matchlist.matchedOffer' | translate }}: {{ match.matchedOffer }}
+            </h5>
+            <div *ngIf="acceptedMatches$, else noRequestBlock" class="card-body accepted-match-cards">
+              <div class="card-text">
+                <div class="row">
+                  <div class="col-8 col-md-10">
+                    <a class="pointer-cursor" (click)="openModal(match.initiatorID)">
+                      <p class="my-0"><small>{{ match.initiatorID }}</small></p> <!-- TODO validate by currentUser -->
+                      <p class="my-0"><small>Age:</small></p>
+                      <p class="my-0"><small>Aktivitäten:</small></p>
+                    </a>
+                  </div>
+                  <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
+                    <button type="button" class="btn btn-outline-warning homebutton"
+                      (click)="contactUser(match.initiatorID, match.partnerID)" data-toggle="tooltip"
+                      data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
+                      <fa-icon [icon]="faEnvelope"></fa-icon>
+                    </button>
                   </div>
                 </div>
-              </div><!--ngFor-->
-
-              <!--controls for pagination, which are only visible at the length of matchRequest-array bigger than 5-->
-              <pagination-controls autoHide="true"
-                class="pagination justify-content-center"
-                (pageChange)="pageNumberAcceptedMatches = $event"
-                previousLabel="{{'home.previous' | translate }}"
-                nextLabel="{{'home.next' | translate }}" id="firstPagination">
-              </pagination-controls>
+              </div>
             </div>
+            <!-- if there are no matchrequests-->
+            <ng-template #noRequestBlock>
+              <p class="text-center">{{ 'home.noRequests' | translate}}</p>
+            </ng-template>
           </div>
-        </div><!--first row/card-->
+        </div>
+        <!--ngFor-->
 
-        <div class="card">
-          <div class="card-header pointer-cursor bg-white border-info" id="headingTwo"  data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-            <h3 class="mb-0 font-weight-light">
-                {{ 'matchlist.unacceptedMatches' | translate }}
-            </h3>
-          </div>
-          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#matchAccordion">
-            <div class="card-body">
-              <!---unaccepted matchrequests-->
-              <!-- show all unaccepted matchrequests which are saved in matchrequests[]-->
-              <div *ngFor="let matchrequest of matchrequests | paginate: { itemsPerPage: 5, currentPage: pageNumberRequests, id: 'secondPagination' }">
-                <div class="card shadow my-3">
-                  <h5 class="card-header bg-white border-info font-italic">
-                    {{ 'matchlist.matchrequestFor' | translate }}: {{ matchrequest.matchedOffer }}
-                  </h5>
-                  <div class="card-body unaccepted-match-cards">
-                    <div class="card-text">
-                      <div class="row">
-                        <div class="col-8 col-md-10">
-                          <a class="pointer-cursor" (click)="openModal(matchrequest.initiatorID)">
-                            <p class="my-0"><small>{{ matchrequest.initiatorID }}</small></p>
-                            <p class="my-0"><small>Age:</small></p>
-                            <p class="my-0"><small>Aktivitäten:</small></p>
-                          </a>
-                        </div>
-                        <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
-                          <button type="button" class="btn btn-outline-danger homebutton" (click)="deleteMatchrequest()" data-toggle="tooltip" data-placement="top" title="{{ 'matchlist.deleteTooltip' | translate }}">
-                            <fa-icon [icon]="faTrash"></fa-icon>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+        <!--controls for pagination, which are only visible at the length of matchRequest-array bigger than 5-->
+        <pagination-controls autoHide="true" class="pagination justify-content-center"
+          (pageChange)="pageNumberAcceptedMatches = $event" previousLabel="{{'home.previous' | translate }}"
+          nextLabel="{{'home.next' | translate }}" id="firstPagination">
+        </pagination-controls>
+
+      </div>
+
+      <!--show all Matchrequests-->
+      <div *ngIf="requestsCollapsed" class="card-body collapse" id="collapseRequests">
+
+
+
+        <!-- show all unaccepted matchrequests which are saved in matchrequests[]-->
+        <div
+          *ngFor="let matchrequest of matchRequests$ | async | paginate: { itemsPerPage: 5, currentPage: pageNumberRequests, id: 'secondPagination' }">
+          <div class="card shadow my-3">
+            <h5 class="card-header bg-white border-info font-italic">
+              {{ 'matchlist.matchrequestFor' | translate }}: {{ matchrequest.matchedOffer }}
+            </h5>
+            <div class="card-body unaccepted-match-cards">
+              <div class="card-text">
+                <div class="row">
+                  <div class="col-8 col-md-10">
+                    <a class="pointer-cursor" (click)="openModal(matchrequest.initiatorID)">
+                      <p class="my-0"><small>{{ matchrequest.initiatorID }}</small></p>
+                      <p class="my-0"><small>Age:</small></p>
+                      <p class="my-0"><small>Aktivitäten:</small></p>
+                    </a>
+                  </div>
+                  <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
+                    <button type="button" class="btn btn-outline-danger homebutton" (click)="deleteMatchrequest(matchrequest.id)"
+                      data-toggle="tooltip" data-placement="top" title="{{ 'matchlist.deleteTooltip' | translate }}">
+                      <fa-icon [icon]="faTrash"></fa-icon>
+                    </button>
                   </div>
                 </div>
-              </div><!--ngFor-->
-
-              <!--controls for pagination, which are only visible at the length of matchRequest-array bigger than 5-->
-              <pagination-controls autoHide="true"
-                class="pagination justify-content-center"
-                (pageChange)="pageNumberRequests = $event"
-                previousLabel="{{'home.previous' | translate }}"
-                nextLabel="{{'home.next' | translate }}" id="secondPagination">
-              </pagination-controls>
+              </div>
             </div>
           </div>
-        </div><!--second row/card-->
+        </div>
+        <!--ngFor-->
 
-      </div><!--accordion-->
-    </div><!--ngIf allMatches=!null-->
+        <!--controls for pagination, which are only visible at the length of matchRequest-array bigger than 5-->
+        <pagination-controls autoHide="true" class="pagination justify-content-center"
+          (pageChange)="pageNumberRequests = $event" previousLabel="{{'home.previous' | translate }}"
+          nextLabel="{{'home.next' | translate }}" id="secondPagination">
+        </pagination-controls>
 
-    <!-- if there are no matchrequests-->
-    <ng-template #elseBlock>
-      <p class="text-center">{{ 'home.noRequests' | translate}}</p>
-    </ng-template>
-  </div><!--col-10-->
+
+      </div>
+      <!--second row/card-->
+
+    </div>
+
+
+  </div>
+  <!--col-10-->
+
   <div class="col-1"></div>
 </div>
 
@@ -114,21 +122,21 @@
 <!-- Modal -->
 <div class="modal-backdrop fade in" [ngStyle]="{'display':display}"></div>
 <div *ngIf="modalIsOpen" class="modal" [ngStyle]="{'display': display}" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">{{ 'home.requestTitle' | translate}} Kochen</h5>
-          <button type="button" class="close" (click)="closeModal()" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-           <!-- {{ user.firstname }}-->
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ 'home.requestTitle' | translate}} Kochen</h5>
+        <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- {{ user.firstname }}-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
+</div>

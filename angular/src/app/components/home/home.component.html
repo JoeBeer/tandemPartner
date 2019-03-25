@@ -1,10 +1,10 @@
-<h1 class="text-center font-weight-light my-3">{{ 'home.openMatchrequests' | translate }}</h1>
+<h1 class="text-center font-weight-light mb-3 mt-4">{{ 'home.openMatchrequests' | translate }}</h1>
 <div class="row">
   <div class="col-1"></div>
   <div class="col-10">
-    <div *ngIf="matchRequests, else elseBlock">
+    <div *ngIf="matchRequests$, else elseBlock">
       <!-- show all matchRequests which are saved in the Array of 'matchRequests'-->
-      <div *ngFor="let match of matchRequests | paginate: { itemsPerPage: 5, currentPage: pageNumber }">
+      <div *ngFor="let match of matchRequests$ | async | paginate: { itemsPerPage: 5, currentPage: pageNumber }">
         <div class="card shadow my-3">
             <h5 class="card-header">
                 {{ 'home.requestTitle' | translate}} {{ match.matchedOffer }}

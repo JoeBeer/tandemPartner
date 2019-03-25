@@ -1,4 +1,4 @@
-import { AuthGuard } from './services/auth-guard.service';
+import { AuthGuard } from './services/auth.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
@@ -35,27 +35,33 @@ const routes: Routes = [
   },
   {
     path: 'matches',
-    component: MatchListComponent
+    component: MatchListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'chats',
-    component: ChatroomListComponent
+    component: ChatroomListComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path: 'chats/:Id',
-    component: ChatroomItemComponent
+    path: 'chats/:id',
+    component: ChatroomItemComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'profile',
-    component: ProfilePageComponent
+    component: ProfilePageComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'search',
-    component: SearchPageComponent
+    component: SearchPageComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'search/result',
-    component: ResultPageComponent
+    component: ResultPageComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'impressum',

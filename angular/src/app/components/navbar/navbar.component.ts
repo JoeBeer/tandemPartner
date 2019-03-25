@@ -15,12 +15,13 @@ export class NavbarComponent implements OnInit {
   // default value for not showing the page in english
   showEnglish = false;
 
-  constructor(private translateService: TranslateService,
-              private authService: AuthService,
-              private router: Router,
-              private userStoreService: UserStoreService) {
+  constructor(
+    private translateService: TranslateService,
+    private authService: AuthService,
+    private router: Router,
+    private userStoreService: UserStoreService) {
     translateService.setDefaultLang('de');
-   }
+  }
 
   ngOnInit() {
   }

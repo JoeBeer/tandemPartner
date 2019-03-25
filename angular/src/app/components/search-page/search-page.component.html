@@ -1,4 +1,4 @@
-<div class="row">
+<div *ngIf="router.url === '/search'" class="row">
   <div class="col-1"></div>
   <div class="col-10">
     <div class="card mx-auto my-5 shadow">
@@ -21,7 +21,7 @@
       </div><!--header-->
 
       <!--new search area-->
-      <div *ngIf="newSearchCollapsed" class="card-body collapse" id="collapseNewSearch">
+      <div *ngIf="newSearchCollapsed" class="card-body" id="collapseNewSearch">
         <form class="" [formGroup]="searchForm" (ngSubmit)="newSearchSave()" novalidate>
           <div class="row">
             <div class="form-group col-md-6">
@@ -46,27 +46,15 @@
               </ng-multiselect-dropdown>
             </div>
             <div class="col-md-6 form-group">
-              <label for="searchFormActivities">{{'search.activities' | translate }}:</label>
-              <ng-multiselect-dropdown  class="form-control shadow-sm" id="searchFormActivities" #searchFormActivities="ngModel"
-                 [placeholder]="'register.pleaseChoose' | translate"
-                 [data]="activities"
-                 [(ngModel)]="selectedActivities" [ngModelOptions]="{ standalone : true }"
-                 [settings]="selectActivitiesSettings">
-              </ng-multiselect-dropdown>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 form-group">
               <label for="searchFormSex">{{'register.sex' | translate }}:</label>
               <ng-multiselect-dropdown  class="form-control shadow-sm" id="searchFormSex" #searchFormSex="ngModel"
                 [placeholder]="'register.pleaseChoose' | translate"
                 [data]="sexes"
                 [(ngModel)]="selectedSex" [ngModelOptions]="{ standalone : true }"
-                [settings]="selectOnlyOneSettings">
+                [settings]="selectSexSettings">
               </ng-multiselect-dropdown>
             </div>
-          </div>
+            </div>
 
           <div class="row">
             <div class="col-md-6 form-group">
@@ -83,14 +71,14 @@
             <div *ngIf="searchFormOffer.errors.required" class="alert-danger">{{'validators.minOffers' | translate }}</div>
           </div>
 
-          <div class="alert-danger pl-2" *ngIf="searchFormMinAge.value > searchFormMaxAge.value">
+          <div class="alert-danger pl-2" *ngIf="searchFormMinAge.value > searchFormMaxAge.value && searchFormMaxAge.touched">
             {{'validators.ageMismatch' | translate }}
           </div>
 
           <div class="row" role="toolbar">
             <div class="col-md-6">
               <button type="button" type="submit" class="btn btn-warning d-flex mx-auto ml-md-auto mt-2"
-                      [disabled]="!searchFormOffer.valid || (searchFormMinAge.value > searchFormMaxAge.value)">
+                      [disabled]="!searchFormOffer.valid || (searchFormMinAge.value > searchFormMaxAge.value  && searchFormMaxAge.touched)">
                       {{'search.searchButton' | translate }}
               </button>
             </div>
@@ -121,3 +109,4 @@
   </div><!--col-10-->
   <div class="col-1"></div>
 </div>
+<app-result-page *ngIf="router.url === '/search/result'"></app-result-page>

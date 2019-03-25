@@ -21,6 +21,8 @@ export class HomeComponent implements OnInit {
   matchRequests: any[];
   initiatorFirstname: string;
 
+  matchRequests$;
+
   openedModal: any;
 
   // for fontawesome icons
@@ -38,52 +40,37 @@ export class HomeComponent implements OnInit {
     private userStoreService: UserStoreService,
     private authService: AuthService,
     private matchStoreService: MatchStoreService
-    ) { }
+  ) { }
 
   // when home-component was called, the written methods in ngOnInit gonna start
   ngOnInit() {
-    this.showMatchRequestsForCurrentUser(this.authService.getUser().uid);
-  }
-
-
-  showMatchRequestsForCurrentUser(id: string) {
-    this.matchStoreService.getAllUnacceptedMatchesForUser(id).then(matches => this.matchRequests = matches);
-    // this.matchRequests.forEach((i: Match) => {
-    //   console.log('PREinitiatorID: ' + i.initiatorID);
-    //   this.getInitiatorFirstname(i.initiatorID);
-    //   i.initiatorID = this.initiatorFirstname;
-    //   console.log('initiatorID: ' + i.initiatorID);
-    // });
+    this.matchRequests$ = this.matchStoreService.getAllUnAcceptedMatches();
   }
 
   getInitiatorFirstname(id: string) {
-    this.userStoreService.getUserById(id).subscribe((recievedUser: User) => {
-      this.initiatorFirstname = recievedUser.firstname;
-      console.log('initiatorFirstname: ' + this.initiatorFirstname);
-    });
+    // this.userStoreService.getUserById(id).subscribe((recievedUser: User) => {
+    //   this.initiatorFirstname = recievedUser.firstname;
+    //   console.log('initiatorFirstname: ' + this.initiatorFirstname);
+    // });
   }
 
   acceptMatch() {
     // TODO: add functionality - update the match
     console.log('accepted');
-  //  this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
+    //  this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
   }
 
   declineMatch() {
     // TODO: add delete functionality - delete the match
     console.log('deleted');
-   // this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
+    // this.showMatchRequestsForCurrentUser(this.authService.currentUser.uid);
   }
 
   openModal(id: string) {
     console.log('id: ' + id);
     this.modalIsOpen = true;
     this.display = 'block';
-    this.matchRequests.forEach( match => {
-      if (match._id === id) {
-        this.openedModal = match;
-      }
-    });
+
   }
 
   closeModal() {

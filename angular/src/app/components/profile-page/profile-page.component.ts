@@ -13,6 +13,7 @@ import { ActivitiesOffersCitiesStoreService } from '../../services/activities-of
 })
 export class ProfilePageComponent implements OnInit {
 
+  currentUser;
   editForm: FormGroup;
 
   // for showing available offers, activities & cities
@@ -23,7 +24,7 @@ export class ProfilePageComponent implements OnInit {
   // for loading/saving the selected fields
   selectedOffers: any[];
   selectedActivities: any[];
-  selectedCity: any;
+  selectedCity: string;
   sex: string;
 
   // for selecting fields
@@ -31,37 +32,43 @@ export class ProfilePageComponent implements OnInit {
   selectOffersActivitiesSettings = {};
 
 
-  constructor(private formBuilder: FormBuilder,
-              private router: Router,
-              private userStoreService: UserStoreService,
-              private authService: AuthService,
-              private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private userStoreService: UserStoreService,
+    private authService: AuthService,
+    private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService) {
 
-              this.editForm = this.createEditForm();
+    this.editForm = this.createEditForm();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     // initialzie all available offers & activities
     this.offers = this.activitiesOffersCitiesStoreService.getAllOffers();
     this.activities = this.activitiesOffersCitiesStoreService.getAllActivities();
     this.cities = this.activitiesOffersCitiesStoreService.getAllCities();
 
+    const user = await this.authService.getCurrentUser();
 
-    this.sex = this.parseSexValueForFrontend(this.authService.getUser().sex);
-    this.selectedActivities = this.authService.getUser().activities;
-    this.selectedOffers = this.authService.getUser().offers,
-    this.selectedCity = this.authService.getUser().city;
-    this.editForm.get('editFormFirstname').setValue(this.authService.getUser().firstname);
-    this.editForm.get('editFormLastname').setValue(this.authService.getUser().lastname);
-    this.editForm.get('editFormMail').setValue(this.authService.firebaseUser.email);
-    this.editForm.get('editFormBirthday').setValue(this.authService.getUser().dateOfBirth);
+    this.userStoreService.getUserById(user.uid).subscribe((recievedUser: User) => {
+      this.sex = this.parseSexValueForFrontend(recievedUser.sex);
+      this.selectedActivities = recievedUser.activities;
+      this.selectedOffers = recievedUser.offers,
+        this.selectedCity = recievedUser.city;
+      this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
+      this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
+      this.editForm.get('editFormMail').setValue(user.mail);
+      this.editForm.get('editFormBirthday').setValue(recievedUser.dateOfBirth);
+      console.log(recievedUser.dateOfBirth);
+    });
 
     this.initializeMultiselectSettings();
+
   }
 
   createEditForm() {
     // create the formGroup
-    return this.formBuilder.group ({
+    return this.formBuilder.group({
       // the field only contains letters or spaces
       editFormFirstname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
 
@@ -70,17 +77,18 @@ export class ProfilePageComponent implements OnInit {
 
       editFormMail: ['', [Validators.required, Validators.email]],
 
-      editFormBirthday: [{value: '', disabled: true}],
+      editFormBirthday: [{ value: '', disabled: true }],
 
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
-      editFormPassword: ['', [Validators.required, Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,}$')/* , Validators.minLength(6), Validators.maxLength(16) */]],
+      editFormPassword: ['', [Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,16}$')]],
 
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
-      editFormPasswordConfirm: ['', [Validators.required, Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,}$')/* , Validators.minLength(6), Validators.maxLength(16) */]]
+      editFormPasswordConfirm: ['', [Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,16}$')]]
         // adds the custom validator for validating the passwords og their matching
     }, { validator: this.passwordMatchValidator});
+
   }
 
   initializeMultiselectSettings() {
@@ -90,7 +98,7 @@ export class ProfilePageComponent implements OnInit {
       idField: 'item_id',
       textField: 'item_text',
       enableCheckAll: false,
-      allowSearchFilter: false,
+      allowSearchFilter: true,
       closeDropDownOnSelection: true
     };
     // selecting settings for the select fields of offers and activities
@@ -100,7 +108,7 @@ export class ProfilePageComponent implements OnInit {
       textField: 'item_text',
       enableCheckAll: false,
       itemsShowLimit: 3,
-      allowSearchFilter: false
+      allowSearchFilter: true
     };
   }
 
@@ -125,9 +133,9 @@ export class ProfilePageComponent implements OnInit {
   }
 
   // validate the passwords whether they are matching
-  passwordMatchValidator(control: AbstractControl): { invalid: boolean} {
+  passwordMatchValidator(control: AbstractControl): { invalid: boolean } {
     if (control.get('editFormPassword').value !== control.get('editFormPasswordConfirm').value) {
-      return {invalid: true };
+      return { invalid: true };
     }
   }
 
@@ -142,7 +150,7 @@ export class ProfilePageComponent implements OnInit {
     const userdata = {
       firstname: this.editForm.value.editFormFirstname,
       lastname: this.editForm.value.editFormLastname,
-      city: this.selectedCity[0],
+      city: this.selectedCity,
       dateOfBirth: this.editForm.value.editFormBirthday,
       // get the only one item from selectedSex-Array
       sex: this.parseSexValueForBackend(this.sex),
@@ -155,21 +163,21 @@ export class ProfilePageComponent implements OnInit {
     const mail = this.editForm.value.editFormMail;
     const password = this.editForm.value.editFormPassword;
 
-    if (password === !null || password === !undefined || password === !'' ) {
+    if (password === !null || password === !undefined || password === !'') {
       console.log('ausgefülltes password');
       // this.authService.firebaseUser.updatePassword(password).then();
     }
 
-    if (mail === !null || mail === !undefined || mail === !'' ) {
+    if (mail === !null || mail === !undefined || mail === !'') {
       console.log('ausgefüllte mail');
       // this.authService.firebaseUser.updateEmail(mail).then();
     }
 
-   // // create new user in cloud firestore and take the UID from the new created User
-   // this.userStoreService.updateUser(this.authService.currentUser.uid, userdata).subscribe(() => {
-   //   // then go to page 'home'
-   //   this.router.navigate(['/home']);
-   // });
+    // // create new user in cloud firestore and take the UID from the new created User
+    // this.userStoreService.updateUser(this.authService.currentUser.uid, userdata).subscribe(() => {
+    //   // then go to page 'home'
+    //   this.router.navigate(['/home']);
+    // });
 
   }
 
@@ -187,16 +195,16 @@ export class ProfilePageComponent implements OnInit {
     return this.editForm.get('editFormBirthday');
   }
 
- get editFormMail() {
-   return this.editForm.get('editFormMail');
- }
+  get editFormMail() {
+    return this.editForm.get('editFormMail');
+  }
 
- get editFormPassword() {
-   return this.editForm.get('editFormPassword');
- }
- get editFormPasswordConfirm() {
-   return this.editForm.get('editFormPasswordConfirm');
- }
+  get editFormPassword() {
+    return this.editForm.get('editFormPassword');
+  }
+  get editFormPasswordConfirm() {
+    return this.editForm.get('editFormPasswordConfirm');
+  }
 
 
 }

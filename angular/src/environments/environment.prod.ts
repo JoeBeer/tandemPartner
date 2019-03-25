@@ -1,11 +1,7 @@
 export const environment = {
   production: true,
   firebase: {
-    apiKey: 'AIzaSyD3N0cvtiexqnzKGIE9iGfHgMHhu-ou8EU',
-    authDomain: 'experimentaltandem.firebaseapp.com',
-    databaseURL: 'https://experimentaltandem.firebaseio.com',
-    projectId: 'experimentaltandem',
-    storageBucket: 'experimentaltandem.appspot.com',
-    messagingSenderId: '263344694119'
+    apiKey: 'AIzaSyA60SCLQd6f7KOT_UmUml5RgMnAC3F5E_A',
+    projectId: 'livechattandem'
   }
 };

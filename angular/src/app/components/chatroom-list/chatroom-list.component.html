@@ -1,3 +1,49 @@
-<p>
-  chatroom-list works!
-</p>
+<div class="row mt-4">
+  <div class="col-1"></div>
+  <div class="col-10">
+    <div class="card shadow my-3" *ngFor="let chatroom of userChats$ | async">
+      <div class="card-body py-2 accepted-match-cards">
+        <div class="row">
+          <div class="col-10">
+            <!-- TODO map the userA or userB (depending on the currentUser) to a modal to display profile pic and name  -->
+            <a [routerLink]="chatroom.id">
+              <span class="text-decoration-none text-dark">{{ chatroom.userB }}</span>
+              <hr class="border-warning border-bottom mt-0 mb-1">
+              <p class="text-muted mb-0">{{ chatroom.messages.length }} {{'chatroomList.messages' | translate }}</p>
+            </a>
+          </div>
+          <div class="col-2 d-flex align-items-center justify-content-end">
+            <button type="button" class="btn btn-outline-danger homebutton" (click)="openModal(chatroom.id)"
+            data-toggle="tooltip" data-placement="top" title="{{ 'chatroomList.deleteTooltip' | translate }}">
+              <fa-icon [icon]="faTimes"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-1"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop fade in" [ngStyle]="{'display':display}"></div>
+<div *ngIf="modalIsOpen" class="modal" [ngStyle]="{'display': display}" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ 'home.requestTitle' | translate}} Kochen</h5>
+          <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="deleteChatroom()">DELETE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
