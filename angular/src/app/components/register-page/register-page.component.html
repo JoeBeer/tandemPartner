@@ -92,49 +92,65 @@
             <div *ngIf="registerFormFirstname.errors.pattern">{{'validators.letterSpaces' | translate }}</div>
           </div>
 
-          <div class="alert-danger pl-2"
-            *ngIf="registerFormLastname.errors && (registerFormLastname.touched || registerFormLastname.dirty)">
-            <div *ngIf="registerFormLastname.errors.required">{{'register.lastname' | translate }}
-              {{'validators.required' | translate }}</div>
-            <div *ngIf="registerFormLastname.errors.pattern">{{'validators.letterSpaces' | translate }}</div>
-          </div>
+            <!--Validator messages-->
+            <div class="alert-danger pl-2" *ngIf="registerFormFirstname.errors && (registerFormFirstname.touched || registerFormFirstname.dirty)">
+                <div *ngIf="registerFormFirstname.errors.required">{{'register.firstname' | translate }} {{'validators.required' | translate }}</div>
+                <div *ngIf="registerFormFirstname.errors.pattern">{{'validators.letterSpaces' | translate }}</div>
+              </div>
 
-          <div class="alert-danger pl-2"
-            *ngIf="registerFormMail.errors && (registerFormMail.touched || registerFormMail.dirty)">
-            <div *ngIf="registerFormMail.errors.required">{{'register.mail' | translate }}
-              {{'validators.required' | translate }}</div>
-            <div *ngIf="registerFormMail.errors.email">{{'validators.email' | translate }}</div>
-          </div>
+              <div class="alert-danger pl-2" *ngIf="registerFormLastname.errors && (registerFormLastname.touched || registerFormLastname.dirty)">
+                <div *ngIf="registerFormLastname.errors.required">{{'register.lastname' | translate }} {{'validators.required' | translate }}</div>
+                <div *ngIf="registerFormLastname.errors.pattern">{{'validators.letterSpaces' | translate }}</div>
+              </div>
 
-          <div class="alert-danger pl-2"
-            *ngIf="registerFormPassword.errors && (registerFormPassword.touched || registerFormPassword.dirty)">
-            <div *ngIf="registerFormPassword.errors.required">{{'register.password' | translate }}
-              {{'validators.required' | translate }}</div>
-            <div *ngIf="registerFormPassword.errors.minlength">{{'validators.passwordPattern' | translate }}</div>
-          </div>
+              <div class="alert-danger pl-2" *ngIf="registerFormMail.errors && (registerFormMail.touched || registerFormMail.dirty)">
+                <div *ngIf="registerFormMail.errors.required">{{'register.mail' | translate }} {{'validators.required' | translate }}</div>
+                <div *ngIf="registerFormMail.errors.email">{{'validators.email' | translate }}</div>
+              </div>
 
-          <div class="alert-danger pl-2"
-            *ngIf="registerFormPasswordConfirm.errors && (registerFormPasswordConfirm.touched || registerFormPasswordConfirm.dirty)">
-            <div *ngIf="registerFormPasswordConfirm.errors.required">{{'register.passwordConfirm' | translate }}
-              {{'validators.required' | translate }}</div>
-            <div *ngIf="registerFormPasswordConfirm.errors.minlength">{{'validators.passwordPattern' | translate }}
-            </div>
-          </div>
+              <div class="alert-danger pl-2" *ngIf="registerFormPassword.errors && (registerFormPassword.touched || registerFormPassword.dirty)">
+                <div *ngIf="registerFormPassword.errors.required">{{'register.password' | translate }} {{'validators.required' | translate }}</div>
+                <div *ngIf="registerFormPassword.errors.pattern">{{'validators.passwordPattern' | translate }}</div>
+              </div>
 
-          <div class="alert-danger pl-2"
-            *ngIf="registerFormPassword.value != registerFormPasswordConfirm.value && registerFormPasswordConfirm.value != null">
-            {{'validators.passwordMismatch' | translate }}
-          </div>
+              <div class="alert-danger pl-2" *ngIf="registerFormPasswordConfirm.errors && (registerFormPasswordConfirm.touched || registerFormPasswordConfirm.dirty)">
+                <div *ngIf="registerFormPasswordConfirm.errors.required">{{'register.passwordConfirm' | translate }} {{'validators.required' | translate }}</div>
+                <div *ngIf="registerFormPassword.errors.pattern">{{'validators.passwordPattern' | translate }}</div>
+              </div>
 
-          <div class="alert-danger pl-2"
-            *ngIf="registerFormSex.errors && (registerFormSex.touched || registerFormSex.dirty)">
-            <div *ngIf="registerFormSex.errors.required" class="alert-danger">{{'register.sex' | translate }}
-              {{'validators.required' | translate }}</div>
-          </div>
+              <div class="alert-danger pl-2" *ngIf="registerFormPassword.value != registerFormPasswordConfirm.value && registerFormPasswordConfirm.value != null">
+                  {{'validators.passwordMismatch' | translate }}
+              </div>
 
-          <div class="alert-danger pl-2"
-            *ngIf="registerFormOffers.errors && (registerFormOffers.touched || registerFormOffers.dirty)">
-            <div *ngIf="registerFormOffers.errors.required" class="alert-danger">{{'validators.minOffers' | translate }}
+              <div class="alert-danger pl-2" *ngIf="registerFormSex.errors && (registerFormSex.touched || registerFormSex.dirty)">
+                  <div *ngIf="registerFormSex.errors.required" class="alert-danger">{{'register.sex' | translate }} {{'validators.required' | translate }}</div>
+              </div>
+
+              <div class="alert-danger pl-2" *ngIf="registerFormOffers.errors && (registerFormOffers.touched || registerFormOffers.dirty)">
+                  <div *ngIf="registerFormOffers.errors.required" class="alert-danger">{{'validators.minOffers' | translate }}</div>
+              </div>
+
+              <div class="alert-danger pl-2" *ngIf="registerFormActivities.errors && (registerFormActivities.touched || registerFormActivities.dirty)">
+                  <div *ngIf="registerFormActivities.errors.required" class="alert-danger">{{'validators.minActivities' | translate }}</div>
+              </div>
+
+              <div class="alert-danger pl-2" *ngIf="registerFormCity.errors && (registerFormCity.touched || registerFormCity.dirty)">
+                <div *ngIf="registerFormCity.errors.required" class="alert-danger">{{'validators.city' | translate }}</div>
+              </div>
+
+              <div class="alert-danger pl-2" *ngIf="registerFormBirthday.errors && (registerFormBirthday.touched || registerFormBirthday.dirty)">
+                <div *ngIf="registerFormBirthday.errors.required" class="alert-danger">{{'validators.birthday' | translate }}</div>
+              </div>
+              <!--End-Validator messages-->
+
+              <div class="btn-toolbar d-flex justify-content-center" role="toolbar">
+              <div class="btn-group mr-1 mr-md-3">
+                <button type="button" type="submit" class="btn btn-warning d-flex mx-auto mt-2" [disabled]="(!registerForm.valid || !registerFormOffers.valid || !registerFormActivities.valid || !registerFormCity.valid)">{{'register.saveButton' | translate }}</button>
+              </div>
+              <div class="btn-group ml-md-3">
+                <button type="button" [routerLink]="['/login']" class="btn btn-outline-warning d-flex mx-auto mt-2" >{{'register.quitButton' | translate }}</button>
+              </div>
+
             </div>
           </div>
 

@@ -99,11 +99,11 @@
               </div>
 
               <div class="alert-danger pl-2" *ngIf="editFormPassword.errors && (editFormPassword.touched || editFormPassword.dirty)">
-                <div *ngIf="editFormPassword.errors.minlength">{{'validators.passwordPattern' | translate }}</div>
+                <div *ngIf="editFormPassword.errors.pattern">{{'validators.passwordPattern' | translate }}</div>
               </div>
 
               <div class="alert-danger pl-2" *ngIf="editFormPasswordConfirm.errors && (editFormPasswordConfirm.touched || editFormPasswordConfirm.dirty)">
-                <div *ngIf="editFormPasswordConfirm.errors.minlength">{{'validators.passwordPattern' | translate }}</div>
+                <div *ngIf="editFormPasswordConfirm.errors.pattern">{{'validators.passwordPattern' | translate }}</div>
               </div>
 
               <div class="alert-danger pl-2" *ngIf="editFormPassword.value != editFormPasswordConfirm.value && editFormPasswordConfirm.value != null">
