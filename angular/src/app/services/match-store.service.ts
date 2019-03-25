@@ -12,8 +12,6 @@ import { combineLatest } from 'rxjs';
 export class MatchStoreService {
 
   private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
-  unacceptedMatches: any[];
-  allMatchesForSpecificUser: any[];
 
   constructor(
     private http: HttpClient,
@@ -26,78 +24,32 @@ export class MatchStoreService {
   }
 
   getAllUnAcceptedMatches() {
-    return this.authService.user$.pipe(
-      switchMap(user => {
-        return this.angularFirestore
-          .collection('matches', ref => ref.where('partnerID', '==', user ? user.uid : '')
-            .where('accepted', '==', false))
-          .snapshotChanges()
-          .pipe(
-            map(actions => {
-              return actions.map(a => {
-                // TODO check if it works without the 'Object'  const data: Object = a.payload.doc.data();
-                const data = a.payload.doc.data();
-                const id = a.payload.doc.id;
-                return { id, ...data };
-              });
-            })
-          );
-      })
-    );
+    return this.queryMatches('partnerID', false);
   }
 
   getAllAcceptedMatches() {
-    const resultA = this.authService.user$.pipe(
-      switchMap(user => {
-        return this.angularFirestore
-          .collection('matches', ref => ref.where('partnerID', '==', user ? user.uid : '')
-          .where('accepted', '==', true))
-          .snapshotChanges()
-          .pipe(
-            map(actions => {
-              return actions.map(a => {
-                const data = a.payload.doc.data();
-                const id = a.payload.doc.id;
-                return { id, ...data };
-              });
-            })
-          );
-      })
-    );
-
-    const resultB = this.authService.user$.pipe(
-      switchMap(user => {
-        return this.angularFirestore
-          .collection('matches', ref => ref.where('initiatorID', '==', user ? user.uid : '')
-          .where('accepted', '==', true))
-          .snapshotChanges()
-          .pipe(
-            map(actions => {
-              return actions.map(a => {
-                const data = a.payload.doc.data();
-                const id = a.payload.doc.id;
-                return { id, ...data };
-              });
-            })
-          );
-      })
-    );
+    const resultA = this.queryMatches('partnerID', true);
+    const resultB = this.queryMatches('initiatorID', true);
 
     return combineLatest(resultA, resultB).pipe(
       map(([users, otherUsers]) => users.concat(otherUsers)));
   }
 
   getAllMatchrequests() {
+    return this.queryMatches('initiatorID', false);
+  }
+
+  private queryMatches(fieldNameOfRole, boolValueOfAccepted) {
     return this.authService.user$.pipe(
       switchMap(user => {
         return this.angularFirestore
-          .collection('matches', ref => ref.where('initiatorID', '==', user ? user.uid : '')
-            .where('accepted', '==', false))
+          .collection('matches', ref => ref.where(fieldNameOfRole, '==', user ? user.uid : '')
+            .where('accepted', '==', boolValueOfAccepted))
           .snapshotChanges()
           .pipe(
             map(actions => {
               return actions.map(a => {
-                const data = a.payload.doc.data();
+                const data = a.payload.doc.data() as Match;
                 const id = a.payload.doc.id;
                 return { id, ...data };
               });
@@ -107,8 +59,8 @@ export class MatchStoreService {
     );
   }
 
-  updateMatch(id: string, data: any) {
-    // TOD: add functionality
+  updateMatch(matchId: string, data: any) {
+    return this.http.put(`${this.apiUrl}/matches/${matchId}`, data);
   }
 
   deleteMatch(matchId: string) {

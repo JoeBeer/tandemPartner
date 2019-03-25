@@ -59,7 +59,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'search/result',
+    path: 'search/result/:id',
     component: ResultPageComponent,
     canActivate: [AuthGuard]
   },

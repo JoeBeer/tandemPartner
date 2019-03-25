@@ -20,6 +20,71 @@
     "requestTitle": "Matchrequest for: ",
     "previous": "Previous",
     "next": "Next"
+  },
 
+  "login": {
+    "tandemSlogan": " - learn together",
+    "mailPlaceholder": "Mailadress",
+    "passwordPlaceholder": "Password",
+    "loginButton": "Einloggen",
+    "registerButton": "Register now"
+  },
+
+  "register": {
+    "headerTitle": "Register",
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "sex": "Sex",
+    "mail": "Mailadress",
+    "city": "Residence",
+    "birthday": "Birthday",
+    "offers": "I'm offering",
+    "pleaseChoose": "choose an option",
+    "activities": "My activities",
+    "password": "Password",
+    "passwordConfirm": "Confirm your Password",
+    "saveButton": "Save",
+    "quitButton": "Quit"
+  },
+
+  "profile": {
+    "headerTitle": "Edit your Profile",
+    "newPassword": "New Password",
+    "newPasswordConfirm": "Confirm your new Password",
+    "deleteButton": "Delete Profile"
+  },
+
+  "validators": {
+    "required": " is required!",
+    "letterSpaces": "Only letters are allowed",
+    "email": "E-Mail Format is required!",
+    "city": "Residence is required!",
+    "birthday": "Birthday is required!",
+    "passwordPattern": "at least. 6 characters incl. 1 uppercase letter, 1 lowercase letter, 1 number!",
+    "passwordMismatch": "Passwords not match!",
+    "minOffers": "at least one offer is required!",
+    "minActivities": "at least one activity is required!",
+    "ageMismatch": "The minimum Age has to be smaller than the maximum Age!"
+  },
+
+  "matchlist": {
+    "matchHeaderTitle": "Overview of all Matches",
+    "accpetedMatches": "Accepted Matches",
+    "matchedOffer": "Match for",
+    "unacceptedMatches": "Sent Requests",
+    "matchrequestFor": "Request for",
+    "contactTooltip": "Contact the Partner",
+    "deleteTooltip": "Withdraw the Offer"
+  },
+
+  "search": {
+    "newSearch": "New Search",
+    "offer": "I want to learn",
+    "city": "City",
+    "activities": "Activities",
+    "minAge": "Minimum Age",
+    "maxAge": "Maximum Age",
+    "searchButton": "Start new Search",
+    "recentSearches": "Use recent Searchparametres"
   }
 }

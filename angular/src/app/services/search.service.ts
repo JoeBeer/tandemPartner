@@ -1,46 +1,129 @@
+import { MatchStoreService } from './match-store.service';
+import { Searchrequest } from './../models/searchrequest';
 import { Injectable } from '@angular/core';
-import { Searchrequest } from '../models/searchrequest';
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { collection } from 'rxfire/firestore';
-import { map } from 'rxjs/operators';
-
+import { map, switchMap, filter } from 'rxjs/operators';
+import { AuthService } from './auth.service';
+import { User } from '../models/user';
+import { IdResponse } from '../models/idResponse';
+import { combineLatest, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
 
-  recentSearchrequests: Searchrequest[] = [
-    new Searchrequest( 18, 40, 'both', 'kochen'),
-    new Searchrequest( 19, 20, 'female', 'schwimmen'),
-    new Searchrequest( 20, 30, 'male', 'rudern')
-  ];
-
-  private apiUrl = 'https://us-central1-experimentaltandem.cloudfunctions.net';
+  private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
   private headers: Headers = new Headers();
 
   constructor(
     private http: HttpClient,
-    private angularFirestore: AngularFirestore) {
+    private angularFirestore: AngularFirestore,
+    private authService: AuthService,
+    private matchStoreService: MatchStoreService
+  ) {
     this.headers.append('Content-Type', 'application/json');
-   }
-
-  createSearchrequest(userId: string, searchdata: any) {
-    return this.http.post(`${this.apiUrl}/users/${userId}/searches`, searchdata);
   }
 
-  getRecentSearchrequestsForSpecificUser(userId: string) {
-   // return this.http.get(`${this.apiUrl}/users/${userId}/searches`);
-    const query = this.angularFirestore.collection('users/' + userId + '/searches').ref;
-    // use rxfire's collection to create an Observable Response
-    return collection(query).pipe(map(docs => docs.map(doc => doc.data())));
+  createSearchrequest(searchdata: any) {
+    return this.http.post<IdResponse>(`${this.apiUrl}/searches/`, searchdata);
   }
 
-  takeExistingSearchrequest(userId: string, searchdata: any) {
-    return this.http.post(`${this.apiUrl}/users/${userId}/searches`, searchdata);
+  getRecentSearchRequests() {
+    return this.angularFirestore
+      .collection(`users/${this.authService.currentUserID}/searches`)
+      .snapshotChanges()
+      .pipe(
+        map(actions => {
+          return actions.map(a => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          });
+        })
+      );
   }
 
+  getSearchRequestById(searchRequestId) {
+    return this.angularFirestore
+      .collection<any>('users')
+      .doc<User>(this.authService.currentUserID)
+      .collection('searches')
+      .doc<Searchrequest>(searchRequestId).valueChanges();
+  }
 
+  getSearchResult(searchRequest: Searchrequest) {
+    return this.getUsersToBeExcludedArray().pipe(
+      switchMap(userArray => {
+        return this.angularFirestore
+          .collection<any>('users', ref => ref.where('offers', 'array-contains', searchRequest.offerParam)
+            .where('city', '==', searchRequest.cityParam)
+            .where('sex', '==', searchRequest.sexParam))
+          .snapshotChanges()
+          .pipe(
+            map(actions => {
+              return actions.map(a => {
+                const data = a.payload.doc.data() as User;
+                return { ...data };
+              });
+            }),
+            map(users => {
+              const filteredUsers: User[] = [];
+              users.map(user => {
+                if (userArray.includes(user.uid) === false) {
+                  filteredUsers.push(user);
+                }
+              });
+              return filteredUsers;
+            })
+          );
+      })
+    );
+  }
 
+  getUsersToBeExcludedArray() {
+    const allAcceptedMatches = this.matchStoreService.getAllAcceptedMatches().pipe(
+      map(matches => {
+        const userArray: string[] = [];
+        matches.map(match => {
+          userArray.push(match.initiatorID);
+          userArray.push(match.partnerID);
+        });
+        return userArray;
+      })
+    );
+
+    const allUnAcceptedMatches = this.matchStoreService.getAllUnAcceptedMatches().pipe(
+      map(matches => {
+        const userArray: string[] = [];
+        matches.map(match => {
+          userArray.push(match.initiatorID);
+          userArray.push(match.partnerID);
+        });
+        return userArray;
+      })
+    );
+
+    const matchRequests = this.matchStoreService.getAllMatchrequests().pipe(
+      map(matches => {
+        const userArray: string[] = [];
+        matches.map(match => {
+          userArray.push(match.initiatorID);
+          userArray.push(match.partnerID);
+        });
+        return userArray;
+      })
+    );
+
+    const resultA = combineLatest(allAcceptedMatches, allUnAcceptedMatches).pipe(
+      map(([acceptedUser, unAcceptedUser]) => acceptedUser.concat(unAcceptedUser))
+    );
+
+    return combineLatest(resultA, matchRequests).pipe(
+      map(([resultAUser, matchRequestUser]) => resultAUser.concat(matchRequestUser))
+    );
+
+  }
 }

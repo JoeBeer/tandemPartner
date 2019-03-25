@@ -23,10 +23,10 @@ export class UserStoreService {
      return this.http.get(`${this.apiUrl}/users`);
    }
 
-   getUserById(id) {
+   getUserById(uid) {
     return this.angularFirestore
     .collection<any>(`users`)
-    .doc<User>(id).valueChanges();
+    .doc<User>(uid).valueChanges();
    }
 
    createUser(user: any) {

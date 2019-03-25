@@ -5,6 +5,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SearchService } from 'src/app/services/search.service';
+import { first } from 'rxjs/operators';
+import { DocumentReference } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-search-page',
@@ -31,17 +33,21 @@ export class SearchPageComponent implements OnInit {
 
   recentSearchrequests: Searchrequest[];
 
+  recentSearchRequests$;
+
   // getting active & collapsed state
   newSearchCollapsed = true;
   recentRequestCollapsed = false;
 
-  constructor(private formBuilder: FormBuilder,
-              private router: Router,
-              private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService,
-              private searchService: SearchService,
-              private authService: AuthService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService,
+    private searchService: SearchService,
+    private authService: AuthService
+  ) {
     this.searchForm = this.createSearchForm();
-              }
+  }
 
   ngOnInit() {
     // initialzie all available offers & cities
@@ -51,18 +57,20 @@ export class SearchPageComponent implements OnInit {
     this.initializeMultiselectSettings();
 
     // tslint:disable-next-line:max-line-length
-    this.searchService.getRecentSearchrequestsForSpecificUser(this.authService.currentUserID).subscribe((requests: Searchrequest[]) => {
-      this.recentSearchrequests = requests;
-    });
+    // this.searchService.getRecentSearchrequestsForSpecificUser(this.authService.currentUserID)
+    // .subscribe((requests: Searchrequest[]) => {
+    //   this.recentSearchrequests = requests;
+    // });
+    this.recentSearchRequests$ = this.searchService.getRecentSearchRequests();
   }
 
   createSearchForm() {
-     // create the formGroup
-     return this.formBuilder.group ({
-       searchFormMinAge: [''],
+    // create the formGroup
+    return this.formBuilder.group({
+      searchFormMinAge: [''],
 
-       searchFormMaxAge: ['']
-     }, {validator: this.ageCheckValidator});
+      searchFormMaxAge: ['']
+    }, { validator: this.ageCheckValidator });
   }
 
   initializeMultiselectSettings() {
@@ -85,30 +93,32 @@ export class SearchPageComponent implements OnInit {
     };
   }
 
-  ageCheckValidator(control: AbstractControl): { invalid: boolean} {
+  ageCheckValidator(control: AbstractControl): { invalid: boolean } {
     if (control.get('searchFormMinAge').value > control.get('searchFormMaxAge').value) {
-      return {invalid: true };
+      return { invalid: true };
     }
   }
 
   newSearchSave() {
 
     const searchdata = {
-      offerParam: this.selectedOffer,
-      sexParam: this.parseSexValueForBackend(this.selectedSex),
+      offerParam: this.selectedOffer[0],
+      cityParam: this.selectedCity[0],
+      sexParam: this.parseSexValueForBackend(this.selectedSex[0]),
       minAgeParam: this.searchForm.value.searchFormMinAge,
-      maxAgeParam: this.searchForm.value.searchFormMaxAge
+      maxAgeParam: this.searchForm.value.searchFormMaxAge,
+      createdAt: Date.now(),
+      uid: this.authService.currentUserID
     };
 
-    this.searchService.createSearchrequest(this.authService.currentUserID, searchdata).subscribe(() => {
-      this.router.navigate(['/search/result']);
-    });
+    this.searchService.createSearchrequest(searchdata)
+      .subscribe(response => {
+        this.router.navigate([`/search/result/${response.id}`]);
+      });
   }
 
-  useRecentSearchrequest(request: Searchrequest) {
-    this.searchService.takeExistingSearchrequest(this.authService.currentUserID, request).subscribe(() => {
-      this.router.navigate(['/search/result']);
-    });
+  useRecentSearchrequest(searchRequestId) {
+    this.router.navigate([`/search/result/${searchRequestId}`]);
   }
 
   // shorten the male/female-word and return one letter or 'no choice'

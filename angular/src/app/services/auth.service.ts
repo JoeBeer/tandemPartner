@@ -14,6 +14,7 @@ import { switchMap, first } from 'rxjs/operators';
 export class AuthService {
   user$: Observable<any>;
   currentUserID: string;
+  currentUsername: string;
 
   isLoggedIn = false;
   // store the URL so we can redirect after logging in
@@ -28,6 +29,7 @@ export class AuthService {
         switchMap(user => {
           if (user) {
             this.currentUserID = user.uid;
+            this.currentUsername = user.displayName;
             return this.angularFirestore.doc<any>(`users/${user.uid}`).valueChanges();
           } else {
             return of(null);
@@ -46,11 +48,13 @@ export class AuthService {
     }
   }
 
-  // TODO Should it be renamed to getCurrentUser?
   getCurrentUser() {
     return this.user$.pipe(first()).toPromise();
   }
 
+  getCurrentUsername() {
+    return this.currentUsername;
+  }
   async logout() {
     await this.angularFireAuth.auth.signOut();
     this.isLoggedIn = false;

@@ -20,5 +20,71 @@
     "requestTitle": "Matchanfrage für: ",
     "previous": "Vorherige",
     "next": "Nächste"
+  },
+
+  "login": {
+    "tandemSlogan": " - gemeinsam lernen",
+    "mailPlaceholder": "E-Mailadresse:",
+    "passwordPlaceholder": "Passwort",
+    "loginButton": "Einloggen",
+    "registerButton": "Account erstellen"
+  },
+
+  "register": {
+    "headerTitle": "Registrieren",
+    "firstname": "Vorname",
+    "lastname": "Nachname",
+    "sex": "Geschlecht",
+    "mail": "E-Mail",
+    "city": "Wohnort",
+    "birthday": "Geburtstag",
+    "offers": "Ich biete an",
+    "pleaseChoose": "bitte wählen",
+    "activities": "Meine Aktivitäten",
+    "password": "Passwort",
+    "passwordConfirm": "Passwort bestätigen",
+    "saveButton": "Speichern",
+    "quitButton": "Abbrechen"
+  },
+
+  "profile": {
+    "headerTitle": "Profil bearbeiten",
+    "newPassword": "Neues Passwort",
+    "newPasswordConfirm": "Neues Passwort bestätigen",
+    "deleteButton": "Profil löschen"
+  },
+
+  "validators": {
+    "required": " muss ausgefüllt sein!",
+    "letterSpaces": "Nur Buchstaben sind erlaubt",
+    "email": "Nur E-Mail Format erlaubt!",
+    "city": "Wohnort muss ausgewählt sein!",
+    "birthday": "Geburtstag muss ausgewählt sein!",
+    "passwordPattern": "mind. 6 Zeichen inkl. 1 Großbuchstabe, 1 Kleinbuchstabe, 1 Zahl!",
+    "passwordMismatch": "Passwörter stimmen nicht überein!",
+    "minOffers": "mind. ein  Angebot muss ausgewählt sein!",
+    "minActivities": "mind. eine Aktivität muss ausgewählt sein!",
+    "ageMismatch": "Das Mindestalter muss kleiner als das Maximalalter sein!"
+  },
+
+  "matchlist": {
+    "matchHeaderTitle": "Übersicht aller Matches",
+    "accpetedMatches": "Akzeptierte Matches",
+    "matchedOffer": "Match für",
+    "unacceptedMatches": "Versendete Anfragen",
+    "matchrequestFor": "Anfrage für",
+    "contactTooltip": "Partner kontaktieren",
+    "deleteTooltip": "Anfrage zurückziehen"
+  },
+
+  "search": {
+    "newSearch": "Neue Suche",
+    "offer": "Ich möchte lernen",
+    "city": "Stadt",
+    "activities": "Aktivitäten",
+    "minAge": "Mindestalter",
+    "maxAge": "Maximalalter",
+    "searchButton": "Neue Suche starten",
+    "recentSearches": "Alte Suchparamter verwenden"
   }
 }

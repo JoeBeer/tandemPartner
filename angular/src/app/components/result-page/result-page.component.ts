@@ -1,3 +1,6 @@
+import { Searchrequest } from './../../models/searchrequest';
+import { ActivatedRoute } from '@angular/router';
+import { SearchService } from './../../services/search.service';
 import { AuthService } from './../../services/auth.service';
 import { MatchStoreService } from './../../services/match-store.service';
 import { Component, OnInit } from '@angular/core';
@@ -18,38 +21,34 @@ export class ResultPageComponent implements OnInit {
   // for pagination the array
   pageNumber: 1;
 
-  userForSpecificRequest: any[];
+  userForSpecificRequest: User[] = [];
+  usersToBeExcludedArray: string[] = [];
 
-  constructor(private matchStoreService: MatchStoreService,
-              private authService: AuthService) {
-    this.userForSpecificRequest = [
-      new User('1234', 'paul', 'test', new Date(1999, 3, 25), 'm', 'hamburg', ['kochen', 'schwimmen', 'ruder'], ['rudern']),
-      new User('1234', 'hannes', 'test', new Date(1999, 3, 25), 'm', 'hamburg', ['kochen', 'schwimmen', 'ruder'], ['rudern'])
-    ];
-               }
+  searchResults$;
+
+  matchedOffer;
+
+  constructor(
+    private matchStoreService: MatchStoreService,
+    private authService: AuthService,
+    private searchService: SearchService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
-    this.showAllUsersForSpecificRequest();
-  }
-
-  showAllUsersForSpecificRequest() {
-    // TODO: get the link where the requests comes from
-    this.editRequestsBeforeInit();
-    return this.userForSpecificRequest;
-  }
-
-  editRequestsBeforeInit() {
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.userForSpecificRequest.length; i++) {
-      this.userForSpecificRequest[i].dateOfBirth = this.calculateAgeForEachUser(this.userForSpecificRequest[i].dateOfBirth);
-      this.userForSpecificRequest[i].sex = this.parseSexValueForFrontend(this.userForSpecificRequest[i].sex);
-    }
+    const searchRequestId = this.route.snapshot.paramMap.get('id');
+    this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
+      console.log(searchRequest);
+      this.matchedOffer = searchRequest.offerParam; // TODO check, if the error message occures again
+      this.searchResults$ = this.searchService.getSearchResult(searchRequest);
+      this.searchService.getSearchResult(searchRequest).subscribe();
+    });
   }
 
   calculateAgeForEachUser(birthdate: any) {
-      const timeDiff = Math.abs(Date.now() - birthdate);
-      const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365);
-      return age;
+    const timeDiff = Math.abs(Date.now() - birthdate);
+    const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365);
+    return age;
   }
 
   parseSexValueForFrontend(sex: string): string {
@@ -60,15 +59,9 @@ export class ResultPageComponent implements OnInit {
     }
   }
 
-  sendMatchrequest(partner: User, matchedOffer) {
-    const newMatch: Match = new Match(this.authService.currentUserID, partner.uid, matchedOffer, false);
-
-    this.matchStoreService.createMatch(newMatch).subscribe(() => {
-      // find index of requested user in the array
-      const index = this.userForSpecificRequest.indexOf(partner);
-      // delete the requested user and shorten the array - showing the remaining users will be updated automatically
-      this.userForSpecificRequest.splice(index, 1);
-    });
+  sendMatchrequest(partner: User) {
+    const newMatch: Match = new Match(this.authService.currentUserID, partner.uid, this.matchedOffer, false);
+    this.matchStoreService.createMatch(newMatch).subscribe();
   }
 
 
