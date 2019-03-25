@@ -105,12 +105,12 @@
 
               <div class="alert-danger pl-2" *ngIf="registerFormPassword.errors && (registerFormPassword.touched || registerFormPassword.dirty)">
                 <div *ngIf="registerFormPassword.errors.required">{{'register.password' | translate }} {{'validators.required' | translate }}</div>
-                <div *ngIf="registerFormPassword.errors.minlength">{{'validators.passwordPattern' | translate }}</div>
+                <div *ngIf="registerFormPassword.errors.pattern">{{'validators.passwordPattern' | translate }}</div>
               </div>
 
               <div class="alert-danger pl-2" *ngIf="registerFormPasswordConfirm.errors && (registerFormPasswordConfirm.touched || registerFormPasswordConfirm.dirty)">
                 <div *ngIf="registerFormPasswordConfirm.errors.required">{{'register.passwordConfirm' | translate }} {{'validators.required' | translate }}</div>
-                <div *ngIf="registerFormPasswordConfirm.errors.minlength">{{'validators.passwordPattern' | translate }}</div>
+                <div *ngIf="registerFormPassword.errors.pattern">{{'validators.passwordPattern' | translate }}</div>
               </div>
 
               <div class="alert-danger pl-2" *ngIf="registerFormPassword.value != registerFormPasswordConfirm.value && registerFormPasswordConfirm.value != null">
