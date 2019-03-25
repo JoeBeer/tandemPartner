@@ -1,3 +1,4 @@
+import { UserStoreService } from './../../services/user-store.service';
 import { Match } from './../../models/match';
 import { MatchStoreService } from './../../services/match-store.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -41,35 +42,31 @@ export class MatchListComponent implements OnInit {
 
   openedModal: any;
 
-  constructor(private authService: AuthService,
-              private matchStoreService: MatchStoreService,
-              private router: Router,
-              private chatservice: ChatService ) { }
+  constructor(
+    private authService: AuthService,
+    private matchStoreService: MatchStoreService,
+    private router: Router,
+    private chatservice: ChatService,
+    private userStoreService: UserStoreService
+    ) { }
 
   ngOnInit() {
     this.matchRequests$ = this.matchStoreService.getAllMatchrequests();
     this.acceptedMatches$ = this.matchStoreService.getAllAcceptedMatches();
-    console.log(this.matchRequests$);
-    this.matchStoreService.getAllAcceptedMatches().subscribe(response => {
-      console.log(response);
-      response.map(match => {
-        console.log(match.initiatorID);
-      })
-    });
+    // this.matchStoreService.getAllAcceptedMatches().subscribe(); // TODO check if this is neccessary!
   }
 
-// calculateAgeForEachUser() {
-//   // tslint:disable-next-line:prefer-for-of
-//   for (let i = 0; i < this.userForSpecificRequest.length; i++) {
-//     const birthdate = this.userForSpecificRequest[i].dateOfBirth;
-//     const timeDiff = Math.abs(Date.now() - birthdate);
-//     const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365);
-//     this.userForSpecificRequest[i].dateOfBirth = age;
-//   }
-// }
-//
+  // calculateAgeForEachUser() {
+  //   // tslint:disable-next-line:prefer-for-of
+  //   for (let i = 0; i < this.userForSpecificRequest.length; i++) {
+  //     const birthdate = this.userForSpecificRequest[i].dateOfBirth;
+  //     const timeDiff = Math.abs(Date.now() - birthdate);
+  //     const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365);
+  //     this.userForSpecificRequest[i].dateOfBirth = age;
+  //   }
+  // }
+  //
   contactUser(initiatorID: string, partnerID: string) {
-    // TODO: cretae new chatroom and redirect to the chatroom
     const currentUserID = this.authService.currentUserID;
     let userB;
 
@@ -81,35 +78,56 @@ export class MatchListComponent implements OnInit {
     }
 
     this.chatservice.create(currentUserID, userB)
-    .subscribe(response => {
-      if (response.result) {
-        this.router.navigate([`chats/${response.id}`]);
-      } else if (!response.result) {
-        this.router.navigate([`chats/${response.id}`]);
-      }
-    });
+      .subscribe(response => {
+        if (response.result) {
+          this.router.navigate([`chats/${response.id}`]);
+        } else if (!response.result) {
+          this.router.navigate([`chats/${response.id}`]);
+        }
+      });
   }
 
   deleteMatchrequest(matchId: string) {
-    console.log(matchId);
     this.matchStoreService.deleteMatch(matchId)
-    .subscribe();
+      .subscribe();
   }
 
   openModal(id: string) {
     console.log('id: ' + id);
     this.modalIsOpen = true;
     this.display = 'block';
-   // this.allMatches.forEach( match => {
-   //   if (match.id === id) {
-   //     this.openedModal = match;
-   //   }
-   // });
+    // this.allMatches.forEach( match => {
+    //   if (match.id === id) {
+    //     this.openedModal = match;
+    //   }
+    // });
   }
 
   closeModal() {
     this.display = 'none';
     this.modalIsOpen = false;
+  }
+
+  // async validateCurrentUser(initiatorID: string, partnerID: string) {
+  //   // let username: string;
+  //   if (this.authService.currentUserID === initiatorID) {
+  //    const user =  await this.userStoreService.getUserById(partnerID).toPromise()
+  //     console.log(user)
+  //    return 'partnerID';
+  //   } else {
+  //     this.userStoreService.getUserById(initiatorID)
+  //     const user =  await this.userStoreService.getUserById(initiatorID).toPromise()
+  //     console.log(user)
+  //     return 'initiatorID';
+  //   }
+  // }
+
+  validateCurrentUser(initiatorID: string, partnerID: string) {
+    if (this.authService.currentUserID === initiatorID) {
+      return partnerID;
+    } else {
+      return initiatorID;
+    }
   }
 
 }

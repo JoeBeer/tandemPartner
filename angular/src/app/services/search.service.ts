@@ -25,7 +25,6 @@ export class SearchService {
     private matchStoreService: MatchStoreService
   ) {
     this.headers.append('Content-Type', 'application/json');
-    // this.getUsersToBeExcludedArray();
   }
 
   createSearchrequest(searchdata: any) {
@@ -56,8 +55,8 @@ export class SearchService {
   }
 
   getSearchResult(searchRequest: Searchrequest) {
-    return this.authService.user$.pipe(
-      switchMap(user => {
+    return this.getUsersToBeExcludedArray().pipe(
+      switchMap(userArray => {
         return this.angularFirestore
           .collection<any>('users', ref => ref.where('offers', 'array-contains', searchRequest.offerParam)
             .where('city', '==', searchRequest.cityParam)
@@ -69,21 +68,28 @@ export class SearchService {
                 const data = a.payload.doc.data() as User;
                 return { ...data };
               });
+            }),
+            map(users => {
+              const filteredUsers: User[] = [];
+              users.map(user => {
+                if (userArray.includes(user.uid) === false) {
+                  filteredUsers.push(user);
+                }
+              });
+              return filteredUsers;
             })
           );
-      }
-      )
+      })
     );
   }
 
-  // TODO validation for duplicates have to be done after the subscribtion
   getUsersToBeExcludedArray() {
     const allAcceptedMatches = this.matchStoreService.getAllAcceptedMatches().pipe(
       map(matches => {
         const userArray: string[] = [];
         matches.map(match => {
-            userArray.push(match.initiatorID);
-            userArray.push(match.partnerID);
+          userArray.push(match.initiatorID);
+          userArray.push(match.partnerID);
         });
         return userArray;
       })
@@ -93,8 +99,8 @@ export class SearchService {
       map(matches => {
         const userArray: string[] = [];
         matches.map(match => {
-            userArray.push(match.initiatorID);
-            userArray.push(match.partnerID);
+          userArray.push(match.initiatorID);
+          userArray.push(match.partnerID);
         });
         return userArray;
       })
@@ -104,8 +110,8 @@ export class SearchService {
       map(matches => {
         const userArray: string[] = [];
         matches.map(match => {
-            userArray.push(match.initiatorID);
-            userArray.push(match.partnerID);
+          userArray.push(match.initiatorID);
+          userArray.push(match.partnerID);
         });
         return userArray;
       })
@@ -120,43 +126,4 @@ export class SearchService {
     );
 
   }
-
-  // getUsersToBeExcludedArray() {
-  //   const UsersToBeExcludedId: string[] = [];
-
-  //   this.matchStoreService.getAllAcceptedMatches().subscribe(matches => {
-  //     matches.map(match => {
-  //       if (UsersToBeExcludedId.includes(match.initiatorID) === false) {
-  //         UsersToBeExcludedId.push(match.initiatorID);
-  //       }
-  //       if (UsersToBeExcludedId.includes(match.partnerID) === false) {
-  //         UsersToBeExcludedId.push(match.partnerID);
-  //       }
-  //     });
-  //   });
-
-  //   this.matchStoreService.getAllUnAcceptedMatches().subscribe(matches => {
-  //     matches.map(match => {
-  //       if (UsersToBeExcludedId.includes(match.initiatorID) === false) {
-  //         UsersToBeExcludedId.push(match.initiatorID);
-  //       }
-  //       if (UsersToBeExcludedId.includes(match.partnerID) === false) {
-  //         UsersToBeExcludedId.push(match.partnerID);
-  //       }
-  //     });
-  //   });
-
-  //   this.matchStoreService.getAllMatchrequests().subscribe(matches => {
-  //     matches.map(match => {
-  //       if (UsersToBeExcludedId.includes(match.initiatorID) === false) {
-  //         UsersToBeExcludedId.push(match.initiatorID);
-  //       }
-  //       if (UsersToBeExcludedId.includes(match.partnerID) === false) {
-  //         UsersToBeExcludedId.push(match.partnerID);
-  //       }
-  //     });
-  //   });
-
-  //   return UsersToBeExcludedId;
-  // }
 }

@@ -47,46 +47,6 @@ export class ChatService {
   }
 
   // Get all chatrooms of the current user and return it as an observable array with realtime changes.
-  // getAllChatrooms() {
-  //   const resultA = this.authService.user$.pipe(
-  //     switchMap(user => {
-  //       return this.angularFirestore
-  //         .collection('chatrooms', ref => ref.where('userA', '==', user ? user.uid : ''))
-  //         .snapshotChanges()
-  //         .pipe(
-  //           map(actions => {
-  //             return actions.map(a => {
-  //               const data: Object = a.payload.doc.data();
-  //               const id = a.payload.doc.id;
-  //               return { id, ...data };
-  //             });
-  //           })
-  //         );
-  //     })
-  //   );
-
-  //   const resultB = this.authService.user$.pipe(
-  //     switchMap(user => {
-  //       return this.angularFirestore
-  //         .collection('chatrooms', ref => ref.where('userB', '==', user ? user.uid : ''))
-  //         .snapshotChanges()
-  //         .pipe(
-  //           map(actions => {
-  //             return actions.map(a => {
-  //               const data: Object = a.payload.doc.data();
-  //               const id = a.payload.doc.id;
-  //               return { id, ...data };
-  //             });
-  //           })
-  //         );
-  //     })
-  //   );
-
-  //   return combineLatest(resultA, resultB).pipe(
-  //     map(([users, otherUsers]) => users.concat(otherUsers)));
-  // }
-
-  // Get all chatrooms of the current user and return it as an observable array with realtime changes.
   getAllChatrooms() {
     const resultA = this.queryChatrooms('userA');
 

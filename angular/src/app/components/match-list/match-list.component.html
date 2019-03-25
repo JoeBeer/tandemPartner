@@ -33,7 +33,7 @@
                 <div class="row">
                   <div class="col-8 col-md-10">
                     <a class="pointer-cursor" (click)="openModal(match.initiatorID)">
-                      <p class="my-0"><small>{{ match.initiatorID }}</small></p> <!-- TODO validate by currentUser -->
+                      <p class="my-0"><small>{{ validateCurrentUser(match.initiatorID, match.partnerID) }}</small></p>
                       <p class="my-0"><small>Age:</small></p>
                       <p class="my-0"><small>Aktivitäten:</small></p>
                     </a>
@@ -87,8 +87,9 @@
                     </a>
                   </div>
                   <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
-                    <button type="button" class="btn btn-outline-danger homebutton" (click)="deleteMatchrequest(matchrequest.id)"
-                      data-toggle="tooltip" data-placement="top" title="{{ 'matchlist.deleteTooltip' | translate }}">
+                    <button type="button" class="btn btn-outline-danger homebutton"
+                      (click)="deleteMatchrequest(matchrequest.id)" data-toggle="tooltip" data-placement="top"
+                      title="{{ 'matchlist.deleteTooltip' | translate }}">
                       <fa-icon [icon]="faTrash"></fa-icon>
                     </button>
                   </div>

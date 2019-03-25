@@ -13,7 +13,7 @@ exports.createMatch = function (req, res) {
         accepted: match.accepted
     }).then(() => {
             console.log('Succesfully inserted user');
-            return res.status(201).send("Success - match created");
+            return res.status(201).send(true);
         })
         .catch((error) => {
             console.log('Error creating new match', error);

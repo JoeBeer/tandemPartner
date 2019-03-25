@@ -93,6 +93,7 @@
   "result": {
     "sendMatchrequestTooltip": "Send Matchrequest",
     "results": "Searching Results",
-    "age": "years old"
+    "age": "years old",
+    "activities": "Activities"
   }
 }
