@@ -1,3 +1,4 @@
+import { UserStoreService } from 'src/app/services/user-store.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Match } from './../models/match';
 import { Injectable } from '@angular/core';
@@ -16,7 +17,8 @@ export class MatchStoreService {
   constructor(
     private http: HttpClient,
     private angularFirestore: AngularFirestore,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private userStoreService: UserStoreService) {
   }
 
   createMatch(match: Match) {
@@ -55,7 +57,16 @@ export class MatchStoreService {
               });
             })
           );
-      })
+      }),
+      // map(matches => {
+      //   return matches.map(match => {
+      //     return this.userStoreService.getUserById(match.partnerID).pipe(
+      //       map(user => {
+      //         return { ...match, ...user };
+      //       })
+      //     );
+      //   });
+      // })
     );
   }
 

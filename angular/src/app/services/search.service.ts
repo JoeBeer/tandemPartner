@@ -88,8 +88,8 @@ export class SearchService {
       map(matches => {
         const userArray: string[] = [];
         matches.map(match => {
-          userArray.push(match.initiatorID);
-          userArray.push(match.partnerID);
+          // userArray.push(match.initiatorID);
+          // userArray.push(match.partnerID);
         });
         return userArray;
       })
@@ -99,8 +99,8 @@ export class SearchService {
       map(matches => {
         const userArray: string[] = [];
         matches.map(match => {
-          userArray.push(match.initiatorID);
-          userArray.push(match.partnerID);
+          // userArray.push(match.initiatorID);
+          // userArray.push(match.partnerID);
         });
         return userArray;
       })
@@ -110,8 +110,8 @@ export class SearchService {
       map(matches => {
         const userArray: string[] = [];
         matches.map(match => {
-          userArray.push(match.initiatorID);
-          userArray.push(match.partnerID);
+          // userArray.push(match.initiatorID);
+          // userArray.push(match.partnerID);
         });
         return userArray;
       })
