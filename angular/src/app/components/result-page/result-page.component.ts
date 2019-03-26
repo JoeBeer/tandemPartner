@@ -43,6 +43,7 @@ export class ResultPageComponent implements OnInit {
       this.searchResults$ = this.searchService.getSearchResult(searchRequest);
       this.searchService.getSearchResult(searchRequest).subscribe();
     });
+    console.log('Aufruf - Result');
   }
 
   calculateAgeForEachUser(birthdate: any) {

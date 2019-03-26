@@ -32,6 +32,7 @@ export class ChatroomListComponent implements OnInit {
   ngOnInit() {
     this.userChats$ = this.chatService.getAllChatrooms();
     this.getPartnerName();
+    console.log('Aufruf - Chatroom-List');
   }
 
   getPartnerName() {

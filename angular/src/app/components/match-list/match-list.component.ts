@@ -21,7 +21,7 @@ export class MatchListComponent implements OnInit {
   acceptedMatches: Match[];
   matchrequests: Match[];
 
-  matchRequests$;
+  matchRequests$: any[] = [];
   acceptedMatches$;
 
   // for fontawesome icons
@@ -48,12 +48,39 @@ export class MatchListComponent implements OnInit {
     private router: Router,
     private chatservice: ChatService,
     private userStoreService: UserStoreService
-    ) { }
+    ) {
+      this.matchStoreService.getAllMatchrequests().subscribe(matches => {
+        // this.matchRequests$ = matches;
+        matches.map(match => {
+          this.userStoreService.getUserById(match.partnerID).subscribe(user => {
+            const m = match;
+            const u = user;
+            this.matchRequests$.push({ ...m, ...u });
+            console.log(user);
+          });
+        });
+      });
+
+      this.matchStoreService.getAllAcceptedMatches().subscribe(matches => {
+        this.acceptedMatches$ = matches;
+        matches.map(match => {
+          if (this.authService.currentUserID === match.initiatorID) {
+            this.userStoreService.getUserById(match.partnerID).subscribe(user => {
+              console.log('Partner');
+              console.log(user);
+            });
+          } else {
+            this.userStoreService.getUserById(match.initiatorID).subscribe(user => {
+              console.log('Initiator');
+              console.log(user);
+            });
+          }
+        });
+      });
+    }
 
   ngOnInit() {
-    this.matchRequests$ = this.matchStoreService.getAllMatchrequests();
-    this.acceptedMatches$ = this.matchStoreService.getAllAcceptedMatches();
-    // this.matchStoreService.getAllAcceptedMatches().subscribe(); // TODO check if this is neccessary!
+    console.log('Aufruf - Matches');
   }
 
   // calculateAgeForEachUser() {

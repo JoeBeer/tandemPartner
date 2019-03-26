@@ -62,6 +62,7 @@ export class SearchPageComponent implements OnInit {
     //   this.recentSearchrequests = requests;
     // });
     this.recentSearchRequests$ = this.searchService.getRecentSearchRequests();
+    console.log('Aufruf - search');
   }
 
   createSearchForm() {
