@@ -15,7 +15,8 @@ import { combineLatest, Observable } from 'rxjs';
 })
 export class SearchService {
 
-  private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
+  // private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
+  private apiUrl = 'https://us-central1-livechattandem.cloudfunctions.net';
   private headers: Headers = new Headers();
 
   constructor(
@@ -33,7 +34,8 @@ export class SearchService {
 
   getRecentSearchRequests() {
     return this.angularFirestore
-      .collection(`users/${this.authService.currentUserID}/searches`)
+    .collection(`users/${this.authService.currentUserID}/searches`)
+      // .collection(`users/${this.authService.currentUserID}/searches`, ref => ref.orderBy('createdAt', 'desc'))
       .snapshotChanges()
       .pipe(
         map(actions => {

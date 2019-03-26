@@ -3,8 +3,10 @@
     "homeLink": "Startseite",
     "profileLink": "Mein Profil",
     "searchLink": "Suchanfrage",
+    "searchResults": "Suchergebnisse",
     "matchesLink": "Matches",
     "chatLink": "Nachrichten",
+    "lang": "De",
     "logout": "Ausloggen",
     "login": "Einloggen"
   },
@@ -38,13 +40,15 @@
     "mail": "E-Mail",
     "city": "Wohnort",
     "birthday": "Geburtstag",
+    "birthdayShort": "tt.mm.jjjj",
     "offers": "Ich biete an",
     "pleaseChoose": "bitte wählen",
     "activities": "Meine Aktivitäten",
     "password": "Passwort",
     "passwordConfirm": "Passwort bestätigen",
     "saveButton": "Speichern",
-    "quitButton": "Abbrechen"
+    "quitButton": "Abbrechen",
+    "requiredExplanation": "Diese Felder müssen ausgefüllt sein"
   },
 
   "profile": {
@@ -81,10 +85,21 @@
     "newSearch": "Neue Suche",
     "offer": "Ich möchte lernen",
     "city": "Stadt",
-    "activities": "Aktivitäten",
     "minAge": "Mindestalter",
     "maxAge": "Maximalalter",
     "searchButton": "Neue Suche starten",
-    "recentSearches": "Alte Suchparamter verwenden"
+    "recentSearches": "Letzte Suchanfragen"
+  },
+
+  "result": {
+    "sendMatchrequestTooltip": "Matchanfrage senden",
+    "results": "Suchergebnisse",
+    "age": "Jahre alt",
+    "activities": "Aktivitäten"
+  },
+
+  "chatroomList": {
+    "messages": "Nachrichten",
+    "deleteTooltip": "Chat löschen"
   }
 }
