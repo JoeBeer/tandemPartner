@@ -22,7 +22,8 @@ export class MatchListComponent implements OnInit {
   matchrequests: Match[];
 
   matchRequests$: any[] = [];
-  acceptedMatches$;
+  acceptedMatchesAsInitiator$: any[] = [];
+  acceptedMatchesAsPartner$: any[] = [];
 
   // for fontawesome icons
   faTrash = faTrash;
@@ -50,32 +51,15 @@ export class MatchListComponent implements OnInit {
     private userStoreService: UserStoreService
     ) {
       this.matchStoreService.getAllMatchrequests().subscribe(matches => {
-        // this.matchRequests$ = matches;
-        matches.map(match => {
-          this.userStoreService.getUserById(match.partnerID).subscribe(user => {
-            const m = match;
-            const u = user;
-            this.matchRequests$.push({ ...m, ...u });
-            console.log(user);
-          });
-        });
+        this.matchRequests$ = matches;
       });
 
-      this.matchStoreService.getAllAcceptedMatches().subscribe(matches => {
-        this.acceptedMatches$ = matches;
-        matches.map(match => {
-          if (this.authService.currentUserID === match.initiatorID) {
-            this.userStoreService.getUserById(match.partnerID).subscribe(user => {
-              console.log('Partner');
-              console.log(user);
-            });
-          } else {
-            this.userStoreService.getUserById(match.initiatorID).subscribe(user => {
-              console.log('Initiator');
-              console.log(user);
-            });
-          }
-        });
+      this.matchStoreService.getAllAcceptedMatchesAsInitiator().subscribe(matches => {
+        this.acceptedMatchesAsInitiator$ = matches;
+      });
+
+      this.matchStoreService.getAllAcceptedMatchesAsPartner().subscribe(matches => {
+        this.acceptedMatchesAsPartner$ = matches;
       });
     }
 
@@ -135,19 +119,6 @@ export class MatchListComponent implements OnInit {
     this.modalIsOpen = false;
   }
 
-  // async validateCurrentUser(initiatorID: string, partnerID: string) {
-  //   // let username: string;
-  //   if (this.authService.currentUserID === initiatorID) {
-  //    const user =  await this.userStoreService.getUserById(partnerID).toPromise()
-  //     console.log(user)
-  //    return 'partnerID';
-  //   } else {
-  //     this.userStoreService.getUserById(initiatorID)
-  //     const user =  await this.userStoreService.getUserById(initiatorID).toPromise()
-  //     console.log(user)
-  //     return 'initiatorID';
-  //   }
-  // }
 
   validateCurrentUser(initiatorID: string, partnerID: string) {
     if (this.authService.currentUserID === initiatorID) {
