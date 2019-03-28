@@ -1,3 +1,5 @@
+import { Chatroom } from './../models/chatroom';
+import { UserStoreService } from 'src/app/services/user-store.service';
 import { IdResponse } from '../models/idResponse';
 import { combineLatest, Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -20,6 +22,7 @@ export class ChatService {
     private authService: AuthService,
     private angularFirestore: AngularFirestore,
     private http: HttpClient,
+    private userStoreService: UserStoreService
   ) {
     this.headers.append('Content-Type', 'application/json');
   }
@@ -54,6 +57,62 @@ export class ChatService {
 
     return combineLatest(resultA, resultB).pipe(
       map(([users, otherUsers]) => users.concat(otherUsers)));
+  }
+
+  getAllChatroomsAsUserA() {
+    return this.authService.user$.pipe(
+      switchMap(user => {
+        return this.angularFirestore
+          .collection('chatrooms', ref => ref.where('userA', '==', user ? user.uid : ''))
+          .snapshotChanges()
+          .pipe(
+            map(actions => {
+              return actions.map(a => {
+                const data = a.payload.doc.data() as Chatroom;
+                const id = a.payload.doc.id;
+                return { id, ...data };
+              });
+            })
+          );
+      }),
+      switchMap(chatrooms => {
+        return combineLatest(chatrooms.map(chatroom => {
+          return this.userStoreService.getUserById(chatroom.userB).pipe(
+            map(user => {
+              return { ...chatroom, ...user };
+            })
+          );
+        }));
+      })
+    );
+  }
+
+  getAllChatroomsAsUserB() {
+    return this.authService.user$.pipe(
+      switchMap(user => {
+        return this.angularFirestore
+          .collection('chatrooms', ref => ref.where('userB', '==', user ? user.uid : ''))
+          .snapshotChanges()
+          .pipe(
+            map(actions => {
+              return actions.map(a => {
+                const data = a.payload.doc.data() as Chatroom;
+                const id = a.payload.doc.id;
+                return { id, ...data };
+              });
+            })
+          );
+      }),
+      switchMap(chatrooms => {
+        return combineLatest(chatrooms.map(chatroom => {
+          return this.userStoreService.getUserById(chatroom.userA).pipe(
+            map(user => {
+              return { ...chatroom, ...user };
+            })
+          );
+        }));
+      })
+    );
   }
 
   // Query chatrooms by field name.
