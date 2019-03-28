@@ -21,8 +21,9 @@ export class MatchListComponent implements OnInit {
   acceptedMatches: Match[];
   matchrequests: Match[];
 
-  matchRequests$;
-  acceptedMatches$;
+  matchRequests$: any[] = [];
+  acceptedMatchesAsInitiator$: any[] = [];
+  acceptedMatchesAsPartner$: any[] = [];
 
   // for fontawesome icons
   faTrash = faTrash;
@@ -48,12 +49,22 @@ export class MatchListComponent implements OnInit {
     private router: Router,
     private chatservice: ChatService,
     private userStoreService: UserStoreService
-    ) { }
+    ) {
+      this.matchStoreService.getAllMatchrequests().subscribe(matches => {
+        this.matchRequests$ = matches;
+      });
+
+      this.matchStoreService.getAllAcceptedMatchesAsInitiator().subscribe(matches => {
+        this.acceptedMatchesAsInitiator$ = matches;
+      });
+
+      this.matchStoreService.getAllAcceptedMatchesAsPartner().subscribe(matches => {
+        this.acceptedMatchesAsPartner$ = matches;
+      });
+    }
 
   ngOnInit() {
-    this.matchRequests$ = this.matchStoreService.getAllMatchrequests();
-    this.acceptedMatches$ = this.matchStoreService.getAllAcceptedMatches();
-    // this.matchStoreService.getAllAcceptedMatches().subscribe(); // TODO check if this is neccessary!
+    console.log('Aufruf - Matches');
   }
 
   // calculateAgeForEachUser() {
@@ -108,19 +119,6 @@ export class MatchListComponent implements OnInit {
     this.modalIsOpen = false;
   }
 
-  // async validateCurrentUser(initiatorID: string, partnerID: string) {
-  //   // let username: string;
-  //   if (this.authService.currentUserID === initiatorID) {
-  //    const user =  await this.userStoreService.getUserById(partnerID).toPromise()
-  //     console.log(user)
-  //    return 'partnerID';
-  //   } else {
-  //     this.userStoreService.getUserById(initiatorID)
-  //     const user =  await this.userStoreService.getUserById(initiatorID).toPromise()
-  //     console.log(user)
-  //     return 'initiatorID';
-  //   }
-  // }
 
   validateCurrentUser(initiatorID: string, partnerID: string) {
     if (this.authService.currentUserID === initiatorID) {

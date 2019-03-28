@@ -62,6 +62,7 @@ export class ProfilePageComponent implements OnInit {
     });
 
     this.initializeMultiselectSettings();
+    console.log('Aufruf - Profile');
   }
 
   createEditForm() {

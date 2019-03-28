@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user';
 import { faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import { Match } from '../..//models/match';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-result-page',
@@ -36,12 +37,19 @@ export class ResultPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // const searchRequestId = this.route.snapshot.paramMap.get('id');
+    // this.searchResults$ = this.searchService.getSearchRequestById(searchRequestId).pipe(
+    //   switchMap(searchRequest => {
+    //     this.matchedOffer = searchRequest.offerParam;
+    //     return this.searchService.getSearchResult(searchRequest);
+    //   })
+    // );
+
     const searchRequestId = this.route.snapshot.paramMap.get('id');
     this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
-      console.log(searchRequest);
       this.matchedOffer = searchRequest.offerParam; // TODO check, if the error message occures again
       this.searchResults$ = this.searchService.getSearchResult(searchRequest);
-      this.searchService.getSearchResult(searchRequest).subscribe();
+      this.searchService.getSearchResult(searchRequest).subscribe(); // TODO subscribe in a subscribe is bad code. Try to fix this!
     });
   }
 

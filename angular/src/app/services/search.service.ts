@@ -15,8 +15,8 @@ import { combineLatest, Observable } from 'rxjs';
 })
 export class SearchService {
 
-  // private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
-  private apiUrl = 'https://us-central1-livechattandem.cloudfunctions.net';
+  private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
+  // private apiUrl = 'https://us-central1-livechattandem.cloudfunctions.net';
   private headers: Headers = new Headers();
 
   constructor(
@@ -59,6 +59,7 @@ export class SearchService {
   getSearchResult(searchRequest: Searchrequest) {
     return this.getUsersToBeExcludedArray().pipe(
       switchMap(userArray => {
+        const uniqueUsers = Array.from(new Set(userArray));
         return this.angularFirestore
           .collection<any>('users', ref => ref.where('offers', 'array-contains', searchRequest.offerParam)
             .where('city', '==', searchRequest.cityParam)
@@ -74,7 +75,7 @@ export class SearchService {
             map(users => {
               const filteredUsers: User[] = [];
               users.map(user => {
-                if (userArray.includes(user.uid) === false) {
+                if (uniqueUsers.includes(user.uid) === false) {
                   filteredUsers.push(user);
                 }
               });
@@ -86,7 +87,7 @@ export class SearchService {
   }
 
   getUsersToBeExcludedArray() {
-    const allAcceptedMatches = this.matchStoreService.getAllAcceptedMatches().pipe(
+    return this.matchStoreService.getAllMatches().pipe(
       map(matches => {
         const userArray: string[] = [];
         matches.map(match => {
@@ -96,36 +97,6 @@ export class SearchService {
         return userArray;
       })
     );
-
-    const allUnAcceptedMatches = this.matchStoreService.getAllUnAcceptedMatches().pipe(
-      map(matches => {
-        const userArray: string[] = [];
-        matches.map(match => {
-          userArray.push(match.initiatorID);
-          userArray.push(match.partnerID);
-        });
-        return userArray;
-      })
-    );
-
-    const matchRequests = this.matchStoreService.getAllMatchrequests().pipe(
-      map(matches => {
-        const userArray: string[] = [];
-        matches.map(match => {
-          userArray.push(match.initiatorID);
-          userArray.push(match.partnerID);
-        });
-        return userArray;
-      })
-    );
-
-    const resultA = combineLatest(allAcceptedMatches, allUnAcceptedMatches).pipe(
-      map(([acceptedUser, unAcceptedUser]) => acceptedUser.concat(unAcceptedUser))
-    );
-
-    return combineLatest(resultA, matchRequests).pipe(
-      map(([resultAUser, matchRequestUser]) => resultAUser.concat(matchRequestUser))
-    );
-
   }
+
 }
