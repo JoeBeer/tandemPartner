@@ -14,7 +14,10 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 export class ChatroomListComponent implements OnInit {
 
   currentUser = this.authService.getCurrentUser();
-  userChats$;
+  userChatsAsUserA$: any[] = [];
+  userChatsAsUserB$: any[] = [];
+  userChatsAsUserALength: number;
+  userChatsAsUserBLength: number;
 
   faTimes = faTimes;
 
@@ -26,34 +29,51 @@ export class ChatroomListComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private chatService: ChatService,
+    private router: Router,
     private userStoreService: UserStoreService
-  ) { }
+  ) {
+    this.chatService.getAllChatroomsAsUserA().subscribe(chatrooms => {
+      this.userChatsAsUserALength = chatrooms.length;
+      this.userChatsAsUserA$ = chatrooms;
+    });
+    this.chatService.getAllChatroomsAsUserB().subscribe(chatrooms => {
+      this.userChatsAsUserBLength = chatrooms.length;
+      this.userChatsAsUserB$ = chatrooms;
+    });
+  }
 
   ngOnInit() {
-    this.userChats$ = this.chatService.getAllChatrooms();
-    this.getPartnerName();
+    // this.userChats$ = this.chatService.getAllChatrooms();
+    // this.userChats$ = this.chatService.getAllChatroomsAsUserA();
+    // this.getPartnerName();
     console.log('Aufruf - Chatroom-List');
   }
 
-  getPartnerName() {
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.userChats$.length; i++) {
-      let partnerID = this.userChats$[i].userB;
-      if (partnerID === this.authService.currentUserID) {
-        partnerID = this.userChats$[i].userA;
-        this.userStoreService.getUserById(partnerID).subscribe(user => {
-          this.userChats$[i].userA = user.firstname;
-        });
-      } else {
-        this.userStoreService.getUserById(partnerID).subscribe(user => {
-          this.userChats$[i].userB = user.firstname;
-        });
-      }
-    }
-  }
+  // getPartnerName() {
+  //   // tslint:disable-next-line:prefer-for-of
+  //   for (let i = 0; i < this.userChats$.length; i++) {
+  //     let partnerID = this.userChats$[i].userB;
+  //     if (partnerID === this.authService.currentUserID) {
+  //       partnerID = this.userChats$[i].userA;
+  //       this.userStoreService.getUserById(partnerID).subscribe(user => {
+  //         this.userChats$[i].userA = user.firstname;
+  //       });
+  //     } else {
+  //       this.userStoreService.getUserById(partnerID).subscribe(user => {
+  //         this.userChats$[i].userB = user.firstname;
+  //       });
+  //     }
+  //   }
+  // }
 
   deleteChatroom() {
-    this.chatService.deleteChatroom(this.roomToBeDeleted).subscribe();
+    this.chatService.deleteChatroom(this.roomToBeDeleted).subscribe(() => {
+      if (this.userChatsAsUserALength === 1 || this.userChatsAsUserBLength === 1) {
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+          this.router.navigate(['/chats']));
+      }
+    });
+    this.closeModal();
   }
 
   openModal(chatroomId: string) {

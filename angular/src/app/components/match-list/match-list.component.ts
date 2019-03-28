@@ -25,6 +25,8 @@ export class MatchListComponent implements OnInit {
   acceptedMatchesAsInitiator$: any[] = [];
   acceptedMatchesAsPartner$: any[] = [];
 
+  matchRequestLength: number;
+
   // for fontawesome icons
   faTrash = faTrash;
   faEnvelope = faEnvelope;
@@ -49,19 +51,22 @@ export class MatchListComponent implements OnInit {
     private router: Router,
     private chatservice: ChatService,
     private userStoreService: UserStoreService
-    ) {
-      this.matchStoreService.getAllMatchrequests().subscribe(matches => {
-        this.matchRequests$ = matches;
-      });
+  ) {
+    this.matchStoreService.getAllMatchrequests().subscribe(matches => {
+      this.matchRequestLength = matches.length;
+      this.matchRequests$ = matches;
+      console.log(this.matchRequestLength);
+    });
 
-      this.matchStoreService.getAllAcceptedMatchesAsInitiator().subscribe(matches => {
-        this.acceptedMatchesAsInitiator$ = matches;
-      });
+    this.matchStoreService.getAllAcceptedMatchesAsInitiator().subscribe(matches => {
+      this.acceptedMatchesAsInitiator$ = matches;
+    });
 
-      this.matchStoreService.getAllAcceptedMatchesAsPartner().subscribe(matches => {
-        this.acceptedMatchesAsPartner$ = matches;
-      });
-    }
+    this.matchStoreService.getAllAcceptedMatchesAsPartner().subscribe(matches => {
+      this.acceptedMatchesAsPartner$ = matches;
+    });
+    console.log(this.matchRequestLength);
+  }
 
   ngOnInit() {
     console.log('Aufruf - Matches');
@@ -100,18 +105,18 @@ export class MatchListComponent implements OnInit {
 
   deleteMatchrequest(matchId: string) {
     this.matchStoreService.deleteMatch(matchId)
-      .subscribe();
+      .subscribe(() => {
+        if (this.matchRequestLength === 1) {
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+            this.router.navigate(['/matches']));
+        }
+      });
   }
 
-  openModal(id: string) {
-    console.log('id: ' + id);
+  openModal(match) {
+    console.log('id: ' + match.uid);
     this.modalIsOpen = true;
     this.display = 'block';
-    // this.allMatches.forEach( match => {
-    //   if (match.id === id) {
-    //     this.openedModal = match;
-    //   }
-    // });
   }
 
   closeModal() {

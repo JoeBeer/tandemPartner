@@ -7,6 +7,7 @@ import { User } from 'src/app/models/user';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,8 @@ export class HomeComponent implements OnInit {
   matchRequests: any[];
   initiatorFirstname: string;
 
-  matchRequests$;
+  unAcceptedMatches$: any[] = [];
+  unAcceptedMatchesLength: number;
 
   openedModal: any;
 
@@ -39,12 +41,18 @@ export class HomeComponent implements OnInit {
   constructor(
     private userStoreService: UserStoreService,
     private authService: AuthService,
+    private router: Router,
     private matchStoreService: MatchStoreService
-  ) { }
+  ) {
+    this.matchStoreService.getAllUnAcceptedMatches().subscribe(matches => {
+      this.unAcceptedMatchesLength = matches.length;
+      this.unAcceptedMatches$ = matches;
+    })
+  }
 
   // when home-component was called, the written methods in ngOnInit gonna start
   ngOnInit() {
-    this.matchRequests$ = this.matchStoreService.getAllUnAcceptedMatches();
+    // this.unAcceptedMatches$ = this.matchStoreService.getAllUnAcceptedMatches();
     console.log('Aufruf - Home');
   }
 
@@ -58,14 +66,24 @@ export class HomeComponent implements OnInit {
   acceptMatch(matchId) {
     const data = {
       accepted: true
-    }
+    };
     this.matchStoreService.updateMatch(matchId, data)
-    .subscribe();
+    .subscribe(() => {
+      if (this.unAcceptedMatchesLength === 1) {
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+          this.router.navigate(['/home']));
+      }
+    });
   }
 
   declineMatch(matchId) {
     this.matchStoreService.deleteMatch(matchId)
-    .subscribe();
+    .subscribe(() => {
+      if (this.unAcceptedMatchesLength === 1) {
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+          this.router.navigate(['/home']));
+      }
+    } );
   }
 
   openModal(id: string) {

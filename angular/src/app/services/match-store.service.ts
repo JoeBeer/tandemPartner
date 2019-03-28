@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { switchMap, map, tap, mergeMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { combineLatest, forkJoin } from 'rxjs';
+import { combineLatest, forkJoin, of, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +52,7 @@ export class MatchStoreService {
             })
           );
       }),
-      mergeMap(matches => {
+      switchMap(matches => {
         return combineLatest(matches.map(match => {
           return this.userStoreService.getUserById(match.initiatorID).pipe(
             map(user => {
@@ -97,6 +97,26 @@ export class MatchStoreService {
     );
   }
 
+  // joinUsersMatchRequests(matchRequests$: Observable<Match[]>) {
+  //   let match;
+  //   const joinKeys = {};
+
+  //   return matchRequests$.pipe(
+  //     switchMap(matches => {
+  //       let userDocs;
+  //       matches.forEach(m => {
+  //         match = m;
+  //         const uids = Array.from(new Set(m.partnerID));
+
+  //         userDocs = uids.map(u => {
+  //           this.angularFirestore.doc(`users/${u}`).valueChanges();
+  //         });
+  //       });
+  //       return userDocs
+  //     })
+  //   )
+  // }
+
   getAllMatchrequests() {
     return this.queryMatches(false);
   }
@@ -118,9 +138,8 @@ export class MatchStoreService {
             })
           );
       }),
-      mergeMap(matches => {
+      switchMap(matches => {
         return combineLatest(matches.map(match => {
-          let uid: string;
           return this.userStoreService.getUserById(match.partnerID).pipe(
             map(user => {
               return { ...match, ...user };
@@ -135,17 +154,17 @@ export class MatchStoreService {
     return this.authService.user$.pipe(
       switchMap(user => {
         return this.angularFirestore
-        .collection('matches', ref => ref.where(fieldNameOfRole, '==', user ? user.uid : ''))
-        .snapshotChanges()
-        .pipe(
-          map(actions => {
-            return actions.map(a => {
-              const data = a.payload.doc.data() as Match;
-              const matchId = a.payload.doc.id;
-              return { matchId, ...data };
-            });
-          })
-        );
+          .collection('matches', ref => ref.where(fieldNameOfRole, '==', user ? user.uid : ''))
+          .snapshotChanges()
+          .pipe(
+            map(actions => {
+              return actions.map(a => {
+                const data = a.payload.doc.data() as Match;
+                const matchId = a.payload.doc.id;
+                return { matchId, ...data };
+              });
+            })
+          );
       })
     );
   }
