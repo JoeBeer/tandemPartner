@@ -125,7 +125,7 @@ export class RegisterPageComponent implements OnInit {
       firstname: this.registerForm.value.registerFormFirstname,
       lastname: this.registerForm.value.registerFormLastname,
       city: this.selectedCity[0],
-      dateOfBirth: this.registerForm.value.registerFormBirthday,
+      dateOfBirth: Number(this.registerForm.value.registerFormBirthday),
       // get the only one item from selectedSex-Array
       sex: this.parseSexValueForBackend(this.selectedSex[0]),
       activities: this.selectedActivities,

@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class ActivitiesOffersCitiesStoreService {
 
-  offers = ['spanisch', 'kochen'];
+  offers = ['spanisch', 'kochen', 'programmieren', 'tanzen', 'klettern'];
   activities = ['kochen', 'turnen', 'schwimmen', 'rudern'];
   cities = ['Hamburg', 'Berlin', 'München', 'Hannover'];
 

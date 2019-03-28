@@ -58,7 +58,7 @@ export class ProfilePageComponent implements OnInit {
       this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
       this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
       this.editForm.get('editFormMail').setValue(user.mail);
-      this.editForm.get('editFormBirthday').setValue(recievedUser.dateOfBirth);
+      this.editForm.get('editFormBirthday').setValue(new Date(recievedUser.dateOfBirth));
     });
 
     this.initializeMultiselectSettings();

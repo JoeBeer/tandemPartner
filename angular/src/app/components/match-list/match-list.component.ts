@@ -55,7 +55,6 @@ export class MatchListComponent implements OnInit {
     this.matchStoreService.getAllMatchrequests().subscribe(matches => {
       this.matchRequestLength = matches.length;
       this.matchRequests$ = matches;
-      console.log(this.matchRequestLength);
     });
 
     this.matchStoreService.getAllAcceptedMatchesAsInitiator().subscribe(matches => {
@@ -65,7 +64,6 @@ export class MatchListComponent implements OnInit {
     this.matchStoreService.getAllAcceptedMatchesAsPartner().subscribe(matches => {
       this.acceptedMatchesAsPartner$ = matches;
     });
-    console.log(this.matchRequestLength);
   }
 
   ngOnInit() {
