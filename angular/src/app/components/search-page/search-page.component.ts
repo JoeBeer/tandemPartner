@@ -135,6 +135,14 @@ export class SearchPageComponent implements OnInit {
     }
   }
 
+  parseSexValueForFrontend(sex: string): string {
+    if (sex === 'm') {
+      return 'male';
+    } else if (sex === 'f') {
+      return 'female';
+    }
+  }
+
   get searchFormMinAge() {
     return this.searchForm.get('searchFormMinAge');
   }

@@ -34,8 +34,8 @@ export class SearchService {
 
   getRecentSearchRequests() {
     return this.angularFirestore
-    .collection(`users/${this.authService.currentUserID}/searches`)
-      // .collection(`users/${this.authService.currentUserID}/searches`, ref => ref.orderBy('createdAt', 'desc'))
+    // .collection(`users/${this.authService.currentUserID}/searches`)
+      .collection(`users/${this.authService.currentUserID}/searches`, ref => ref.orderBy('createdAt', 'desc'))
       .snapshotChanges()
       .pipe(
         map(actions => {
