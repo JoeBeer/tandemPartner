@@ -117,12 +117,6 @@ export class RegisterPageComponent implements OnInit {
   // after that the rest of userdata incl. the recieved UserID will be send to the API(Firebase Cloud Functions)
   registerFormSave() {
 
-    console.log(this.registerForm.value.registerFormBirthday);
-    const time = new Date(this.registerForm.value.registerFormBirthday);
-    console.log(time);
-    console.log(time.getFullYear());
-    console.log(Number(time));
-
     if (this.registerForm.invalid) {
       return;
     }
