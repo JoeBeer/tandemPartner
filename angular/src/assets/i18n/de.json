@@ -26,7 +26,7 @@
 
   "login": {
     "tandemSlogan": " - gemeinsam lernen",
-    "mailPlaceholder": "E-Mailadresse:",
+    "mailPlaceholder": "E-Mailadresse",
     "passwordPlaceholder": "Passwort",
     "loginButton": "Einloggen",
     "registerButton": "Account erstellen"
