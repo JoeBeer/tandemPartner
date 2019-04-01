@@ -100,5 +100,11 @@
   "chatroomList": {
     "messages": "Messages",
     "deleteTooltip": "Delete Chat"
+  },
+
+  "chatroomItem": {
+    "currentUser": "You",
+    "inputPlaceholder": "Write something...",
+    "sendButton": "Send"
   }
 }
