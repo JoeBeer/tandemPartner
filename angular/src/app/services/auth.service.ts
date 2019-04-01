@@ -15,6 +15,7 @@ export class AuthService {
   user$: Observable<any>;
   currentUserID: string;
   currentUsername: string;
+  currentUserMail: string;
 
   isLoggedIn = false;
   // store the URL so we can redirect after logging in
@@ -28,8 +29,10 @@ export class AuthService {
       this.user$ = this.angularFireAuth.authState.pipe(
         switchMap(user => {
           if (user) {
+            // console.log('authService database call');
             this.currentUserID = user.uid;
             this.currentUsername = user.displayName;
+            this.currentUserMail = user.email;
             return this.angularFirestore.doc<any>(`users/${user.uid}`).valueChanges();
           } else {
             return of(null);

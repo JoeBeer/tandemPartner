@@ -47,21 +47,8 @@ export class UserStoreService {
     return this.http.post(`${this.apiUrl}/users/`, data);
   }
 
-   updateUser(id: any, user: any) {
-    const data = {
-      uid: id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      dateOfBirth: user.dateOfBirth,
-      sex: user.sex,
-      city: user.city,
-      activities: user.activities,
-      offers: user.offers,
-      mail: user.mail,
-      password: user.password
-    };
-
-    return this.http.put(`${this.apiUrl}/users/${id}`, data);
+   updateUser(id: string, user: any) {
+    return this.http.put(`${this.apiUrl}/users/${id}`, user);
   }
 
   public deleteUser(id: string) {

@@ -7,7 +7,6 @@ exports.createUser = async (req, res) => {
         const user = req.body;
         const userRecord = await admin.auth().createUser({
             email: user.mail,
-            emailVerified: false,
             password: user.password,
             displayName: user.firstname + ' ' + user.lastname,
             photoURL: "http://www.example.com/12345678/photo.png",
@@ -35,29 +34,51 @@ exports.createUser = async (req, res) => {
 };
 
 exports.updateUser = function (req, res) {
-    const updatedUser = req.body;
+    // try {
 
-    admin.auth().updateUser(updatedUser.uid, {
-        email: updatedUser.mail,
-        emailVerified: false,
-        password: updatedUser.password,
-        displayName: updatedUser.firstname + ' ' + updatedUser.lastname,
-        photoURL: "http://www.example.com/12345678/photo.png",
-    })
-        .then(async (userRecord) => {
-            console.log(userRecord.password);
-            console.log(userRecord);
-            return await userCollection.doc(userRecord.uid).update({
-                uid: updatedUser.uid,
+    // }
+    // catch (error) {
+
+    // }
+
+
+    let userAuthUpdate;
+    const updatedUser = req.body;
+    console.table(updatedUser);
+
+    if (updatedUser.mail) {
+        userAuthUpdate = {
+            email: updatedUser.mail,
+            password: updatedUser.password,
+            displayName: updatedUser.firstname + ' ' + updatedUser.lastname,
+        }
+    } else {
+        userAuthUpdate = {
+            displayName: updatedUser.firstname + ' ' + updatedUser.lastname,
+        }
+    }
+
+    console.table(userAuthUpdate);
+
+    // return res.status(200).send(true);
+
+    admin.auth().updateUser(req.params.userId, userAuthUpdate)
+        .then((userRecord) => {
+            // console.log(userRecord.password);
+            // console.log(userRecord);
+            console.log(req.params.userId)
+            console.log(userRecord.uid)
+            return userCollection.doc(userRecord.uid).update({
                 firstname: updatedUser.firstname,
                 lastname: updatedUser.lastname,
-                photoURL: userRecord.photoURL,
-                dateOfBirth: updatedUser.dateOfBirth,
                 sex: updatedUser.sex,
                 city: updatedUser.city,
                 activities: updatedUser.activities,
                 offers: updatedUser.offers
             })
+        }).then(() => {
+            console.log("Successfully updated user:");
+            return res.status(200).send(true);
         })
         .catch((error) => {
             console.log("Error updating user:", error);
@@ -77,6 +98,7 @@ exports.updateUser = function (req, res) {
 //         });
 // };
 
+// TODO delete all further connections - matches, chatrooms, firebase.auth, users
 exports.deleteUser = function (req, res) {
     userCollection.doc(req.params.userId).delete()
         .then(() => {
