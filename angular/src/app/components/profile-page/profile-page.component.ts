@@ -54,10 +54,10 @@ export class ProfilePageComponent implements OnInit {
       this.sex = this.parseSexValueForFrontend(recievedUser.sex);
       this.selectedActivities = recievedUser.activities;
       this.selectedOffers = recievedUser.offers,
-        this.selectedCity = Array.of(recievedUser.city);
+      this.selectedCity = Array.of(recievedUser.city);
       this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
       this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
-      this.editForm.get('editFormMail').setValue(user.mail);
+      this.editForm.get('editFormMail').setValue(this.authService.getCurrentUserMail());
       this.editForm.get('editFormBirthday').setValue(new Date(recievedUser.dateOfBirth));
     });
 

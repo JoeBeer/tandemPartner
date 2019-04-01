@@ -55,6 +55,11 @@ export class AuthService {
   getCurrentUsername() {
     return this.currentUsername;
   }
+
+  getCurrentUserMail() {
+    return this.angularFireAuth.auth.currentUser.email;
+  }
+
   async logout() {
     await this.angularFireAuth.auth.signOut();
     this.isLoggedIn = false;

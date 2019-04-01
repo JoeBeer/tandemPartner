@@ -14,6 +14,7 @@ export class NavbarComponent implements OnInit {
 
   // default value for not showing the page in english
   showEnglish = false;
+  currentUserFirstname: string;
 
   constructor(
     private translateService: TranslateService,
@@ -24,10 +25,17 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.setUsername();
   }
 
   isLoggedIn() {
     return this.authService.isloggedIn();
+  }
+
+  async setUsername() {
+    await this.authService.getCurrentUser().then(((user: User) => {
+      this.currentUserFirstname = user.firstname;
+    }));
   }
 
   switchLanguage(language: string) {
