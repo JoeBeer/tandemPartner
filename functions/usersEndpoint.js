@@ -1,6 +1,8 @@
 const admin = require('firebase-admin');
 const db = admin.firestore();
-const userCollection = db.collection("users");
+const usersCollection = db.collection('users');
+const matchesCollection = db.collection('matches');
+const chatroomsCollection = db.collection('chatrooms');
 
 exports.createUser = async (req, res) => {
     try {
@@ -12,7 +14,7 @@ exports.createUser = async (req, res) => {
             photoURL: "http://www.example.com/12345678/photo.png",
             disabled: false
         }).then(async (userRecord) => {
-            return await userCollection.doc(userRecord.uid).set({
+            return await usersCollection.doc(userRecord.uid).set({
                 uid: userRecord.uid,
                 firstname: user.firstname,
                 lastname: user.lastname,
@@ -34,17 +36,8 @@ exports.createUser = async (req, res) => {
 };
 
 exports.updateUser = function (req, res) {
-    // try {
-
-    // }
-    // catch (error) {
-
-    // }
-
-
     let userAuthUpdate;
     const updatedUser = req.body;
-    console.table(updatedUser);
 
     if (updatedUser.mail) {
         userAuthUpdate = {
@@ -58,17 +51,11 @@ exports.updateUser = function (req, res) {
         }
     }
 
-    console.table(userAuthUpdate);
-
-    // return res.status(200).send(true);
-
     admin.auth().updateUser(req.params.userId, userAuthUpdate)
         .then((userRecord) => {
-            // console.log(userRecord.password);
-            // console.log(userRecord);
             console.log(req.params.userId)
             console.log(userRecord.uid)
-            return userCollection.doc(userRecord.uid).update({
+            return usersCollection.doc(userRecord.uid).update({
                 firstname: updatedUser.firstname,
                 lastname: updatedUser.lastname,
                 sex: updatedUser.sex,
@@ -86,27 +73,66 @@ exports.updateUser = function (req, res) {
         });
 };
 
-// exports.updateUser = function (req, res) {
-//     userCollection.doc(req.params.userId).set(req.body)
-//         .then(result => {
-//             res.status(201).send(true);
-//             console.log('Succesfully updated user');
-//         })
-//         .catch((error) => {
-//             res.send(false);
-//             console.log('Error updating user', error);
-//         });
-// };
+exports.deleteUser = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const searchesCollection = usersCollection.doc(userId).collection('searches');
+        var matchesId = [];
+        var chatroomsId = [];
+        var searchesId = [];
 
-// TODO delete all further connections - matches, chatrooms, firebase.auth, users
-exports.deleteUser = function (req, res) {
-    userCollection.doc(req.params.userId).delete()
-        .then(() => {
-            console.log('Succesfully deleted user');
-            return res.status(204).send(true);
-        })
-        .catch((error) => {
-            console.log('Error deleted user', error);
-            return res.send(false);
+        // find all matches of the user and delete them
+        var matchesAsPartner = await matchesCollection.where('partnerID', '==', userId).get();
+        var matchesAsInitiator = await matchesCollection.where('initiatorID', '==', userId).get();
+
+        matchesAsPartner.forEach(doc => {
+            matchesId.push(doc.id);
         });
+        matchesAsInitiator.forEach(doc => {
+            matchesId.push(doc.id);
+        });
+
+        await Promise.all(matchesId.map(async (matchId) => {
+            await matchesCollection.doc(matchId).delete()
+        }));
+
+        // find all chatrooms of the user and delete them
+        var chatroomsAsUserA = await chatroomsCollection.where('userA', '==', userId).get();
+        var chatroomsAsUserB = await chatroomsCollection.where('userB', '==', userId).get();
+
+        chatroomsAsUserA.forEach(doc => {
+            chatroomsId.push(doc.id);
+        });
+        chatroomsAsUserB.forEach(doc => {
+            chatroomsId.push(doc.id);
+        });
+
+        await Promise.all(chatroomsId.map(async (chatroomId) => {
+            await chatroomsCollection.doc(chatroomId).delete()
+        }));
+
+        // delete searches collection in user doc
+        var searches = await searchesCollection.get();
+
+        searches.forEach(search => {
+            searchesId.push(search.id);
+        });
+
+        await Promise.all(searchesId.map(async (searchId) => {
+            await searchesCollection.doc(searchId).delete()
+        }));
+
+        // delete user doc in users collection
+        await usersCollection.doc(userId).delete();
+
+        // delete user in Firebase Authentication
+        await admin.auth().deleteUser(userId);
+
+        console.log('Successfully deleted user');
+        return res.status(200).send(true);
+    }
+    catch (error) {
+        console.log('Error deleting user', error);
+        return res.send(false);
+    }
 };

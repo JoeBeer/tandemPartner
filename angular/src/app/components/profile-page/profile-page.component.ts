@@ -169,7 +169,7 @@ export class ProfilePageComponent implements OnInit {
 
       this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
         this.authService.logout();
-    });
+      });
     } else {
       userdata = {
         firstname: this.editForm.value.editFormFirstname,
@@ -183,10 +183,16 @@ export class ProfilePageComponent implements OnInit {
       };
 
       this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
-          this.router.navigate(['/home']);
+        this.router.navigate(['/home']);
       });
     }
 
+  }
+
+  deleteUser() {
+    this.userStoreService.deleteUser(this.authService.currentUserID).subscribe(() => {
+      this.authService.logout();
+    });
   }
 
 

@@ -26,24 +26,22 @@ export class AuthService {
     private angularFirestore: AngularFirestore,
     private router: Router) {
 
-      this.user$ = this.angularFireAuth.authState.pipe(
-        switchMap(user => {
-          if (user) {
-            // console.log('authService database call');
-            this.currentUserID = user.uid;
-            this.currentUsername = user.displayName;
-            this.currentUserMail = user.email;
-            return this.angularFirestore.doc<any>(`users/${user.uid}`).valueChanges();
-          } else {
-            return of(null);
-          }
-        })
-      );
+    this.user$ = this.angularFireAuth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+          this.currentUserID = user.uid;
+          this.currentUsername = user.displayName;
+          this.currentUserMail = user.email;
+          return this.angularFirestore.doc<any>(`users/${user.uid}`).valueChanges();
+        } else {
+          return of(null);
+        }
+      })
+    );
   }
 
   isloggedIn(): boolean {
     const user = this.angularFireAuth.auth.currentUser;
-    // console.log(this.user$);
     if (user) {
       return this.isLoggedIn = true;
     } else {

@@ -1,9 +1,7 @@
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,19 +16,19 @@ export class UserStoreService {
     private http: HttpClient,
     private angularFirestore: AngularFirestore) {
     this.headers.append('Content-Type', 'application/json');
-   }
+  }
 
-   getAllUsers() {
-     return this.http.get(`${this.apiUrl}/users`);
-   }
+  getAllUsers() {
+    return this.http.get(`${this.apiUrl}/users`);
+  }
 
-   getUserById(uid) {
+  getUserById(uid) {
     return this.angularFirestore
-    .collection<any>(`users`)
-    .doc<User>(uid).valueChanges();
-   }
+      .collection<any>(`users`)
+      .doc<User>(uid).valueChanges();
+  }
 
-   createUser(user: any) {
+  createUser(user: any) {
     // generate new API-User
     const data = {
       firstname: user.firstname,
@@ -47,15 +45,11 @@ export class UserStoreService {
     return this.http.post(`${this.apiUrl}/users/`, data);
   }
 
-   updateUser(id: string, user: any) {
+  updateUser(id: string, user: any) {
     return this.http.put(`${this.apiUrl}/users/${id}`, user);
   }
 
-  public deleteUser(id: string) {
+  deleteUser(id: string) {
     return this.http.delete(`${this.apiUrl}/users/${id}`);
   }
-
-  // private errorHandler(error: Error | any) {
-  //   return Observable.throw(error);
-  // }
 }
