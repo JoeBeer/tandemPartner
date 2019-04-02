@@ -97,26 +97,6 @@ export class MatchStoreService {
     );
   }
 
-  // joinUsersMatchRequests(matchRequests$: Observable<Match[]>) {
-  //   let match;
-  //   const joinKeys = {};
-
-  //   return matchRequests$.pipe(
-  //     switchMap(matches => {
-  //       let userDocs;
-  //       matches.forEach(m => {
-  //         match = m;
-  //         const uids = Array.from(new Set(m.partnerID));
-
-  //         userDocs = uids.map(u => {
-  //           this.angularFirestore.doc(`users/${u}`).valueChanges();
-  //         });
-  //       });
-  //       return userDocs
-  //     })
-  //   )
-  // }
-
   getAllMatchrequests() {
     return this.queryMatches(false);
   }

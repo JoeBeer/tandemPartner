@@ -5,6 +5,7 @@ import { UserStoreService } from 'src/app/services/user-store.service';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { ActivitiesOffersCitiesStoreService } from '../../services/activities-offers-cities-store.service';
+import { Md5 } from 'ts-md5';
 
 @Component({
   selector: 'app-profile-page',
@@ -13,6 +14,7 @@ import { ActivitiesOffersCitiesStoreService } from '../../services/activities-of
 })
 export class ProfilePageComponent implements OnInit {
 
+  md5 = new Md5();
   currentUser;
   editForm: FormGroup;
 
@@ -57,7 +59,7 @@ export class ProfilePageComponent implements OnInit {
       this.selectedCity = Array.of(recievedUser.city);
       this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
       this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
-      this.editForm.get('editFormMail').setValue(this.authService.getCurrentUserMail());
+      this.editForm.get('editFormMail').setValue(this.authService.currentUserMail);
       this.editForm.get('editFormBirthday').setValue(new Date(recievedUser.dateOfBirth));
     });
 
@@ -85,8 +87,8 @@ export class ProfilePageComponent implements OnInit {
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
       editFormPasswordConfirm: ['', [Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,16}$')]]
-        // adds the custom validator for validating the passwords og their matching
-    }, { validator: this.passwordMatchValidator});
+      // adds the custom validator for validating the passwords og their matching
+    }, { validator: this.passwordMatchValidator });
 
   }
 
@@ -145,39 +147,52 @@ export class ProfilePageComponent implements OnInit {
     if (this.editForm.invalid) {
       return;
     }
-    // get data from the inputfields
-    const userdata = {
-      firstname: this.editForm.value.editFormFirstname,
-      lastname: this.editForm.value.editFormLastname,
-      city: this.selectedCity,
-      dateOfBirth: this.editForm.value.editFormBirthday,
-      // get the only one item from selectedSex-Array
-      sex: this.parseSexValueForBackend(this.sex),
-      activities: this.selectedActivities,
-      offers: this.selectedOffers
-    };
 
-
-    // mail and password are gonna be saved at Firebase Authentication and not in userdata
+    let userdata;
     const mail = this.editForm.value.editFormMail;
     const password = this.editForm.value.editFormPassword;
+    if (!!mail && !!password) {
+      // get data from the inputfields
+      userdata = {
+        firstname: this.editForm.value.editFormFirstname,
+        lastname: this.editForm.value.editFormLastname,
+        city: this.selectedCity[0],
+        dateOfBirth: this.editForm.value.editFormBirthday,
+        // get the only one item from selectedSex-Array
+        sex: this.parseSexValueForBackend(this.sex),
+        activities: this.selectedActivities,
+        offers: this.selectedOffers,
+        mail,
+        password: this.md5.appendStr(mail)
+          .appendStr(password).end()
+      };
 
-    if (password === !null || password === !undefined || password === !'') {
-      console.log('ausgefülltes password');
-      // this.authService.firebaseUser.updatePassword(password).then();
+      this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
+        this.authService.logout();
+      });
+    } else {
+      userdata = {
+        firstname: this.editForm.value.editFormFirstname,
+        lastname: this.editForm.value.editFormLastname,
+        city: this.selectedCity[0],
+        dateOfBirth: this.editForm.value.editFormBirthday,
+        // get the only one item from selectedSex-Array
+        sex: this.parseSexValueForBackend(this.sex),
+        activities: this.selectedActivities,
+        offers: this.selectedOffers
+      };
+
+      this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
+        this.router.navigate(['/home']);
+      });
     }
 
-    if (mail === !null || mail === !undefined || mail === !'') {
-      console.log('ausgefüllte mail');
-      // this.authService.firebaseUser.updateEmail(mail).then();
-    }
+  }
 
-    // // create new user in cloud firestore and take the UID from the new created User
-    // this.userStoreService.updateUser(this.authService.currentUser.uid, userdata).subscribe(() => {
-    //   // then go to page 'home'
-    //   this.router.navigate(['/home']);
-    // });
-
+  deleteUser() {
+    this.userStoreService.deleteUser(this.authService.currentUserID).subscribe(() => {
+      this.authService.logout();
+    });
   }
 
 
