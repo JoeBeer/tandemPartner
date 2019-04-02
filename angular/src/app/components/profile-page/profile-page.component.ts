@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { UserStoreService } from 'src/app/services/user-store.service';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
-import { UtliltyStoreService } from '../../services/utility-store.service';
+import { UtilityStoreService } from '../../services/utility-store.service';
 import { Md5 } from 'ts-md5';
 import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
 
@@ -40,7 +40,7 @@ export class ProfilePageComponent implements OnInit {
     private router: Router,
     private userStoreService: UserStoreService,
     private authService: AuthService,
-    private utliltyStoreService: UtliltyStoreService,
+    private utliltyStoreService: UtilityStoreService,
     private translateService: TranslateService) {
 
     this.editForm = this.createEditForm();

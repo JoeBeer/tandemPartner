@@ -1,6 +1,6 @@
 import { AuthService } from './../../services/auth.service';
 import { Searchrequest } from './../../models/searchrequest';
-import { UtliltyStoreService } from '../../services/utility-store.service';
+import { UtilityStoreService } from '../../services/utility-store.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -43,7 +43,7 @@ export class SearchPageComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private utliltyStoreService: UtliltyStoreService,
+    private utliltyStoreService: UtilityStoreService,
     private searchService: SearchService,
     private authService: AuthService,
     private translateService: TranslateService
