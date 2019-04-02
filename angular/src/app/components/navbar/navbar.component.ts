@@ -42,8 +42,10 @@ export class NavbarComponent implements OnInit {
     this.translateService.use(language);
     if (language === 'en') {
       this.showEnglish = true;
+      this.translateService.setDefaultLang('en');
     } else {
       this.showEnglish = false;
+      this.translateService.setDefaultLang('de');
     }
   }
 

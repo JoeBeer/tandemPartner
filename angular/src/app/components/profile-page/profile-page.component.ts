@@ -4,8 +4,9 @@ import { Router } from '@angular/router';
 import { UserStoreService } from 'src/app/services/user-store.service';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActivitiesOffersCitiesStoreService } from '../../services/activities-offers-cities-store.service';
+import { UtilityStoreService } from '../../services/utility-store.service';
 import { Md5 } from 'ts-md5';
+import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile-page',
@@ -39,16 +40,19 @@ export class ProfilePageComponent implements OnInit {
     private router: Router,
     private userStoreService: UserStoreService,
     private authService: AuthService,
-    private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService) {
+    private utliltyStoreService: UtilityStoreService,
+    private translateService: TranslateService) {
 
     this.editForm = this.createEditForm();
   }
 
   async ngOnInit() {
     // initialzie all available offers & activities
-    this.offers = this.activitiesOffersCitiesStoreService.getAllOffers();
-    this.activities = this.activitiesOffersCitiesStoreService.getAllActivities();
-    this.cities = this.activitiesOffersCitiesStoreService.getAllCities();
+    this.setAllUtilities();
+    this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
+      this.setAllUtilities();
+    });
+
 
     const user = await this.authService.getCurrentUser();
 
@@ -65,6 +69,12 @@ export class ProfilePageComponent implements OnInit {
 
     this.initializeMultiselectSettings();
     console.log('Aufruf - Profile');
+  }
+
+  setAllUtilities() {
+    this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
+    this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
+    this.activities = this.utliltyStoreService.getAllActivities(this.translateService.getDefaultLang());
   }
 
   createEditForm() {
@@ -113,6 +123,7 @@ export class ProfilePageComponent implements OnInit {
     };
   }
 
+  // TODO: internationalize it!
   parseSexValueForFrontend(sex: string): string {
     if (sex === 'm') {
       return 'male';
