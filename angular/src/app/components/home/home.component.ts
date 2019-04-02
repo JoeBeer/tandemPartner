@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
     this.matchStoreService.getAllUnAcceptedMatches().subscribe(matches => {
       this.unAcceptedMatchesLength = matches.length;
       this.unAcceptedMatches$ = matches;
-    })
+    });
   }
 
   // when home-component was called, the written methods in ngOnInit gonna start

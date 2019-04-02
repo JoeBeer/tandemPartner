@@ -1,12 +1,13 @@
 import { AuthService } from './../../services/auth.service';
 import { Searchrequest } from './../../models/searchrequest';
-import { ActivitiesOffersCitiesStoreService } from './../../services/activities-offers-cities-store.service';
+import { UtliltyStoreService } from '../../services/utility-store.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SearchService } from 'src/app/services/search.service';
 import { first } from 'rxjs/operators';
 import { DocumentReference } from '@angular/fire/firestore';
+import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search-page',
@@ -42,18 +43,20 @@ export class SearchPageComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService,
+    private utliltyStoreService: UtliltyStoreService,
     private searchService: SearchService,
-    private authService: AuthService
+    private authService: AuthService,
+    private translateService: TranslateService
   ) {
     this.searchForm = this.createSearchForm();
   }
 
   ngOnInit() {
     // initialzie all available offers & cities
-    this.offers = this.activitiesOffersCitiesStoreService.getAllOffers();
-    this.cities = this.activitiesOffersCitiesStoreService.getAllCities();
-
+    this.setAllUtilities();
+    this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
+      this.setAllUtilities();
+    });
     this.initializeMultiselectSettings();
 
     // tslint:disable-next-line:max-line-length
@@ -63,6 +66,11 @@ export class SearchPageComponent implements OnInit {
     // });
     this.recentSearchRequests$ = this.searchService.getRecentSearchRequests();
     console.log('Aufruf - search');
+  }
+
+  setAllUtilities() {
+    this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
+    this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
   }
 
   createSearchForm() {
