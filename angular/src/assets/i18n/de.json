@@ -107,5 +107,18 @@
     "currentUser": "Du",
     "inputPlaceholder": "Schreib etwas...",
     "sendButton": "Senden"
+  },
+
+  "impressum": {
+    "team": "Das Entwicklerteam",
+    "contact": "Kontakt",
+    "study": "Wirtschaftsinformatik"
+  },
+
+  "about": {
+    "heading": "Über Uns",
+    "blockquote": "\"Eine Investition in Wissen bringt immer noch die besten Zinsen.\"",
+    "explanation": "Wir möchten Dir deine Investition so einfach wie möglich machen und bieten Dir deshalb eine Plattform, mit dieser Du jeder Zeit dein eigenes Wissen mit anderen teilen und auch neues erlangen kannst. Das tandemPartner Team besteht aus Studenten des 6. Semester an der HWR Berlin.",
+    "imageExplanation": "Hier das Team von links nach rechts:"
   }
 }
