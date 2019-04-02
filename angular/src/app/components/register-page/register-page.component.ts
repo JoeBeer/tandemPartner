@@ -65,11 +65,11 @@ export class RegisterPageComponent implements OnInit {
 
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
-      registerFormPassword: ['', [Validators.required, Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,16}$')]],
+      registerFormPassword: ['', [Validators.required, Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,}$')]],
 
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
-      registerFormPasswordConfirm: ['', [Validators.required, Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,16}$')]]
+      registerFormPasswordConfirm: ['', [Validators.required, Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,}$')]]
         // adds the custom validator for validating the passwords og their matching
     }, { validator: this.passwordMatchValidator});
 

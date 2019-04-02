@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { faTrash, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { ChatService } from 'src/app/services/chat.service';
+import { User } from './../../models/user';
 // import { ChatService } from './../../services/chat.service';
 
 @Component({
@@ -42,8 +43,14 @@ export class MatchListComponent implements OnInit {
   // for modal
   display = 'none';
   modalIsOpen = false;
-
-  openedModal: any;
+  modalUser: User;
+  firstname: string;
+  lastname: string;
+  sex: string;
+  city: string;
+  activities: string;
+  arr: string;
+  age: string;
 
   constructor(
     private authService: AuthService,
@@ -81,7 +88,7 @@ export class MatchListComponent implements OnInit {
   //     this.userForSpecificRequest[i].dateOfBirth = age;
   //   }
   // }
-  //
+
   contactUser(initiatorID: string, partnerID: string) {
     const currentUserID = this.authService.currentUserID;
     let userB;
@@ -113,24 +120,60 @@ export class MatchListComponent implements OnInit {
       });
   }
 
-  openModal(match) {
-    console.log('id: ' + match.uid);
+  /*   openModal(match) {
+      console.log('id: ' + match.uid);
+      this.modalIsOpen = true;
+      this.display = 'block';
+    }
+
+    closeModal() {
+      this.display = 'none';
+      this.modalIsOpen = false;
+    } */
+
+
+  openModal(id: any) {
+    this.activities = '';
+    // console.log('id: ' + id);
     this.modalIsOpen = true;
     this.display = 'block';
+    this.userStoreService.getUserById(id).subscribe((user: User) => {
+      this.firstname = user.firstname;
+      this.lastname = user.lastname;
+      this.sex = user.sex;
+      this.city = user.city;
+      this.activities = this.activitiesForModal(user.activities);
+      this.age = this.calculateAgeForModal(user.dateOfBirth);
+    });
   }
 
-  closeModal() {
-    this.display = 'none';
-    this.modalIsOpen = false;
+  calculateAgeForModal(birthdate: Date): string {
+    const BD = new Date(birthdate);
+    const timeDiff = Math.abs(Date.now() - BD.getTime());
+    const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    return age + '';
   }
 
+activitiesForModal(activities: string[]): string {
+  this.arr = '';
+  activities.forEach(element => {
+    this.arr = element + ', ' + this.arr;
+  });
+  return this.arr.substring(0, (this.arr.length - 2));
+}
 
-  validateCurrentUser(initiatorID: string, partnerID: string) {
-    if (this.authService.currentUserID === initiatorID) {
-      return partnerID;
-    } else {
-      return initiatorID;
-    }
+
+closeModal() {
+  this.display = 'none';
+  this.modalIsOpen = false;
+}
+
+validateCurrentUser(initiatorID: string, partnerID: string) {
+  if (this.authService.currentUserID === initiatorID) {
+    return partnerID;
+  } else {
+    return initiatorID;
   }
+}
 
 }

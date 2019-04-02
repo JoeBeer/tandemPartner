@@ -14,6 +14,7 @@ import { ActivitiesOffersCitiesStoreService } from '../../services/activities-of
 export class ProfilePageComponent implements OnInit {
 
   currentUser;
+  userId: string;
   editForm: FormGroup;
 
   // for showing available offers, activities & cities
@@ -31,6 +32,9 @@ export class ProfilePageComponent implements OnInit {
   selectCitySettings = {};
   selectOffersActivitiesSettings = {};
 
+  // for modal
+  display = 'none';
+  modalIsOpen = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,6 +55,7 @@ export class ProfilePageComponent implements OnInit {
     const user = await this.authService.getCurrentUser();
 
     this.userStoreService.getUserById(user.uid).subscribe((recievedUser: User) => {
+      this.userId = recievedUser.uid;
       this.sex = this.parseSexValueForFrontend(recievedUser.sex);
       this.selectedActivities = recievedUser.activities;
       this.selectedOffers = recievedUser.offers,
@@ -85,8 +90,8 @@ export class ProfilePageComponent implements OnInit {
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
       editFormPasswordConfirm: ['', [Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,16}$')]]
-        // adds the custom validator for validating the passwords og their matching
-    }, { validator: this.passwordMatchValidator});
+      // adds the custom validator for validating the passwords og their matching
+    }, { validator: this.passwordMatchValidator });
 
   }
 
@@ -205,5 +210,25 @@ export class ProfilePageComponent implements OnInit {
     return this.editForm.get('editFormPasswordConfirm');
   }
 
+  openModal(id: string) {
+    console.log('id: ' + id);
+    this.modalIsOpen = true;
+    this.display = 'block';
+
+  }
+
+  closeModal() {
+    this.display = 'none';
+    this.modalIsOpen = false;
+  }
+
+  deleteProfile() {
+    this.userStoreService.deleteUser(this.userId).subscribe(() => {
+      this.closeModal();
+      this.authService.logout().then(() => {
+        alert('Profil wurde gelöscht');
+      });
+    });
+  }
 
 }

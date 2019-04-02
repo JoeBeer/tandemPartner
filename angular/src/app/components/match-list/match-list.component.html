@@ -32,9 +32,9 @@
               <div class="card-text">
                 <div class="row">
                   <div class="col-8 col-md-10">
-                    <a class="pointer-cursor" (click)="openModal(match)">
+                    <a class="pointer-cursor" (click)="openModal(match.partnerID)">
                       <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
-                      <p class="my-0"><small>Age:</small></p>
+                      <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p>
                       <p class="my-0"><small>Aktivitäten: {{ match.activities }}</small></p>
                     </a>
                   </div>
@@ -67,9 +67,9 @@
               <div class="card-text">
                 <div class="row">
                   <div class="col-8 col-md-10">
-                    <a class="pointer-cursor" (click)="openModal(match)">
+                    <a class="pointer-cursor" (click)="openModal(match.partnerID)">
                       <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
-                      <p class="my-0"><small>Age:</small></p>
+                      <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p>
                       <p class="my-0"><small>Aktivitäten: {{ match.activities }}</small></p>
                     </a>
                   </div>
@@ -115,11 +115,11 @@
               <div class="card-text">
                 <div class="row">
                   <div class="col-8 col-md-10">
-                    <a class="pointer-cursor" (click)="openModal(matchrequest)">
+
                       <p class="my-0"><small>{{ matchrequest.firstname }} {{ matchrequest.lastname }}</small></p>
-                      <p class="my-0"><small>Age:</small></p>
+                      <p class="my-0"><small>Age: {{calculateAgeForModal(matchrequest.dateOfBirth)}}</small></p>
                       <p class="my-0"><small>Aktivitäten: {{ matchrequest.activities }}</small></p>
-                    </a>
+
                   </div>
                   <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
                     <button type="button" class="btn btn-outline-danger homebutton"
@@ -155,23 +155,51 @@
 </div>
 
 
+
 <!-- Modal -->
 <div class="modal-backdrop fade in" [ngStyle]="{'display':display}"></div>
 <div *ngIf="modalIsOpen" class="modal" [ngStyle]="{'display': display}" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{{ 'home.requestTitle' | translate}} Kochen</h5>
+        <h5 class="modal-title">Details zu {{firstname}}</h5>
         <button type="button" class="close" (click)="closeModal()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <!-- {{ user.firstname }}-->
+        <table class="table table-light">
+          <tbody>
+            <tr>
+              <th class="font-weight-normal" scope="row">Vorname:</th>
+              <td>{{firstname}}</td>
+            </tr>
+            <tr>
+              <th class="font-weight-normal" scope="row">Nachname:</th>
+              <td>{{lastname}}</td>
+            </tr>
+            <tr>
+              <th class="font-weight-normal" scope="row">Alter:</th>
+              <td>{{age}}</td>
+            </tr>
+            <tr>
+              <th class="font-weight-normal" scope="row">Ort:</th>
+              <td>{{city}}</td>
+            </tr>
+            <tr>
+              <th class="font-weight-normal" scope="row">Interessen:</th>
+              <td>{{activities}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
-        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        <!-- <button type="button" class="btn btn-outline-warning homebutton"
+          (click)="contactUser(match.initiatorID, match.partnerID)" data-toggle="tooltip" data-placement="top"
+          title="{{ 'matchlist.contactTooltip' | translate }}">
+          <fa-icon [icon]="faEnvelope"></fa-icon>
+        </button> -->
+        <button type="button" class="btn btn-warning" (click)="closeModal()">Close</button>
       </div>
     </div>
   </div>

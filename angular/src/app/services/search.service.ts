@@ -15,8 +15,8 @@ import { combineLatest, Observable } from 'rxjs';
 })
 export class SearchService {
 
-  private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
-  // private apiUrl = 'https://us-central1-livechattandem.cloudfunctions.net';
+  // private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
+  private apiUrl = 'https://us-central1-livechattandem.cloudfunctions.net';
   private headers: Headers = new Headers();
 
   constructor(

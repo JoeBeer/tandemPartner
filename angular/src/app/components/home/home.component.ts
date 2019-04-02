@@ -37,6 +37,14 @@ export class HomeComponent implements OnInit {
   // for modal
   display = 'none';
   modalIsOpen = false;
+  modalUser: User;
+  firstname: string;
+  lastname: string;
+  sex: string;
+  city: string;
+  activities: string;
+  arr: string;
+  age: string;
 
   constructor(
     private userStoreService: UserStoreService,
@@ -47,7 +55,7 @@ export class HomeComponent implements OnInit {
     this.matchStoreService.getAllUnAcceptedMatches().subscribe(matches => {
       this.unAcceptedMatchesLength = matches.length;
       this.unAcceptedMatches$ = matches;
-    })
+    });
   }
 
   // when home-component was called, the written methods in ngOnInit gonna start
@@ -68,30 +76,54 @@ export class HomeComponent implements OnInit {
       accepted: true
     };
     this.matchStoreService.updateMatch(matchId, data)
-    .subscribe(() => {
-      if (this.unAcceptedMatchesLength === 1) {
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-          this.router.navigate(['/home']));
-      }
-    });
+      .subscribe(() => {
+        if (this.unAcceptedMatchesLength === 1) {
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+            this.router.navigate(['/home']));
+        }
+      });
   }
 
   declineMatch(matchId) {
     this.matchStoreService.deleteMatch(matchId)
-    .subscribe(() => {
-      if (this.unAcceptedMatchesLength === 1) {
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-          this.router.navigate(['/home']));
-      }
-    } );
+      .subscribe(() => {
+        if (this.unAcceptedMatchesLength === 1) {
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+            this.router.navigate(['/home']));
+        }
+      });
   }
 
-  openModal(id: string) {
-    console.log('id: ' + id);
+  openModal(id: any) {
+    this.activities = '';
+    // console.log('id: ' + id);
     this.modalIsOpen = true;
     this.display = 'block';
-
+    this.userStoreService.getUserById(id).subscribe((user: User) => {
+      this.firstname = user.firstname;
+      this.lastname = user.lastname;
+      this.sex = user.sex;
+      this.city = user.city;
+      this.activities = this.activitiesForModal(user.activities);
+      this.age = this.calculateAgeForModal(user.dateOfBirth);
+    });
   }
+
+  calculateAgeForModal(birthdate: Date): string {
+    const BD = new Date(birthdate);
+    const timeDiff = Math.abs(Date.now() - BD.getTime());
+    const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    return age + '';
+  }
+
+  activitiesForModal(activities: string[]): string {
+    this.arr = '';
+    activities.forEach(element => {
+      this.arr = element + ', ' + this.arr;
+    });
+    return this.arr.substring(0, (this.arr.length - 2));
+  }
+
 
   closeModal() {
     this.display = 'none';
