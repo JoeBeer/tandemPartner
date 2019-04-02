@@ -8,8 +8,8 @@ import { User } from '../models/user';
 })
 export class UserStoreService {
 
-  private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
-  // private apiUrl = 'https://us-central1-livechattandem.cloudfunctions.net';
+  //private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
+  private apiUrl = 'https://us-central1-livechattandem.cloudfunctions.net';
   private headers: Headers = new Headers();
 
   constructor(
@@ -19,7 +19,7 @@ export class UserStoreService {
   }
 
   getAllUsers() {
-    return this.http.get(`${this.apiUrl}/users`);
+    return this.http.get(`${this.apiUrl}/users/`);
   }
 
   getUserById(uid) {
