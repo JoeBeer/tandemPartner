@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserStoreService } from 'src/app/services/user-store.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { UtilityStoreService } from '../../services/utility-store.service';
 import { Md5 } from 'ts-md5';
 import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
@@ -36,7 +35,6 @@ export class RegisterPageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private userStoreService: UserStoreService,
-    private authService: AuthService,
     private utliltyStoreService: UtilityStoreService,
     private translateService: TranslateService) {
 
@@ -57,7 +55,7 @@ export class RegisterPageComponent implements OnInit {
     this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
     this.activities = this.utliltyStoreService.getAllActivities(this.translateService.getDefaultLang());
     this.sexes = this.utliltyStoreService.getAllSex(this.translateService.getDefaultLang());
-    this.sexes.splice(2, 1);
+    // this.sexes.splice(2, 1);
   }
 
   createRegisterForm() {
@@ -80,8 +78,8 @@ export class RegisterPageComponent implements OnInit {
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
       registerFormPasswordConfirm: ['', [Validators.required, Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,16}$')]]
-        // adds the custom validator for validating the passwords og their matching
-    }, { validator: this.passwordMatchValidator});
+      // adds the custom validator for validating the passwords og their matching
+    }, { validator: this.passwordMatchValidator });
 
   }
 
@@ -134,7 +132,7 @@ export class RegisterPageComponent implements OnInit {
     const userdata = {
       firstname: this.registerForm.value.registerFormFirstname,
       lastname: this.registerForm.value.registerFormLastname,
-      city: this.selectedCity[0],
+      city: this.cities.indexOf(this.selectedCity[0]),
       dateOfBirth: Number(this.registerForm.value.registerFormBirthday),
       // get the only one item from selectedSex-Array
       sex: this.parseSexValueForBackend(this.selectedSex[0]),
