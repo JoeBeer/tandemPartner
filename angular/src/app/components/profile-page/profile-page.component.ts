@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 import { UserStoreService } from 'src/app/services/user-store.service';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActivitiesOffersCitiesStoreService } from '../../services/activities-offers-cities-store.service';
+import { UtilityStoreService } from '../../services/utility-store.service';
+import { Md5 } from 'ts-md5';
+import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile-page',
@@ -13,6 +15,7 @@ import { ActivitiesOffersCitiesStoreService } from '../../services/activities-of
 })
 export class ProfilePageComponent implements OnInit {
 
+  md5 = new Md5();
   currentUser;
   userId: string;
   editForm: FormGroup;
@@ -41,16 +44,19 @@ export class ProfilePageComponent implements OnInit {
     private router: Router,
     private userStoreService: UserStoreService,
     private authService: AuthService,
-    private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService) {
+    private utliltyStoreService: UtilityStoreService,
+    private translateService: TranslateService) {
 
     this.editForm = this.createEditForm();
   }
 
   async ngOnInit() {
     // initialzie all available offers & activities
-    this.offers = this.activitiesOffersCitiesStoreService.getAllOffers();
-    this.activities = this.activitiesOffersCitiesStoreService.getAllActivities();
-    this.cities = this.activitiesOffersCitiesStoreService.getAllCities();
+    this.setAllUtilities();
+    this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
+      this.setAllUtilities();
+    });
+
 
     const user = await this.authService.getCurrentUser();
 
@@ -59,15 +65,21 @@ export class ProfilePageComponent implements OnInit {
       this.sex = this.parseSexValueForFrontend(recievedUser.sex);
       this.selectedActivities = recievedUser.activities;
       this.selectedOffers = recievedUser.offers,
-        this.selectedCity = Array.of(recievedUser.city);
+      this.selectedCity = Array.of(recievedUser.city);
       this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
       this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
-      this.editForm.get('editFormMail').setValue(user.mail);
-      this.editForm.get('editFormBirthday').setValue(recievedUser.dateOfBirth);
+      this.editForm.get('editFormMail').setValue(this.authService.currentUserMail);
+      this.editForm.get('editFormBirthday').setValue(new Date(recievedUser.dateOfBirth));
     });
 
     this.initializeMultiselectSettings();
     console.log('Aufruf - Profile');
+  }
+
+  setAllUtilities() {
+    this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
+    this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
+    this.activities = this.utliltyStoreService.getAllActivities(this.translateService.getDefaultLang());
   }
 
   createEditForm() {
@@ -116,6 +128,7 @@ export class ProfilePageComponent implements OnInit {
     };
   }
 
+  // TODO: internationalize it!
   parseSexValueForFrontend(sex: string): string {
     if (sex === 'm') {
       return 'male';
@@ -150,39 +163,52 @@ export class ProfilePageComponent implements OnInit {
     if (this.editForm.invalid) {
       return;
     }
-    // get data from the inputfields
-    const userdata = {
-      firstname: this.editForm.value.editFormFirstname,
-      lastname: this.editForm.value.editFormLastname,
-      city: this.selectedCity,
-      dateOfBirth: this.editForm.value.editFormBirthday,
-      // get the only one item from selectedSex-Array
-      sex: this.parseSexValueForBackend(this.sex),
-      activities: this.selectedActivities,
-      offers: this.selectedOffers
-    };
 
-
-    // mail and password are gonna be saved at Firebase Authentication and not in userdata
+    let userdata;
     const mail = this.editForm.value.editFormMail;
     const password = this.editForm.value.editFormPassword;
+    if (!!mail && !!password) {
+      // get data from the inputfields
+      userdata = {
+        firstname: this.editForm.value.editFormFirstname,
+        lastname: this.editForm.value.editFormLastname,
+        city: this.selectedCity[0],
+        dateOfBirth: this.editForm.value.editFormBirthday,
+        // get the only one item from selectedSex-Array
+        sex: this.parseSexValueForBackend(this.sex),
+        activities: this.selectedActivities,
+        offers: this.selectedOffers,
+        mail,
+        password: this.md5.appendStr(mail)
+          .appendStr(password).end()
+      };
 
-    if (password === !null || password === !undefined || password === !'') {
-      console.log('ausgefülltes password');
-      // this.authService.firebaseUser.updatePassword(password).then();
+      this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
+        this.authService.logout();
+      });
+    } else {
+      userdata = {
+        firstname: this.editForm.value.editFormFirstname,
+        lastname: this.editForm.value.editFormLastname,
+        city: this.selectedCity[0],
+        dateOfBirth: this.editForm.value.editFormBirthday,
+        // get the only one item from selectedSex-Array
+        sex: this.parseSexValueForBackend(this.sex),
+        activities: this.selectedActivities,
+        offers: this.selectedOffers
+      };
+
+      this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
+        this.router.navigate(['/home']);
+      });
     }
 
-    if (mail === !null || mail === !undefined || mail === !'') {
-      console.log('ausgefüllte mail');
-      // this.authService.firebaseUser.updateEmail(mail).then();
-    }
+  }
 
-    // // create new user in cloud firestore and take the UID from the new created User
-    // this.userStoreService.updateUser(this.authService.currentUser.uid, userdata).subscribe(() => {
-    //   // then go to page 'home'
-    //   this.router.navigate(['/home']);
-    // });
-
+  deleteUser() {
+    this.userStoreService.deleteUser(this.authService.currentUserID).subscribe(() => {
+      this.authService.logout();
+    });
   }
 
 

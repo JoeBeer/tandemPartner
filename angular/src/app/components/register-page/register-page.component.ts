@@ -3,8 +3,9 @@ import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/fo
 import { Router } from '@angular/router';
 import { UserStoreService } from 'src/app/services/user-store.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActivitiesOffersCitiesStoreService } from '../../services/activities-offers-cities-store.service';
+import { UtilityStoreService } from '../../services/utility-store.service';
 import { Md5 } from 'ts-md5';
+import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register-page',
@@ -16,7 +17,7 @@ export class RegisterPageComponent implements OnInit {
   md5 = new Md5();
   registerForm: FormGroup;
 
-  sexes = ['female', 'male'];
+  sexes: any[];
   offers: any[];
   activities: any[];
   cities: string[];
@@ -36,18 +37,27 @@ export class RegisterPageComponent implements OnInit {
     private router: Router,
     private userStoreService: UserStoreService,
     private authService: AuthService,
-    private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService) {
+    private utliltyStoreService: UtilityStoreService,
+    private translateService: TranslateService) {
 
     this.registerForm = this.createRegisterForm();
   }
 
   ngOnInit() {
     // initialzie all available offers & activities
-    this.offers = this.activitiesOffersCitiesStoreService.getAllOffers();
-    this.activities = this.activitiesOffersCitiesStoreService.getAllActivities();
-    this.cities = this.activitiesOffersCitiesStoreService.getAllCities();
-
+    this.setAllUtilities();
+    this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
+      this.setAllUtilities();
+    });
     this.initializeMultiselectSettings();
+  }
+
+  setAllUtilities() {
+    this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
+    this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
+    this.activities = this.utliltyStoreService.getAllActivities(this.translateService.getDefaultLang());
+    this.sexes = this.utliltyStoreService.getAllSex(this.translateService.getDefaultLang());
+    this.sexes.splice(2, 1);
   }
 
   createRegisterForm() {
@@ -125,7 +135,7 @@ export class RegisterPageComponent implements OnInit {
       firstname: this.registerForm.value.registerFormFirstname,
       lastname: this.registerForm.value.registerFormLastname,
       city: this.selectedCity[0],
-      dateOfBirth: this.registerForm.value.registerFormBirthday,
+      dateOfBirth: Number(this.registerForm.value.registerFormBirthday),
       // get the only one item from selectedSex-Array
       sex: this.parseSexValueForBackend(this.selectedSex[0]),
       activities: this.selectedActivities,

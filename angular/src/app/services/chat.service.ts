@@ -14,6 +14,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class ChatService {
 
   // TODO change if using over web
+
   // private apiUrl2 = 'http://localhost:5000/livechattandem/us-central1/chatrooms';
   private apiUrl2 = 'https://us-central1-livechattandem.cloudfunctions.net/chatrooms';
   private headers: Headers = new Headers();

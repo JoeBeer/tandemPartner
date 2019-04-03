@@ -3,6 +3,8 @@ import { ChatService } from './../../services/chat.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { faReply } from '@fortawesome/free-solid-svg-icons';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-chatroom-item',
@@ -13,6 +15,8 @@ export class ChatroomItemComponent implements OnInit {
 
   chatroom$: Observable<any>;
   newMessage: string;
+
+  faReply = faReply;
 
   constructor(
     public chatService: ChatService,

@@ -33,7 +33,7 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth.guard';
 import { UserStoreService } from './services/user-store.service';
 import { MatchStoreService } from './services/match-store.service';
-import { ActivitiesOffersCitiesStoreService } from './services/activities-offers-cities-store.service';
+import { UtilityStoreService } from './services/utility-store.service';
 import { SearchService } from './services/search.service';
 import { ChatService } from './services/chat.service';
 
@@ -91,7 +91,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AuthService,
     AuthGuard,
     MatchStoreService,
-    ActivitiesOffersCitiesStoreService,
+    UtilityStoreService,
     ChatService,
     SearchService,
     { provide: FirestoreSettingsToken, useValue: {} } // To solve the timestampInSnapshot-Error
