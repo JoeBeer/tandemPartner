@@ -55,7 +55,8 @@
     "headerTitle": "Edit your Profile",
     "newPassword": "New Password",
     "newPasswordConfirm": "Confirm your new Password",
-    "deleteButton": "Delete Profile"
+    "deleteButton": "Delete Profile",
+    "deleteQuestion": "Do you really want to delete your profile?"
   },
 
   "validators": {
@@ -94,8 +95,7 @@
   "result": {
     "sendMatchrequestTooltip": "Send Matchrequest",
     "results": "Searching Results",
-    "age": "years old",
-    "activities": "Activities"
+    "age": "years old"
   },
 
   "chatroomList": {

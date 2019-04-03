@@ -13,7 +13,7 @@ import { combineLatest, forkJoin, of, Observable } from 'rxjs';
 })
 export class MatchStoreService {
 
-  //private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
+  // private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
   private apiUrl = 'https://us-central1-livechattandem.cloudfunctions.net';
 
   constructor(

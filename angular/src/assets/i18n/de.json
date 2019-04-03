@@ -55,7 +55,8 @@
     "headerTitle": "Profil bearbeiten",
     "newPassword": "Neues Passwort",
     "newPasswordConfirm": "Neues Passwort bestätigen",
-    "deleteButton": "Profil löschen"
+    "deleteButton": "Profil löschen",
+    "deleteQuestion": "Möchtest du dein Profil wirklich löschen?"
   },
 
   "validators": {
@@ -94,8 +95,7 @@
   "result": {
     "sendMatchrequestTooltip": "Matchanfrage senden",
     "results": "Suchergebnisse",
-    "age": "Jahre alt",
-    "activities": "Aktivitäten"
+    "age": "Jahre alt"
   },
 
   "chatroomList": {

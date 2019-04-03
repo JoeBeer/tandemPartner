@@ -17,6 +17,7 @@ export class ProfilePageComponent implements OnInit {
 
   md5 = new Md5();
   currentUser;
+  userId: string;
   editForm: FormGroup;
 
   // for showing available offers, activities & cities
@@ -34,6 +35,9 @@ export class ProfilePageComponent implements OnInit {
   selectCitySettings = {};
   selectOffersActivitiesSettings = {};
 
+  // for modal
+  display = 'none';
+  modalIsOpen = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,6 +61,7 @@ export class ProfilePageComponent implements OnInit {
     const user = await this.authService.getCurrentUser();
 
     this.userStoreService.getUserById(user.uid).subscribe((recievedUser: User) => {
+      this.userId = recievedUser.uid;
       this.sex = this.parseSexValueForFrontend(recievedUser.sex);
       this.selectedActivities = recievedUser.activities;
       this.selectedOffers = recievedUser.offers,
@@ -231,5 +236,25 @@ export class ProfilePageComponent implements OnInit {
     return this.editForm.get('editFormPasswordConfirm');
   }
 
+  openModal(id: string) {
+    console.log('id: ' + id);
+    this.modalIsOpen = true;
+    this.display = 'block';
+
+  }
+
+  closeModal() {
+    this.display = 'none';
+    this.modalIsOpen = false;
+  }
+
+  deleteProfile() {
+    this.userStoreService.deleteUser(this.userId).subscribe(() => {
+      this.closeModal();
+      this.authService.logout().then(() => {
+        alert('Profil wurde gelöscht');
+      });
+    });
+  }
 
 }
