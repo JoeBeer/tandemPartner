@@ -51,6 +51,8 @@ export class MatchListComponent implements OnInit {
   activities: string;
   arr: string;
   age: string;
+  initiatorID: string;
+  partnerID: string;
 
   constructor(
     private authService: AuthService,
@@ -132,15 +134,19 @@ export class MatchListComponent implements OnInit {
     } */
 
 
-  openModal(id: any) {
+  openModal(id: any, initiatorID: string, partnerID: string) {
+    // save partnerID and initiatorID for Contact
+    this.initiatorID = initiatorID;
+    this.partnerID = partnerID;
+
+    // infos for modal
     this.activities = '';
-    // console.log('id: ' + id);
     this.modalIsOpen = true;
     this.display = 'block';
     this.userStoreService.getUserById(id).subscribe((user: User) => {
       this.firstname = user.firstname;
       this.lastname = user.lastname;
-      this.sex = user.sex;
+      this.sex = this.parseSexValueForModal(user.sex);
       this.city = user.city;
       this.activities = this.activitiesForModal(user.activities);
       this.age = this.calculateAgeForModal(user.dateOfBirth);
@@ -154,26 +160,33 @@ export class MatchListComponent implements OnInit {
     return age + '';
   }
 
-activitiesForModal(activities: string[]): string {
-  this.arr = '';
-  activities.forEach(element => {
-    this.arr = element + ', ' + this.arr;
-  });
-  return this.arr.substring(0, (this.arr.length - 2));
-}
-
-
-closeModal() {
-  this.display = 'none';
-  this.modalIsOpen = false;
-}
-
-validateCurrentUser(initiatorID: string, partnerID: string) {
-  if (this.authService.currentUserID === initiatorID) {
-    return partnerID;
-  } else {
-    return initiatorID;
+  activitiesForModal(activities: string[]): string {
+    this.arr = '';
+    activities.forEach(element => {
+      this.arr = element + ', ' + this.arr;
+    });
+    return this.arr.substring(0, (this.arr.length - 2));
   }
-}
+
+  parseSexValueForModal(sex: string): string {
+    if (sex === 'm') {
+      return 'männlich';
+    } else if (sex === 'f') {
+      return 'weiblich';
+    }
+  }
+
+  closeModal() {
+    this.display = 'none';
+    this.modalIsOpen = false;
+  }
+
+  validateCurrentUser(initiatorID: string, partnerID: string) {
+    if (this.authService.currentUserID === initiatorID) {
+      return partnerID;
+    } else {
+      return initiatorID;
+    }
+  }
 
 }

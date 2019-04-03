@@ -13,9 +13,9 @@
             <div class="card-text">
               <div class="row">
                 <div class="col-8 col-md-10">
-                  <a class="pointer-cursor" (click)="openModal(match.initiatorID)">
+                  <a class="pointer-cursor" (click)="openModal(match.initiatorID, match.matchId)">
                     <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
-                    <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p>
+                    <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->
                     <p class="my-0"><small>Aktivitäten: {{activitiesForModal(match.activities)}}</small></p>
                   </a>
                 </div>
@@ -75,6 +75,10 @@
               <td>{{age}}</td>
             </tr>
             <tr>
+              <th class="font-weight-normal" scope="row">Geschlecht:</th>
+              <td>{{sex}}</td>
+            </tr>
+            <tr>
               <th class="font-weight-normal" scope="row">Ort:</th>
               <td>{{city}}</td>
             </tr>
@@ -86,12 +90,13 @@
         </table>
       </div>
       <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-outline-warning homebutton"
-          (click)="contactUser(match.initiatorID, match.partnerID)" data-toggle="tooltip" data-placement="top"
-          title="{{ 'matchlist.contactTooltip' | translate }}">
-          <fa-icon [icon]="faEnvelope"></fa-icon>
-        </button> -->
-        <button type="button" class="btn btn-warning" (click)="closeModal()">Close</button>
+        <button type="button" class="btn btn-success mr-2" (click)="acceptMatch(idMatch)">
+          Annehmen
+        </button>
+        <button type="button" class="btn btn-outline-danger" (click)="declineMatch(idMatch)">
+          Ablehnen
+        </button>
+        <!-- <button type="button" class="btn btn-warning" (click)="closeModal()">Close</button> -->
       </div>
     </div>
   </div>

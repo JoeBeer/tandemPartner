@@ -18,7 +18,7 @@
                       <p class="my-0"><small><b>{{ user.firstname }} {{ user.lastname }}</b></small></p>
                       <p class="my-0"><small><i>{{ parseSexValueForFrontend(user.sex) }}</i></small></p>
                       <p class="my-0"><small><i>{{ user.city }}</i></small></p>
-                      <p class="my-0"><small><i>{{ user.dateOfBirth }} {{ 'result.age' | translate }}</i></small></p>
+                      <p class="my-0"><small><i>{{ calculateAge(user.dateOfBirth) }} {{ 'result.age' | translate }}</i></small></p>
                       <p class="my-0"><small><i>{{ 'result.activities' | translate }}</i>: {{ user.activities }}</small></p>
                     </div>
                     <div class="col-4 col-md-2 d-flex justify-content-end my-auto">

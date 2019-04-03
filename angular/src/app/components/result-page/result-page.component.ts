@@ -72,6 +72,11 @@ export class ResultPageComponent implements OnInit {
     this.matchStoreService.createMatch(newMatch).subscribe();
   }
 
-
+  calculateAge(birthdate: Date): string {
+    const BD = new Date(birthdate);
+    const timeDiff = Math.abs(Date.now() - BD.getTime());
+    const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    return age + '';
+  }
 
 }

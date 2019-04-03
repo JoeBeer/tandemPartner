@@ -32,9 +32,9 @@
               <div class="card-text">
                 <div class="row">
                   <div class="col-8 col-md-10">
-                    <a class="pointer-cursor" (click)="openModal(match.partnerID)">
+                    <a class="pointer-cursor" (click)="openModal(match.initiatorID, match.initiatorID, match.partnerID)">
                       <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
-                      <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p>
+                      <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->
                       <p class="my-0"><small>Aktivitäten: {{ match.activities }}</small></p>
                     </a>
                   </div>
@@ -67,9 +67,9 @@
               <div class="card-text">
                 <div class="row">
                   <div class="col-8 col-md-10">
-                    <a class="pointer-cursor" (click)="openModal(match.partnerID)">
+                    <a class="pointer-cursor" (click)="openModal(match.initiatorID)">
                       <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
-                      <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p>
+                      <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->
                       <p class="my-0"><small>Aktivitäten: {{ match.activities }}</small></p>
                     </a>
                   </div>
@@ -116,9 +116,9 @@
                 <div class="row">
                   <div class="col-8 col-md-10">
 
-                      <p class="my-0"><small>{{ matchrequest.firstname }} {{ matchrequest.lastname }}</small></p>
-                      <p class="my-0"><small>Age: {{calculateAgeForModal(matchrequest.dateOfBirth)}}</small></p>
-                      <p class="my-0"><small>Aktivitäten: {{ matchrequest.activities }}</small></p>
+                    <p class="my-0"><small>{{ matchrequest.firstname }} {{ matchrequest.lastname }}</small></p>
+                    <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(matchrequest.dateOfBirth)}}</small></p> -->
+                    <p class="my-0"><small>Aktivitäten: {{ matchrequest.activities }}</small></p>
 
                   </div>
                   <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
@@ -183,6 +183,10 @@
               <td>{{age}}</td>
             </tr>
             <tr>
+              <th class="font-weight-normal" scope="row">Geschlecht:</th>
+              <td>{{sex}}</td>
+            </tr>
+            <tr>
               <th class="font-weight-normal" scope="row">Ort:</th>
               <td>{{city}}</td>
             </tr>
@@ -194,12 +198,11 @@
         </table>
       </div>
       <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-outline-warning homebutton"
-          (click)="contactUser(match.initiatorID, match.partnerID)" data-toggle="tooltip" data-placement="top"
-          title="{{ 'matchlist.contactTooltip' | translate }}">
+        <button type="button" class="btn btn-outline-warning homebutton" (click)="contactUser(initiatorID, partnerID)"
+          data-toggle="tooltip" data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
           <fa-icon [icon]="faEnvelope"></fa-icon>
-        </button> -->
-        <button type="button" class="btn btn-warning" (click)="closeModal()">Close</button>
+        </button>
+        <!-- <button type="button" class="btn btn-warning" (click)="closeModal()">Close</button> -->
       </div>
     </div>
   </div>
