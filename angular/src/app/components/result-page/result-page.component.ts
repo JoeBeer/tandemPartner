@@ -1,3 +1,5 @@
+import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
+import { UtilityStoreService } from './../../services/utility-store.service';
 import { Searchrequest } from './../../models/searchrequest';
 import { ActivatedRoute } from '@angular/router';
 import { SearchService } from './../../services/search.service';
@@ -7,7 +9,6 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user';
 import { faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import { Match } from '../..//models/match';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-result-page',
@@ -25,6 +26,10 @@ export class ResultPageComponent implements OnInit {
   userForSpecificRequest: User[] = [];
   usersToBeExcludedArray: string[] = [];
 
+  cities;
+  activities;
+  sex;
+
   searchResults$;
 
   matchedOffer;
@@ -33,24 +38,28 @@ export class ResultPageComponent implements OnInit {
     private matchStoreService: MatchStoreService,
     private authService: AuthService,
     private searchService: SearchService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private utliltyStoreService: UtilityStoreService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
-    // const searchRequestId = this.route.snapshot.paramMap.get('id');
-    // this.searchResults$ = this.searchService.getSearchRequestById(searchRequestId).pipe(
-    //   switchMap(searchRequest => {
-    //     this.matchedOffer = searchRequest.offerParam;
-    //     return this.searchService.getSearchResult(searchRequest);
-    //   })
-    // );
-
+    this.setAllUtilities();
+    this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
+      this.setAllUtilities();
+    });
     const searchRequestId = this.route.snapshot.paramMap.get('id');
     this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
       this.matchedOffer = searchRequest.offerParam; // TODO check, if the error message occures again
       this.searchResults$ = this.searchService.getSearchResult(searchRequest);
-      this.searchService.getSearchResult(searchRequest).subscribe(); // TODO subscribe in a subscribe is bad code. Try to fix this!
+      // this.searchService.getSearchResult(searchRequest).subscribe(); // TODO subscribe in a subscribe is bad code. Try to fix this!
     });
+  }
+
+  setAllUtilities() {
+    this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
+    this.activities = this.utliltyStoreService.getAllActivities(this.translateService.getDefaultLang());
+    this.sex = this.utliltyStoreService.getAllSex(this.translateService.getDefaultLang());
   }
 
   calculateAgeForEachUser(birthdate: any) {
@@ -59,12 +68,27 @@ export class ResultPageComponent implements OnInit {
     return age;
   }
 
-  parseSexValueForFrontend(sex: string): string {
-    if (sex === 'm') {
-      return 'male';
-    } else if (sex === 'f') {
-      return 'female';
-    }
+  parseSexValueForFrontend(sexIndex: number): string {
+    return this.sex[sexIndex];
+  }
+
+  parseCityForFrontend(cityIndex: number) {
+    return this.cities[cityIndex];
+  }
+
+  parseActivitiesForFrontend(activitiesIndex: number[]) {
+    const activities: string[] = [];
+
+    activitiesIndex.forEach(activityIndex => {
+      activities.push(this.activities[activityIndex]);
+    });
+    return activities;
+  }
+
+  parseDateOfBirthForFrontend(dateOfBirth: number) {
+    const ageDifMs = Date.now() - dateOfBirth;
+    const ageDate = new Date(ageDifMs);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 
   sendMatchrequest(partner: User) {

@@ -16,7 +16,7 @@ export class RegisterPageComponent implements OnInit {
   md5 = new Md5();
   registerForm: FormGroup;
 
-  sexes: any[];
+  sex: any[];
   offers: any[];
   activities: any[];
   cities: string[];
@@ -54,8 +54,7 @@ export class RegisterPageComponent implements OnInit {
     this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
     this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
     this.activities = this.utliltyStoreService.getAllActivities(this.translateService.getDefaultLang());
-    this.sexes = this.utliltyStoreService.getAllSex(this.translateService.getDefaultLang());
-    // this.sexes.splice(2, 1);
+    this.sex = this.utliltyStoreService.getAllSex(this.translateService.getDefaultLang());
   }
 
   createRegisterForm() {
@@ -136,8 +135,8 @@ export class RegisterPageComponent implements OnInit {
       dateOfBirth: Number(this.registerForm.value.registerFormBirthday),
       // get the only one item from selectedSex-Array
       sex: this.parseSexValueForBackend(this.selectedSex[0]),
-      activities: this.selectedActivities,
-      offers: this.selectedOffers,
+      activities: this.parseActivitiesForBackend(this.selectedActivities),
+      offers: this.parseOffersForBackend(this.selectedOffers),
       mail: this.registerForm.value.registerFormMail,
       password: this.md5.appendStr(this.registerForm.value.registerFormMail)
         .appendStr(this.registerForm.value.registerFormPassword).end()
@@ -150,15 +149,26 @@ export class RegisterPageComponent implements OnInit {
 
   }
 
-  // shorten the male/female-word and return one letter or 'no choice'
-  parseSexValueForBackend(sex: string): string {
-    if (sex === 'male' || sex === 'männlich') {
-      return 'm';
-    } else if (sex === 'female' || sex === 'weiblich') {
-      return 'f';
-    } else {
-      return 'there was no choice of sex';
-    }
+  parseSexValueForBackend(sex: string) {
+    return this.sex.indexOf(sex);
+  }
+
+  parseActivitiesForBackend(selectedActivities: string[]) {
+    const selectedActivitiesIndexes: number[] = [];
+
+    selectedActivities.forEach(activity => {
+      selectedActivitiesIndexes.push(this.activities.indexOf(activity));
+    });
+    return selectedActivitiesIndexes;
+  }
+
+  parseOffersForBackend(selectedOffers: string[]) {
+    const selectedOffersIndexes: number[] = [];
+
+    selectedOffers.forEach(offer => {
+      selectedOffersIndexes.push(this.offers.indexOf(offer));
+    });
+    return selectedOffersIndexes;
   }
 
   // getter for the inputfields

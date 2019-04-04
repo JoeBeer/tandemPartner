@@ -1,3 +1,5 @@
+import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
+import { UtilityStoreService } from './../../services/utility-store.service';
 import { Match } from './../../models/match';
 import { MatchStoreService } from './../../services/match-store.service';
 import { AuthService } from './../../services/auth.service';
@@ -25,6 +27,11 @@ export class HomeComponent implements OnInit {
   unAcceptedMatches$: any[] = [];
   unAcceptedMatchesLength: number;
 
+  activities;
+  cities;
+  offers;
+  sex;
+
   openedModal: any;
 
   // for fontawesome icons
@@ -42,7 +49,9 @@ export class HomeComponent implements OnInit {
     private userStoreService: UserStoreService,
     private authService: AuthService,
     private router: Router,
-    private matchStoreService: MatchStoreService
+    private matchStoreService: MatchStoreService,
+    private utliltyStoreService: UtilityStoreService,
+    private translateService: TranslateService
   ) {
     this.matchStoreService.getAllUnAcceptedMatches().subscribe(matches => {
       this.unAcceptedMatchesLength = matches.length;
@@ -52,15 +61,18 @@ export class HomeComponent implements OnInit {
 
   // when home-component was called, the written methods in ngOnInit gonna start
   ngOnInit() {
-    // this.unAcceptedMatches$ = this.matchStoreService.getAllUnAcceptedMatches();
+    this.setAllUtilities();
+    this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
+      this.setAllUtilities();
+    });
     console.log('Aufruf - Home');
   }
 
-  getInitiatorFirstname(id: string) {
-    // this.userStoreService.getUserById(id).subscribe((recievedUser: User) => {
-    //   this.initiatorFirstname = recievedUser.firstname;
-    //   console.log('initiatorFirstname: ' + this.initiatorFirstname);
-    // });
+  setAllUtilities() {
+    this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
+    this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
+    this.activities = this.utliltyStoreService.getAllActivities(this.translateService.getDefaultLang());
+    this.sex = this.utliltyStoreService.getAllSex(this.translateService.getDefaultLang());
   }
 
   acceptMatch(matchId) {
@@ -68,22 +80,22 @@ export class HomeComponent implements OnInit {
       accepted: true
     };
     this.matchStoreService.updateMatch(matchId, data)
-    .subscribe(() => {
-      if (this.unAcceptedMatchesLength === 1) {
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-          this.router.navigate(['/home']));
-      }
-    });
+      .subscribe(() => {
+        if (this.unAcceptedMatchesLength === 1) {
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+            this.router.navigate(['/home']));
+        }
+      });
   }
 
   declineMatch(matchId) {
     this.matchStoreService.deleteMatch(matchId)
-    .subscribe(() => {
-      if (this.unAcceptedMatchesLength === 1) {
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-          this.router.navigate(['/home']));
-      }
-    } );
+      .subscribe(() => {
+        if (this.unAcceptedMatchesLength === 1) {
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+            this.router.navigate(['/home']));
+        }
+      });
   }
 
   openModal(id: string) {
@@ -96,6 +108,25 @@ export class HomeComponent implements OnInit {
   closeModal() {
     this.display = 'none';
     this.modalIsOpen = false;
+  }
+
+  parseActivitiesForFrontend(activitiesIndex: number[]) {
+    const activities: string[] = [];
+
+    activitiesIndex.forEach(activityIndex => {
+      activities.push(this.activities[activityIndex]);
+    });
+    return activities;
+  }
+
+  parseOfferForFrontend(selectedOfferIndex: number) {
+    return this.offers[selectedOfferIndex];
+  }
+
+  parseDateOfBirthForFrontend(dateOfBirth: number) {
+    const ageDifMs = Date.now() - dateOfBirth;
+    const ageDate = new Date(ageDifMs);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 
 }

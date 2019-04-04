@@ -7,7 +7,7 @@
       <div *ngFor="let match of unAcceptedMatches$ | paginate: { itemsPerPage: 5, currentPage: pageNumber }">
         <div class="card shadow my-3">
             <h5 class="card-header">
-                {{ 'home.requestTitle' | translate}} {{ match.matchedOffer }}
+                {{ 'home.requestTitle' | translate}} {{ parseOfferForFrontend(match.matchedOffer) }}
             </h5>
             <div class="card-body">
               <div class="card-text">
@@ -15,8 +15,8 @@
                       <div class="col-8 col-md-10">
                         <a class="pointer-cursor" (click)="openModal(match.initiatorID)">
                           <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
-                          <p class="my-0"><small>Age:</small></p>
-                          <p class="my-0"><small>Aktivitäten:</small></p>
+                          <p class="my-0"><small>Age: {{ parseDateOfBirthForFrontend(match.dateOfBirth) }}</small></p>
+                          <p class="my-0"><small>Aktivitäten: {{ parseActivitiesForFrontend(match.activities) }}</small></p>
                         </a>
                       </div>
                       <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
