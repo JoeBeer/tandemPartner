@@ -56,7 +56,7 @@
     "newPassword": "New Password",
     "newPasswordConfirm": "Confirm your new Password",
     "deleteButton": "Delete Profile",
-    "deleteQuestion": "Do you really want to delete your profile?"
+    "deleteQuestion": "Do you really want to delete your profile?",
     "confirmButton": "Confirm",
     "modalHeader": "Confirm you current Password"
   },
@@ -131,3 +131,4 @@
     "male": "male",
     "female": "female"
   }
+}

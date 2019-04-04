@@ -56,7 +56,7 @@
     "newPassword": "Neues Passwort",
     "newPasswordConfirm": "Neues Passwort bestätigen",
     "deleteButton": "Profil löschen",
-    "deleteQuestion": "Möchtest du dein Profil wirklich löschen?"
+    "deleteQuestion": "Möchtest du dein Profil wirklich löschen?",
     "confirmButton": "Bestätigen",
     "modalHeader": "Aktuelles Passwort bestätigen"
   },
