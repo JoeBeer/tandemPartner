@@ -6,10 +6,10 @@
       <!-- show all matchRequests which are saved in the Array of 'matchRequests'-->
       <div *ngFor="let match of unAcceptedMatches$ | paginate: { itemsPerPage: 5, currentPage: pageNumber }">
         <div class="card shadow my-3">
-          <h5 class="card-header">
+          <h5 class="card-header bg-white border-warning font-italic">
             {{ 'home.requestTitle' | translate}} {{ match.matchedOffer }}
           </h5>
-          <div class="card-body">
+          <div class="card-body accepted-match-cards">
             <div class="card-text">
               <div class="row">
                 <div class="col-8 col-md-10">
@@ -54,7 +54,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Details zu {{firstname}}</h5>
+        <h5 class="modal-title">{{ 'modals.details' | translate}} {{firstname}}</h5>
         <button type="button" class="close" (click)="closeModal()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -63,27 +63,28 @@
         <table class="table table-light">
           <tbody>
             <tr>
-              <th class="font-weight-normal" scope="row">Vorname:</th>
+              <th class="font-weight-normal" scope="row">{{ 'modals.details' | translate}}:</th>
               <td>{{firstname}}</td>
             </tr>
             <tr>
-              <th class="font-weight-normal" scope="row">Nachname:</th>
+              <th class="font-weight-normal" scope="row">{{ 'register.lastname' | translate}}:</th>
               <td>{{lastname}}</td>
             </tr>
             <tr>
-              <th class="font-weight-normal" scope="row">Alter:</th>
+              <th class="font-weight-normal" scope="row">{{ 'modals.age' | translate}}:</th>
               <td>{{age}}</td>
             </tr>
             <tr>
-              <th class="font-weight-normal" scope="row">Geschlecht:</th>
-              <td>{{sex}}</td>
+              <th class="font-weight-normal" scope="row">{{ 'register.sex' | translate}}:</th>
+              <td *ngIf="sex === 'f'">{{ 'sex.female' | translate}}</td>
+              <td *ngIf="sex === 'm'">{{ 'sex.male' | translate}}</td>
             </tr>
             <tr>
-              <th class="font-weight-normal" scope="row">Ort:</th>
+              <th class="font-weight-normal" scope="row">{{ 'search.city' | translate}}:</th>
               <td>{{city}}</td>
             </tr>
             <tr>
-              <th class="font-weight-normal" scope="row">Interessen:</th>
+              <th class="font-weight-normal" scope="row">{{ 'result.activities' | translate}}:</th>
               <td>{{activities}}</td>
             </tr>
           </tbody>
@@ -91,12 +92,11 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success mr-2" (click)="acceptMatch(idMatch)">
-          Annehmen
+          {{ 'modals.accept' | translate}}
         </button>
         <button type="button" class="btn btn-outline-danger" (click)="declineMatch(idMatch)">
-          Ablehnen
+          {{ 'modals.decline' | translate}}
         </button>
-        <!-- <button type="button" class="btn btn-warning" (click)="closeModal()">Close</button> -->
       </div>
     </div>
   </div>

@@ -23,8 +23,8 @@
           <div class="row">
             <div class="col-md-6 form-group">
               <label for="editFormSex">{{'register.sex' | translate }}*</label>
-              <div *ngIf="sex === 'male'" class="form-control shadow-sm bg-light" id="editFormSex" disabled>{{'sex.male' | translate }}</div>
-              <div *ngIf="sex === 'female'" class="form-control shadow-sm bg-light" id="editFormSex" disabled>{{'sex.female' | translate }}</div>
+              <div *ngIf="sex === 'm'" class="form-control shadow-sm bg-light" id="editFormSex" disabled>{{'sex.male' | translate }}</div>
+              <div *ngIf="sex === 'f'" class="form-control shadow-sm bg-light" id="editFormSex" disabled>{{'sex.female' | translate }}</div>
 
             </div>
             <div class="col-md-6 form-group">
@@ -195,7 +195,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Profil löschen</h5>
+        <h5 class="modal-title">{{ 'profile.deleteButton' | translate}}</h5>
         <button type="button" class="close" (click)="closeModal()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -204,9 +204,9 @@
           {{ 'profile.deleteQuestion' | translate}}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-danger" (click)="deleteProfile()">{{ 'modal.deleteButton' | translate}}</button>
+        <button type="button" class="btn btn-outline-warning" (click)="deleteProfile()">{{ 'profile.deleteButton' | translate}}</button>
         <button type="button" class="btn btn-warning" (click)="closeModal()">{{ 'register.quitButton' | translate}}</button>
       </div>
   </div>
   </div>
-</div>    
+</div>

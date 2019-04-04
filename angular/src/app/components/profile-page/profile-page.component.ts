@@ -69,7 +69,7 @@ export class ProfilePageComponent implements OnInit {
 
     this.userStoreService.getUserById(user.uid).subscribe((recievedUser: User) => {
       this.userId = recievedUser.uid;
-      this.sex = this.parseSexValueForFrontend(recievedUser.sex);
+      this.sex = recievedUser.sex;
       this.selectedActivities = recievedUser.activities;
       this.selectedOffers = recievedUser.offers,
       this.selectedCity = Array.of(recievedUser.city);
@@ -141,16 +141,6 @@ export class ProfilePageComponent implements OnInit {
       itemsShowLimit: 3,
       allowSearchFilter: true
     };
-  }
-
-  parseSexValueForFrontend(sex: string): string {
-    if (sex === 'm') {
-      return 'male';
-    } else if (sex === 'f') {
-      return 'female';
-    } else {
-      return 'there was no choice of sex';
-    }
   }
 
   parseSexValueForBackend(sex: string): string {

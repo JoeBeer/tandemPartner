@@ -130,5 +130,12 @@
   "sex": {
     "male": "male",
     "female": "female"
+  },
+
+  "modals": {
+    "details": "Details for",
+    "accept": "Accept",
+    "decline": "Decline",
+    "age": "Age"
   }
 }
