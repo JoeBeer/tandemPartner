@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import * as firebase from 'firebase/app';
 
 import { Observable, of } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
@@ -51,6 +52,11 @@ export class AuthService {
 
   getCurrentUser() {
     return this.user$.pipe(first()).toPromise();
+  }
+
+  async validatePassword(password: string) {
+    const credential = firebase.auth.EmailAuthProvider.credential(this.currentUserMail, password);
+    await this.angularFireAuth.auth.currentUser.reauthenticateAndRetrieveDataWithCredential(credential);
   }
 
   async logout() {

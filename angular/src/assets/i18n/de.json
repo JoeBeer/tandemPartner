@@ -57,6 +57,8 @@
     "newPasswordConfirm": "Neues Passwort bestätigen",
     "deleteButton": "Profil löschen",
     "deleteQuestion": "Möchtest du dein Profil wirklich löschen?"
+    "confirmButton": "Bestätigen",
+    "modalHeader": "Aktuelles Passwort bestätigen"
   },
 
   "validators": {
@@ -69,7 +71,9 @@
     "passwordMismatch": "Passwörter stimmen nicht überein!",
     "minOffers": "mind. ein  Angebot muss ausgewählt sein!",
     "minActivities": "mind. eine Aktivität muss ausgewählt sein!",
-    "ageMismatch": "Das Mindestalter muss kleiner als das Maximalalter sein!"
+    "ageMismatch": "Das Mindestalter muss kleiner als das Maximalalter sein!",
+    "updateSuccess": "Aktualisierung erfoglreich!",
+    "incorrectPassword": "Falsches Passwort! Bitte erneut versuchen!"
   },
 
   "matchlist": {
@@ -95,7 +99,8 @@
   "result": {
     "sendMatchrequestTooltip": "Matchanfrage senden",
     "results": "Suchergebnisse",
-    "age": "Jahre alt"
+    "age": "Jahre alt",
+    "activities": "Aktivitäten"
   },
 
   "chatroomList": {
@@ -120,5 +125,11 @@
     "blockquote": "\"Eine Investition in Wissen bringt immer noch die besten Zinsen.\"",
     "explanation": "Wir möchten Dir deine Investition so einfach wie möglich machen und bieten Dir deshalb eine Plattform, mit dieser Du jeder Zeit dein eigenes Wissen mit anderen teilen und auch neues erlangen kannst. Das tandemPartner Team besteht aus Studenten des 6. Semester an der HWR Berlin.",
     "imageExplanation": "Hier das Team von links nach rechts:"
+  },
+
+  "sex": {
+    "male": "männlich",
+    "female": "weiblich"
   }
 }
+
