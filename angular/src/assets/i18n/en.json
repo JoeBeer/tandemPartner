@@ -55,7 +55,9 @@
     "headerTitle": "Edit your Profile",
     "newPassword": "New Password",
     "newPasswordConfirm": "Confirm your new Password",
-    "deleteButton": "Delete Profile"
+    "deleteButton": "Delete Profile",
+    "confirmButton": "Confirm",
+    "modalHeader": "Confirm you current Password"
   },
 
   "validators": {
@@ -68,7 +70,9 @@
     "passwordMismatch": "Passwords not match!",
     "minOffers": "at least one offer is required!",
     "minActivities": "at least one activity is required!",
-    "ageMismatch": "The minimum Age has to be smaller than the maximum Age!"
+    "ageMismatch": "The minimum Age has to be smaller than the maximum Age!",
+    "updateSuccess": "Update successful!",
+    "incorrectPassword": "Incorrect Password! Please try again!"
   },
 
   "matchlist": {
@@ -120,5 +124,10 @@
     "blockquote": "\"An investment in knowledge still brings the best interest.\"",
     "explanation": "We want to make your investment as simple as possible. Therefore we are offering you one platform, with whom you can share your knowledge with other people and learn something new. The tandemPartner Team consists of students of HWR Berlin in their sixth semesters.",
     "imageExplanation": "This is the team from the left to the right:"
+  },
+
+  "sex": {
+    "male": "male",
+    "female": "female"
   }
 }

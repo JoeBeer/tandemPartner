@@ -18,6 +18,7 @@ export class ProfilePageComponent implements OnInit {
   md5 = new Md5();
   currentUser;
   editForm: FormGroup;
+  modalForm: FormGroup;
 
   // for showing available offers, activities & cities
   offers: any[];
@@ -34,6 +35,9 @@ export class ProfilePageComponent implements OnInit {
   selectCitySettings = {};
   selectOffersActivitiesSettings = {};
 
+  // for passwordConfirming in confirmModal
+  updateSuccess = false;
+  invalidPassword = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -44,6 +48,7 @@ export class ProfilePageComponent implements OnInit {
     private translateService: TranslateService) {
 
     this.editForm = this.createEditForm();
+    this.modalForm = this.createModalForm();
   }
 
   async ngOnInit() {
@@ -65,6 +70,8 @@ export class ProfilePageComponent implements OnInit {
       this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
       this.editForm.get('editFormMail').setValue(this.authService.currentUserMail);
       this.editForm.get('editFormBirthday').setValue(new Date(recievedUser.dateOfBirth));
+      // modalForm valid status will be validated, therefore has to be initialized in ngOnInit()
+      this.modalForm.get('modalFormPassword');
     });
 
     this.initializeMultiselectSettings();
@@ -102,6 +109,12 @@ export class ProfilePageComponent implements OnInit {
 
   }
 
+  createModalForm() {
+    return this.formBuilder.group({
+      modalFormPassword: ['', [Validators.required]]
+    });
+  }
+
   initializeMultiselectSettings() {
 
     this.selectCitySettings = {
@@ -123,7 +136,6 @@ export class ProfilePageComponent implements OnInit {
     };
   }
 
-  // TODO: internationalize it!
   parseSexValueForFrontend(sex: string): string {
     if (sex === 'm') {
       return 'male';
@@ -149,6 +161,29 @@ export class ProfilePageComponent implements OnInit {
     if (control.get('editFormPassword').value !== control.get('editFormPasswordConfirm').value) {
       return { invalid: true };
     }
+  }
+
+  confirmAndValidatePassword() {
+
+    // hash the input for conclusion with the saved password in firebase's Auth
+    const password: string = this.md5.appendStr(this.authService.currentUserMail)
+    .appendStr(this.modalForm.value.modalFormPassword).end() as string;
+
+    this.authService.validatePassword(password)
+    // when password was correct start editFormSave()
+    .then(() => {
+      this.invalidPassword = false;
+      this.editFormSave();
+    })
+    // when the password was incorrect, show the specific message
+    .catch(() => {
+      this.updateSuccess = false;
+      this.invalidPassword = true;
+      setTimeout(() => {
+        this.invalidPassword = false;
+      }, 3000);
+      this.modalForm.reset();
+    });
   }
 
   // validate the input & select fields and send the mail & password to Firebase Authentication
@@ -179,6 +214,13 @@ export class ProfilePageComponent implements OnInit {
       };
 
       this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
+        // show the updateSuccess message
+        this.updateSuccess = true;
+        setTimeout(() => {
+          this.updateSuccess = false;
+        }, 3000);
+        this.modalForm.reset();
+
         this.authService.logout();
       });
     } else {
@@ -194,10 +236,14 @@ export class ProfilePageComponent implements OnInit {
       };
 
       this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
-        this.router.navigate(['/home']);
+        // show the updateSuccess message
+        this.updateSuccess = true;
+        setTimeout(() => {
+          this.updateSuccess = false;
+        }, 3000);
+        this.modalForm.reset();
       });
-    }
-
+    } // end else
   }
 
   deleteUser() {
@@ -229,6 +275,10 @@ export class ProfilePageComponent implements OnInit {
   }
   get editFormPasswordConfirm() {
     return this.editForm.get('editFormPasswordConfirm');
+  }
+
+  get modalFormPassword() {
+    return this.editForm.get('modalFormPassword');
   }
 
 
