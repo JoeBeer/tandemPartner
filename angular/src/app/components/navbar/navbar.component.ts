@@ -16,6 +16,10 @@ export class NavbarComponent implements OnInit {
   showEnglish = false;
   currentUserFirstname: string;
 
+  // set Username
+  username: string;
+  greeting: string;
+
   constructor(
     private translateService: TranslateService,
     private authService: AuthService,
@@ -24,8 +28,17 @@ export class NavbarComponent implements OnInit {
     translateService.setDefaultLang('de');
   }
 
+
   ngOnInit() {
     this.setUsername();
+    // random greeting
+    this.greeting = this.randomGreeting();
+  }
+
+  randomGreeting(): string {
+    const arr: string[] = ['Grüß dich', 'Hallo', 'Hi', 'Hey', 'Guten Tag', 'Servus', 'Huhu', 'Willkommen', 'Moin'];
+    const randomNumber: number = Math.floor(Math.random() * (arr.length - 1));
+    return arr[randomNumber];
   }
 
   isLoggedIn() {

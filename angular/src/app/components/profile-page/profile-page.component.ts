@@ -17,6 +17,7 @@ export class ProfilePageComponent implements OnInit {
 
   md5 = new Md5();
   currentUser;
+  userId: string;
   editForm: FormGroup;
   modalForm: FormGroup;
 
@@ -38,6 +39,11 @@ export class ProfilePageComponent implements OnInit {
   // for passwordConfirming in confirmModal
   updateSuccess = false;
   invalidPassword = false;
+
+  // for modal
+  display = 'none';
+  modalIsOpen = false;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -62,6 +68,7 @@ export class ProfilePageComponent implements OnInit {
     const user = await this.authService.getCurrentUser();
 
     this.userStoreService.getUserById(user.uid).subscribe((recievedUser: User) => {
+      this.userId = recievedUser.uid;
       this.sex = this.parseSexValueForFrontend(recievedUser.sex);
       this.selectedActivities = recievedUser.activities;
       this.selectedOffers = recievedUser.offers,
@@ -282,4 +289,24 @@ export class ProfilePageComponent implements OnInit {
   }
 
 
+  openModal(id: string) {
+    console.log('id: ' + id);
+    this.modalIsOpen = true;
+    this.display = 'block';
+
+  }
+
+  closeModal() {
+    this.display = 'none';
+    this.modalIsOpen = false;
+  }
+
+  deleteProfile() {
+    this.userStoreService.deleteUser(this.userId).subscribe(() => {
+      this.closeModal();
+      this.authService.logout().then(() => {
+        alert('Profil wurde gelöscht');
+      });
+    });
+  }
 }

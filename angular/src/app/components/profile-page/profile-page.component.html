@@ -133,6 +133,7 @@
               {{'validators.minActivities' | translate }}</div>
           </div>
 
+
           <div  *ngIf="updateSuccess" class="alert alert-success mb-2" role="alert">
               {{'validators.updateSuccess' | translate }}
           </div>
@@ -153,8 +154,7 @@
                 class="btn btn-outline-warning d-flex mx-auto mt-2">{{'register.quitButton' | translate }}</button>
             </div>
             <div class="btn-group ml-md-3">
-              <button type="button" class="btn btn-outline-danger d-flex mx-auto mt-2"
-                (click)="deleteUser()">{{'profile.deleteButton' | translate }}</button>
+              <button type="button"  class="btn btn-outline-danger d-flex mx-auto mt-2" (click)="openModal()">{{'profile.deleteButton' | translate }}</button>
             </div>
           </div>
         </form>
@@ -177,7 +177,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <input type="password" class="form-control shadow-sm" id="modalFormPassword" formControlName="modalFormPassword"
+          <input type="password" class="form-control shadow-sm" id="modalFormPassword" formControlName="modalFormPassword"
           placeholder="{{'register.passwordConfirm' | translate }}">
       </div>
       <div class="modal-footer">
@@ -188,3 +188,25 @@
     </div>
   </div>
 </div>
+
+<!-- Deletemodal -->
+<div class="modal-backdrop fade in" [ngStyle]="{'display':display}"></div>
+<div *ngIf="modalIsOpen" class="modal" [ngStyle]="{'display': display}" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Profil löschen</h5>
+        <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          {{ 'profile.deleteQuestion' | translate}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" (click)="deleteProfile()">{{ 'modal.deleteButton' | translate}}</button>
+        <button type="button" class="btn btn-warning" (click)="closeModal()">{{ 'register.quitButton' | translate}}</button>
+      </div>
+  </div>
+  </div>
+</div>    
