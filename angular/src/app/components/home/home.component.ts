@@ -65,13 +65,6 @@ export class HomeComponent implements OnInit {
     console.log('Aufruf - Home');
   }
 
-  getInitiatorFirstname(id: string) {
-    // this.userStoreService.getUserById(id).subscribe((recievedUser: User) => {
-    //   this.initiatorFirstname = recievedUser.firstname;
-    //   console.log('initiatorFirstname: ' + this.initiatorFirstname);
-    // });
-  }
-
   acceptMatch(matchId) {
     let indexNumber: number;
     const data = {
@@ -118,7 +111,7 @@ export class HomeComponent implements OnInit {
     this.userStoreService.getUserById(uid).subscribe((user: User) => {
       this.firstname = user.firstname;
       this.lastname = user.lastname;
-      this.sex = this.parseSexValueForModal(user.sex);
+      this.sex = user.sex;
       this.city = user.city;
       this.activities = user.activities;
       this.age = this.calculateAgeForModal(user.dateOfBirth);
@@ -138,14 +131,6 @@ export class HomeComponent implements OnInit {
       this.arr = element + ', ' + this.arr;
     });
     return this.arr.substring(0, (this.arr.length - 2));
-  }
-
-  parseSexValueForModal(sex: string): string {
-    if (sex === 'm') {
-      return 'männlich';
-    } else if (sex === 'f') {
-      return 'weiblich';
-    }
   }
 
   closeModal() {

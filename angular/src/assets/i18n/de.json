@@ -56,7 +56,7 @@
     "newPassword": "Neues Passwort",
     "newPasswordConfirm": "Neues Passwort bestätigen",
     "deleteButton": "Profil löschen",
-    "deleteQuestion": "Möchtest du dein Profil wirklich löschen?",
+    "deleteQuestion": "Möchtest du wirklich dein Profil löschen?",
     "confirmButton": "Bestätigen",
     "modalHeader": "Aktuelles Passwort bestätigen"
   },
@@ -130,6 +130,13 @@
   "sex": {
     "male": "männlich",
     "female": "weiblich"
+  },
+
+  "modals": {
+    "details": "Details zu",
+    "accept": "Annehmen",
+    "decline": "Ablehnen",
+    "age": "Alter"
   }
 }
 

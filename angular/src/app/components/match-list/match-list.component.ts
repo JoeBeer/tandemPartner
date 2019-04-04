@@ -144,7 +144,7 @@ export class MatchListComponent implements OnInit {
     this.userStoreService.getUserById(id).subscribe((user: User) => {
       this.firstname = user.firstname;
       this.lastname = user.lastname;
-      this.sex = this.parseSexValueForModal(user.sex);
+      this.sex = user.sex;
       this.city = user.city;
       this.activities = this.activitiesForModal(user.activities);
       this.age = this.calculateAgeForModal(user.dateOfBirth);
@@ -164,14 +164,6 @@ export class MatchListComponent implements OnInit {
       this.arr = element + ', ' + this.arr;
     });
     return this.arr.substring(0, (this.arr.length - 2));
-  }
-
-  parseSexValueForModal(sex: string): string {
-    if (sex === 'm') {
-      return 'männlich';
-    } else if (sex === 'f') {
-      return 'weiblich';
-    }
   }
 
   closeModal() {
