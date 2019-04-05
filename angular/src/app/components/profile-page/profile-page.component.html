@@ -20,11 +20,10 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <label for="editFormSex">{{'register.sex' | translate }}*</label>
-              <div *ngIf="sex === 'm'" class="form-control shadow-sm bg-light" id="editFormSex" disabled>{{'sex.male' | translate }}</div>
-              <div *ngIf="sex === 'f'" class="form-control shadow-sm bg-light" id="editFormSex" disabled>{{'sex.female' | translate }}</div>
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="editFormSex">{{'register.sex' | translate }}*</label>
+                <div class="form-control shadow-sm bg-light"id="editFormSex" disabled>{{selectedSex}}</div>
 
             </div>
             <div class="col-md-6 form-group">

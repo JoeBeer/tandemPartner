@@ -2,21 +2,21 @@
 <div class="row">
   <div class="col-1"></div>
   <div class="col-10">
-    <div *ngIf="unAcceptedMatches$, else elseBlock">
+    <div *ngIf="unAcceptedMatchesLength, else elseBlock">
       <!-- show all matchRequests which are saved in the Array of 'matchRequests'-->
       <div *ngFor="let match of unAcceptedMatches$ | paginate: { itemsPerPage: 5, currentPage: pageNumber }">
         <div class="card shadow my-3">
-          <h5 class="card-header bg-white border-warning font-italic">
-            {{ 'home.requestTitle' | translate}} {{ match.matchedOffer }}
+          <h5 class="card-header">
+            {{ 'home.requestTitle' | translate}} {{ parseOfferForFrontend(match.matchedOffer) }}
           </h5>
           <div class="card-body accepted-match-cards">
             <div class="card-text">
               <div class="row">
                 <div class="col-8 col-md-10">
-                  <a class="pointer-cursor" (click)="openModal(match.initiatorID, match.matchId)">
+                  <a class="pointer-cursor" (click)="openModal(match)">
                     <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
                     <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->
-                    <p class="my-0"><small>Aktivitäten: {{activitiesForModal(match.activities)}}</small></p>
+                    <p class="my-0"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>
                   </a>
                 </div>
                 <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
@@ -75,17 +75,16 @@
               <td>{{age}}</td>
             </tr>
             <tr>
-              <th class="font-weight-normal" scope="row">{{ 'register.sex' | translate}}:</th>
-              <td *ngIf="sex === 'f'">{{ 'sex.female' | translate}}</td>
-              <td *ngIf="sex === 'm'">{{ 'sex.male' | translate}}</td>
+              <th class="font-weight-normal" scope="row">Geschlecht:</th>
+              <td>{{matchSex}}</td>
             </tr>
             <tr>
               <th class="font-weight-normal" scope="row">{{ 'search.city' | translate}}:</th>
               <td>{{city}}</td>
             </tr>
             <tr>
-              <th class="font-weight-normal" scope="row">{{ 'result.activities' | translate}}:</th>
-              <td>{{activities}}</td>
+              <th class="font-weight-normal" scope="row">Interessen:</th>
+              <td>{{matchActivities}}</td>
             </tr>
           </tbody>
         </table>

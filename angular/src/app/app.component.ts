@@ -1,3 +1,4 @@
+import { UtilityStoreService } from './services/utility-store.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'tandem-frontend';
+
+  constructor(
+    private utilitiesService: UtilityStoreService
+  ) {
+
+  }
 }

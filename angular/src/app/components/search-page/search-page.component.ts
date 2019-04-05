@@ -19,7 +19,9 @@ export class SearchPageComponent implements OnInit {
   searchForm: FormGroup;
 
   // where the data for the select fields comes from
-  sexes = ['female', 'male', 'both'];
+  sex: string[];
+  sexDe = ['weiblich', 'männlich', 'beide'];
+  sexEn = ['female', 'male', 'both'];
   offers: string[];
   cities: string[];
 
@@ -59,11 +61,6 @@ export class SearchPageComponent implements OnInit {
     });
     this.initializeMultiselectSettings();
 
-    // tslint:disable-next-line:max-line-length
-    // this.searchService.getRecentSearchrequestsForSpecificUser(this.authService.currentUserID)
-    // .subscribe((requests: Searchrequest[]) => {
-    //   this.recentSearchrequests = requests;
-    // });
     this.recentSearchRequests$ = this.searchService.getRecentSearchRequests();
     console.log('Aufruf - search');
   }
@@ -71,6 +68,7 @@ export class SearchPageComponent implements OnInit {
   setAllUtilities() {
     this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
     this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
+    this.sex = this.getSex(this.translateService.getDefaultLang());
   }
 
   createSearchForm() {
@@ -111,9 +109,9 @@ export class SearchPageComponent implements OnInit {
   newSearchSave() {
 
     const searchdata = {
-      offerParam: this.selectedOffer[0],
-      cityParam: this.selectedCity[0],
-      sexParam: this.parseSexValueForBackend(this.selectedSex[0]),
+      offerParam: this.offers.indexOf(this.selectedOffer[0]),
+      cityParam:  this.cities.indexOf(this.selectedCity[0]),
+      sexParam: this.sex.indexOf(this.selectedSex[0]),
       minAgeParam: this.searchForm.value.searchFormMinAge,
       maxAgeParam: this.searchForm.value.searchFormMaxAge,
       createdAt: Date.now(),
@@ -143,11 +141,19 @@ export class SearchPageComponent implements OnInit {
     }
   }
 
-  parseSexValueForFrontend(sex: string): string {
-    if (sex === 'm') {
-      return 'male';
-    } else if (sex === 'f') {
-      return 'female';
+  parseSexValueForFrontend(sexIndex: number): string {
+    return this.sex[sexIndex];
+  }
+
+  parseOfferForFrontend(offerIndex: number) {
+    return this.offers[offerIndex];
+  }
+
+  getSex(language: string) {
+    if (language === 'de') {
+      return this.sexDe;
+    } else {
+      return this.sexEn;
     }
   }
 

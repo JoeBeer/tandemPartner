@@ -13,7 +13,7 @@
             </a>
           </div>
           <div class="col-2 d-flex align-items-center justify-content-end">
-            <button type="button" class="btn btn-outline-danger homebutton" (click)="openModal(chatroom.id)"
+            <button type="button" class="btn btn-outline-danger homebutton" (click)="openModal(chatroom.id, 'userChatsAsUserA$')"
             data-toggle="tooltip" data-placement="top" title="{{ 'chatroomList.deleteTooltip' | translate }}">
               <fa-icon [icon]="faTimes"></fa-icon>
             </button>
@@ -34,7 +34,7 @@
             </a>
           </div>
           <div class="col-2 d-flex align-items-center justify-content-end">
-            <button type="button" class="btn btn-outline-danger homebutton" (click)="openModal(chatroom.id)"
+            <button type="button" class="btn btn-outline-danger homebutton" (click)="openModal(chatroom.id, 'userChatsAsUserB$')"
             data-toggle="tooltip" data-placement="top" title="{{ 'chatroomList.deleteTooltip' | translate }}">
               <fa-icon [icon]="faTimes"></fa-icon>
             </button>

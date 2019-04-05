@@ -48,7 +48,10 @@ export class NavbarComponent implements OnInit {
   async setUsername() {
     await this.authService.getCurrentUser().then(((user: User) => {
       this.currentUserFirstname = user.firstname;
-    }));
+    }))
+    .catch(() => {
+      console.log('Promises need a catch-block after the then-block');
+    });
   }
 
   switchLanguage(language: string) {

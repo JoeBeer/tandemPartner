@@ -93,7 +93,8 @@
     "minAge": "Minimum Age",
     "maxAge": "Maximum Age",
     "searchButton": "Start new Search",
-    "recentSearches": "Use recent Searchrequest"
+    "recentSearches": "Use recent Searchrequest",
+    "years": "Years"
   },
 
   "result": {

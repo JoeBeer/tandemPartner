@@ -1,3 +1,5 @@
+import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
+import { UtilityStoreService } from './../../services/utility-store.service';
 import { Match } from './../../models/match';
 import { MatchStoreService } from './../../services/match-store.service';
 import { AuthService } from './../../services/auth.service';
@@ -25,6 +27,11 @@ export class HomeComponent implements OnInit {
   unAcceptedMatches$: any[] = [];
   unAcceptedMatchesLength: number;
 
+  activities;
+  cities;
+  offers;
+  sex;
+
   openedModal: any;
 
   // for fontawesome icons
@@ -37,21 +44,22 @@ export class HomeComponent implements OnInit {
   // for modal
   display = 'none';
   modalIsOpen = false;
-  modalUser: User;
+  // modalUser: User;
   firstname: string;
   lastname: string;
-  sex: string;
+  matchSex: string;
   city: string;
-  activities: string[];
-  arr: string;
-  age: string;
+  matchActivities;
+  age;
   matchId: string;
 
   constructor(
     private userStoreService: UserStoreService,
     private authService: AuthService,
     private router: Router,
-    private matchStoreService: MatchStoreService
+    private matchStoreService: MatchStoreService,
+    private utliltyStoreService: UtilityStoreService,
+    private translateService: TranslateService
   ) {
     this.matchStoreService.getAllUnAcceptedMatches().subscribe(matches => {
       this.unAcceptedMatchesLength = matches.length;
@@ -61,8 +69,18 @@ export class HomeComponent implements OnInit {
 
   // when home-component was called, the written methods in ngOnInit gonna start
   ngOnInit() {
-    // this.unAcceptedMatches$ = this.matchStoreService.getAllUnAcceptedMatches();
+    this.setAllUtilities();
+    this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
+      this.setAllUtilities();
+    });
     console.log('Aufruf - Home');
+  }
+
+  setAllUtilities() {
+    this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
+    this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
+    this.activities = this.utliltyStoreService.getAllActivities(this.translateService.getDefaultLang());
+    this.sex = this.utliltyStoreService.getAllSex(this.translateService.getDefaultLang());
   }
 
   acceptMatch(matchId) {
@@ -100,42 +118,58 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  openModal(uid: any, matchId: string) {
-    // save Match ID for accept or decline Match in Modal
-    this.matchId = matchId;
-
+  openModal(match) {
     // infos for modal
-    // this.activities = '';
+    this.matchId = match.matchId;
     this.modalIsOpen = true;
     this.display = 'block';
-    this.userStoreService.getUserById(uid).subscribe((user: User) => {
-      this.firstname = user.firstname;
-      this.lastname = user.lastname;
-      this.sex = user.sex;
-      this.city = user.city;
-      this.activities = user.activities;
-      this.age = this.calculateAgeForModal(user.dateOfBirth);
-    });
-  }
-
-  calculateAgeForModal(birthdate: Date): string {
-    const BD = new Date(birthdate);
-    const timeDiff = Math.abs(Date.now() - BD.getTime());
-    const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-    return age + '';
+    this.firstname = match.firstname;
+    this.lastname = match.lastname;
+    this.matchSex = this.parseSexValueForFrontend(match.sex);
+    this.city = this.parseCityForFrontend(match.city);
+    this.matchActivities = this.activitiesForModal(this.parseActivitiesForFrontend(match.activities));
+    this.age = this.parseDateOfBirthForFrontend(match.dateOfBirth);
   }
 
   activitiesForModal(activities: string[]): string {
-    this.arr = '';
+    let arr;
+    arr = '';
     activities.forEach(element => {
-      this.arr = element + ', ' + this.arr;
+      arr = element + ', ' + arr;
     });
-    return this.arr.substring(0, (this.arr.length - 2));
+    return arr.substring(0, (arr.length - 2));
+  }
+
+  parseSexValueForFrontend(sexIndex: number): string {
+    return this.sex[sexIndex];
   }
 
   closeModal() {
     this.display = 'none';
     this.modalIsOpen = false;
+  }
+
+  parseActivitiesForFrontend(activitiesIndex: number[]) {
+    const activities: string[] = [];
+
+    activitiesIndex.forEach(activityIndex => {
+      activities.push(this.activities[activityIndex]);
+    });
+    return activities;
+  }
+
+  parseOfferForFrontend(selectedOfferIndex: number) {
+    return this.offers[selectedOfferIndex];
+  }
+
+  parseDateOfBirthForFrontend(dateOfBirth: number) {
+    const ageDifMs = Date.now() - dateOfBirth;
+    const ageDate = new Date(ageDifMs);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  }
+
+  parseCityForFrontend(cityIndex: number) {
+    return this.cities[cityIndex];
   }
 
 }
