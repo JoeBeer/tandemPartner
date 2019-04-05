@@ -131,6 +131,11 @@ export class HomeComponent implements OnInit {
     this.age = this.parseDateOfBirthForFrontend(match.dateOfBirth);
   }
 
+  closeModal() {
+    this.display = 'none';
+    this.modalIsOpen = false;
+  }
+
   activitiesForModal(activities: string[]): string {
     let arr;
     arr = '';
@@ -142,11 +147,6 @@ export class HomeComponent implements OnInit {
 
   parseSexValueForFrontend(sexIndex: number): string {
     return this.sex[sexIndex];
-  }
-
-  closeModal() {
-    this.display = 'none';
-    this.modalIsOpen = false;
   }
 
   parseActivitiesForFrontend(activitiesIndex: number[]) {
