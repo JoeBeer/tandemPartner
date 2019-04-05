@@ -24,7 +24,7 @@
             <div class="col-md-6 form-group">
               <label for="registerFormSex">{{'register.sex' | translate }}*</label>
               <ng-multiselect-dropdown class="form-control shadow-sm" id="registerFormSex" #registerFormSex="ngModel"
-                [placeholder]="'register.pleaseChoose' | translate" [data]="sexes" [(ngModel)]="selectedSex"
+                [placeholder]="'register.pleaseChoose' | translate" [data]="sex" [(ngModel)]="selectedSex"
                 [ngModelOptions]="{ standalone : true }" [settings]="selectSexSettings" required>
               </ng-multiselect-dropdown>
 

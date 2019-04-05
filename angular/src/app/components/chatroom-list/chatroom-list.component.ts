@@ -25,6 +25,7 @@ export class ChatroomListComponent implements OnInit {
   display = 'none';
   modalIsOpen = false;
   roomToBeDeleted: string;
+  chatsArrayName: string;
 
   constructor(
     private authService: AuthService,
@@ -43,45 +44,50 @@ export class ChatroomListComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.userChats$ = this.chatService.getAllChatrooms();
-    // this.userChats$ = this.chatService.getAllChatroomsAsUserA();
-    // this.getPartnerName();
     console.log('Aufruf - Chatroom-List');
   }
 
-  // getPartnerName() {
-  //   // tslint:disable-next-line:prefer-for-of
-  //   for (let i = 0; i < this.userChats$.length; i++) {
-  //     let partnerID = this.userChats$[i].userB;
-  //     if (partnerID === this.authService.currentUserID) {
-  //       partnerID = this.userChats$[i].userA;
-  //       this.userStoreService.getUserById(partnerID).subscribe(user => {
-  //         this.userChats$[i].userA = user.firstname;
-  //       });
-  //     } else {
-  //       this.userStoreService.getUserById(partnerID).subscribe(user => {
-  //         this.userChats$[i].userB = user.firstname;
-  //       });
+  // deleteChatroom() {
+  //   this.chatService.deleteChatroom(this.roomToBeDeleted).subscribe(() => {
+  //     if (this.userChatsAsUserALength === 1 || this.userChatsAsUserBLength === 1) {
+  //       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+  //         this.router.navigate(['/chats']));
   //     }
-  //   }
+  //   });
+  //   this.closeModal();
   // }
 
+  // TODO doesn't work properly
   deleteChatroom() {
-    this.chatService.deleteChatroom(this.roomToBeDeleted).subscribe(() => {
-      if (this.userChatsAsUserALength === 1 || this.userChatsAsUserBLength === 1) {
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-          this.router.navigate(['/chats']));
-      }
-    });
+    let indexNumber: number;
+    if (this.chatsArrayName === 'userChatsAsUserA$') {
+      this.chatService.deleteChatroom(this.roomToBeDeleted).subscribe(() => {
+        for (let index = 0; index < this.userChatsAsUserA$.length; index++) {
+          if (this.userChatsAsUserA$[index].id === this.roomToBeDeleted) {
+            indexNumber = index;
+          }
+        }
+        this.userChatsAsUserA$.splice(indexNumber, 1);
+      });
+    } else {
+      this.chatService.deleteChatroom(this.roomToBeDeleted).subscribe(() => {
+        for (let index = 0; index < this.userChatsAsUserB$.length; index++) {
+          if (this.userChatsAsUserB$[index].id === this.roomToBeDeleted) {
+            indexNumber = index;
+          }
+        }
+        this.userChatsAsUserB$.splice(indexNumber, 1);
+      });
+    }
     this.closeModal();
   }
 
-  openModal(chatroomId: string) {
+  openModal(chatroomId: string, chatsArrayName: string) {
     console.log('id: ' + chatroomId);
     this.modalIsOpen = true;
     this.display = 'block';
     this.roomToBeDeleted = chatroomId;
-
+    this.chatsArrayName = chatsArrayName;
   }
 
   closeModal() {

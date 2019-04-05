@@ -26,21 +26,21 @@
           *ngFor="let match of acceptedMatchesAsInitiator$ | paginate: { itemsPerPage: 5, currentPage: pageNumberAcceptedMatches, id: 'firstPagination' }">
           <div class="card shadow my-3">
             <h5 class="card-header bg-white border-warning font-italic">
-              {{ 'matchlist.matchedOffer' | translate }}: {{ match.matchedOffer }}
+              {{ 'matchlist.matchedOffer' | translate }}: {{ parseOfferForFrontend(match.matchedOffer) }}
             </h5>
             <div *ngIf="acceptedMatchesAsInitiator$, else noRequestBlock" class="card-body accepted-match-cards">
               <div class="card-text">
                 <div class="row">
                   <div class="col-8 col-md-10">
-                    <a class="pointer-cursor" (click)="openModal(match.initiatorID, match.initiatorID, match.partnerID)">
+                    <a class="pointer-cursor" (click)="openModal(match)">
                       <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
                       <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->
-                      <p class="my-0"><small>Aktivitäten: {{ match.activities }}</small></p>
+                      <p class="my-0"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>
                     </a>
                   </div>
                   <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
                     <button type="button" class="btn btn-outline-warning homebutton"
-                      (click)="contactUser(match.initiatorID, match.partnerID)" data-toggle="tooltip"
+                      (click)="contactUser(match.uid)" data-toggle="tooltip"
                       data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
                       <fa-icon [icon]="faEnvelope"></fa-icon>
                     </button>
@@ -61,21 +61,21 @@
           *ngFor="let match of acceptedMatchesAsPartner$ | paginate: { itemsPerPage: 5, currentPage: pageNumberAcceptedMatches, id: 'firstPagination' }">
           <div class="card shadow my-3">
             <h5 class="card-header bg-white border-warning font-italic">
-              {{ 'matchlist.matchedOffer' | translate }}: {{ match.matchedOffer }}
+              {{ 'matchlist.matchedOffer' | translate }}: {{ parseOfferForFrontend(match.matchedOffer) }}
             </h5>
             <div *ngIf="acceptedMatchesAsPartner$, else noRequestBlock" class="card-body accepted-match-cards">
               <div class="card-text">
                 <div class="row">
                   <div class="col-8 col-md-10">
-                    <a class="pointer-cursor" (click)="openModal(match.initiatorID)">
+                    <a class="pointer-cursor" (click)="openModal(match)">
                       <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
                       <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->
-                      <p class="my-0"><small>Aktivitäten: {{ match.activities }}</small></p>
+                      <p class="my-0"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>
                     </a>
                   </div>
                   <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
                     <button type="button" class="btn btn-outline-warning homebutton"
-                      (click)="contactUser(match.initiatorID, match.partnerID)" data-toggle="tooltip"
+                      (click)="contactUser(match.uid)" data-toggle="tooltip"
                       data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
                       <fa-icon [icon]="faEnvelope"></fa-icon>
                     </button>
@@ -109,7 +109,7 @@
           *ngFor="let matchrequest of matchRequests$ | paginate: { itemsPerPage: 5, currentPage: pageNumberRequests, id: 'secondPagination' }">
           <div class="card shadow my-3">
             <h5 class="card-header bg-white border-info font-italic">
-              {{ 'matchlist.matchrequestFor' | translate }}: {{ matchrequest.matchedOffer }}
+              {{ 'matchlist.matchrequestFor' | translate }}: {{ parseOfferForFrontend(matchrequest.matchedOffer) }}
             </h5>
             <div class="card-body unaccepted-match-cards">
               <div class="card-text">
@@ -118,7 +118,7 @@
 
                     <p class="my-0"><small>{{ matchrequest.firstname }} {{ matchrequest.lastname }}</small></p>
                     <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(matchrequest.dateOfBirth)}}</small></p> -->
-                    <p class="my-0"><small>Aktivitäten: {{ matchrequest.activities }}</small></p>
+                    <p class="my-0"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(matchrequest.activities))}}</small></p>
 
                   </div>
                   <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
@@ -184,7 +184,7 @@
             </tr>
             <tr>
               <th class="font-weight-normal" scope="row">Geschlecht:</th>
-              <td>{{sex}}</td>
+              <td>{{matchSex}}</td>
             </tr>
             <tr>
               <th class="font-weight-normal" scope="row">Ort:</th>
@@ -192,7 +192,7 @@
             </tr>
             <tr>
               <th class="font-weight-normal" scope="row">Interessen:</th>
-              <td>{{activities}}</td>
+              <td>{{matchActivities}}</td>
             </tr>
           </tbody>
         </table>

@@ -24,12 +24,13 @@ export class ProfilePageComponent implements OnInit {
   offers: any[];
   activities: any[];
   cities: string[];
+  sex: string[];
 
   // for loading/saving the selected fields
   selectedOffers: any[];
   selectedActivities: any[];
   selectedCity;
-  sex: string;
+  selectedSex: string;
 
   // for selecting fields
   selectCitySettings = {};
@@ -50,22 +51,18 @@ export class ProfilePageComponent implements OnInit {
     this.editForm = this.createEditForm();
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     // initialzie all available offers & activities
     this.setAllUtilities();
     this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
       this.setAllUtilities();
     });
 
-
-    const user = await this.authService.getCurrentUser();
-
-    this.userStoreService.getUserById(user.uid).subscribe((recievedUser: User) => {
-      this.userId = recievedUser.uid;
-      this.sex = this.parseSexValueForFrontend(recievedUser.sex);
-      this.selectedActivities = recievedUser.activities;
-      this.selectedOffers = recievedUser.offers,
-      this.selectedCity = Array.of(recievedUser.city);
+    this.userStoreService.getUserById(this.authService.currentUserID).subscribe((recievedUser: User) => {
+      this.selectedSex = this.parseSexValueForFrontend(recievedUser.sex);
+      this.selectedActivities = this.parseActivitiesForFrontend(recievedUser.activities);
+      this.selectedOffers = this.parseOffersForFrontend(recievedUser.offers);
+      this.selectedCity = Array.of(this.cities[recievedUser.city]);
       this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
       this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
       this.editForm.get('editFormMail').setValue(this.authService.currentUserMail);
@@ -80,6 +77,7 @@ export class ProfilePageComponent implements OnInit {
     this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
     this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
     this.activities = this.utliltyStoreService.getAllActivities(this.translateService.getDefaultLang());
+    this.sex = this.utliltyStoreService.getAllSex(this.translateService.getDefaultLang());
   }
 
   createEditForm() {
@@ -128,25 +126,48 @@ export class ProfilePageComponent implements OnInit {
     };
   }
 
-  // TODO: internationalize it!
-  parseSexValueForFrontend(sex: string): string {
-    if (sex === 'm') {
-      return 'male';
-    } else if (sex === 'f') {
-      return 'female';
-    } else {
-      return 'there was no choice of sex';
-    }
+  parseSexValueForFrontend(sexIndex: number): string {
+    return this.sex[sexIndex];
   }
 
-  parseSexValueForBackend(sex: string): string {
-    if (sex === 'male' || sex === 'männlich') {
-      return 'm';
-    } else if (sex === 'female' || sex === 'weiblich') {
-      return 'f';
-    } else {
-      return 'there was no choice of sex';
-    }
+  parseSexValueForBackend(sex: string): number {
+    return this.sex.indexOf(sex);
+  }
+
+  parseActivitiesForFrontend(selectedActivitiesIndexes: number[]) {
+    const selectedActivities: string[] = [];
+
+    selectedActivitiesIndexes.forEach(activitiyIndex => {
+      selectedActivities.push(this.activities[activitiyIndex]);
+    });
+    return selectedActivities;
+  }
+
+  parseActivitiesForBackend(selectedActivities: string[]) {
+    const selectedActivitiesIndexes: number[] = [];
+
+    selectedActivities.forEach(activity => {
+      selectedActivitiesIndexes.push(this.activities.indexOf(activity));
+    });
+    return selectedActivitiesIndexes;
+  }
+
+  parseOffersForFrontend(selectedOffersIndexes: number[]) {
+    const selectedOffers: string[] = [];
+
+    selectedOffersIndexes.forEach(offerIndex => {
+      selectedOffers.push(this.offers[offerIndex]);
+    });
+    return selectedOffers;
+  }
+
+  parseOffersForBackend(selectedOffers: string[]) {
+    const selectedOffersIndexes: number[] = [];
+
+    selectedOffers.forEach(offer => {
+      selectedOffersIndexes.push(this.offers.indexOf(offer));
+    });
+    return selectedOffersIndexes;
   }
 
   // validate the passwords whether they are matching
@@ -172,12 +193,12 @@ export class ProfilePageComponent implements OnInit {
       userdata = {
         firstname: this.editForm.value.editFormFirstname,
         lastname: this.editForm.value.editFormLastname,
-        city: this.selectedCity[0],
+        city: this.cities.indexOf(this.selectedCity[0]),
         dateOfBirth: this.editForm.value.editFormBirthday,
         // get the only one item from selectedSex-Array
-        sex: this.parseSexValueForBackend(this.sex),
-        activities: this.selectedActivities,
-        offers: this.selectedOffers,
+        sex: this.parseSexValueForBackend(this.selectedSex),
+        activities: this.parseActivitiesForBackend(this.selectedActivities),
+        offers: this.parseOffersForBackend(this.selectedOffers),
         mail,
         password: this.md5.appendStr(mail)
           .appendStr(password).end()
@@ -190,12 +211,12 @@ export class ProfilePageComponent implements OnInit {
       userdata = {
         firstname: this.editForm.value.editFormFirstname,
         lastname: this.editForm.value.editFormLastname,
-        city: this.selectedCity[0],
+        city: this.cities.indexOf(this.selectedCity[0]),
         dateOfBirth: this.editForm.value.editFormBirthday,
         // get the only one item from selectedSex-Array
-        sex: this.parseSexValueForBackend(this.sex),
-        activities: this.selectedActivities,
-        offers: this.selectedOffers
+        sex: this.parseSexValueForBackend(this.selectedSex),
+        activities: this.parseActivitiesForBackend(this.selectedActivities),
+        offers: this.parseOffersForBackend(this.selectedOffers)
       };
 
       this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
