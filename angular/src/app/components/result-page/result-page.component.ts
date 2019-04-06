@@ -65,6 +65,9 @@ export class ResultPageComponent implements OnInit {
         this.searchResultLength = searchResults.length;
         this.searchResults$ = searchResults;
       });
+    }, error => {
+      // TODO check, if this helps
+      console.log('Error - ', error);
     });
   }
 
