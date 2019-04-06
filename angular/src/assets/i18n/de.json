@@ -108,7 +108,10 @@
 
   "chatroomList": {
     "messages": "Nachrichten",
-    "deleteTooltip": "Chat löschen"
+    "deleteTooltip": "Chat löschen",
+    "deleteModalHeader": "Chat löschen",
+    "deleteModalQuestion": "Möchtest du wirklich diesen Chat löschen?",
+    "deleteButton": "Chat löschen"
   },
 
   "chatroomItem": {

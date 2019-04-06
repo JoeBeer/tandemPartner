@@ -53,17 +53,17 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{ 'home.requestTitle' | translate}} Kochen</h5>
+          <h5 class="modal-title">{{ 'chatroomList.deleteModalHeader' | translate }}</h5>
           <button type="button" class="close" (click)="closeModal()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-
+          {{ 'chatroomList.deleteModalQuestion' | translate}}
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
-          <button type="button" class="btn btn-primary" (click)="deleteChatroom()">DELETE</button>
+          <button type="button" class="btn btn-outline-warning" (click)="deleteChatroom()">{{ 'chatroomList.deleteButton' | translate }}</button>
+          <button type="button" class="btn btn-warning" (click)="closeModal()">{{ 'register.quitButton' | translate }}</button>
         </div>
       </div>
     </div>
