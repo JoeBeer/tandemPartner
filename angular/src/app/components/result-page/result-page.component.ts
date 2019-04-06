@@ -64,10 +64,11 @@ export class ResultPageComponent implements OnInit {
       this.searchService.getSearchResult(searchRequest).subscribe(searchResults => {
         this.searchResultLength = searchResults.length;
         this.searchResults$ = searchResults;
+      }, error => {
+        console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
       });
     }, error => {
-      // TODO check, if this helps
-      console.log('Error - ', error);
+      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
     });
   }
 

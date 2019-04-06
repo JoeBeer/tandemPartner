@@ -36,15 +36,18 @@ export class ChatroomListComponent implements OnInit {
     this.chatService.getAllChatroomsAsUserA().subscribe(chatrooms => {
       this.userChatsAsUserALength = chatrooms.length;
       this.userChatsAsUserA$ = chatrooms;
+    }, error => {
+      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
     });
     this.chatService.getAllChatroomsAsUserB().subscribe(chatrooms => {
       this.userChatsAsUserBLength = chatrooms.length;
       this.userChatsAsUserB$ = chatrooms;
+    }, error => {
+      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
     });
   }
 
   ngOnInit() {
-    console.log('Aufruf - Chatroom-List');
   }
 
   // deleteChatroom() {

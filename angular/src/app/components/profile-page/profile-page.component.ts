@@ -77,10 +77,11 @@ export class ProfilePageComponent implements OnInit {
       this.editForm.get('editFormBirthday').setValue(new Date(recievedUser.dateOfBirth));
       // modalForm valid status will be validated, therefore has to be initialized in ngOnInit()
       this.modalForm.get('modalFormPassword');
+    }, error => {
+      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
     });
 
     this.initializeMultiselectSettings();
-    console.log('Aufruf - Profile');
   }
 
   setAllUtilities() {
