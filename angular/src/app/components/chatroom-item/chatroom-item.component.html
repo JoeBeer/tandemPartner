@@ -7,12 +7,12 @@
         <div #chatBox class="card shadow mb-2">
           <div class="card-body">
             <div *ngFor="let message of chat.messages; trackBy: trackByCreated"><!-- TODO trackBy seems not working.-->
-              <div *ngIf="message.user?.uid !== authService.currentUserID; else positionRight" class="card col-10 col-md-8 shadow-sm" role="alert" aria-live="assertive" aria-atomic="true"
+              <div *ngIf="message.user?.uid !== authService.currentUserID; else positionRight" class="card col-10 col-md-8 shadow-sm mb-3" role="alert" aria-live="assertive" aria-atomic="true"
                 data-autohide="false">
 
 
                 <div class="toast-header border-info">
-                  <strong class="mr-auto">{{ 'chatroomItem.currentUser' | translate }}</strong>
+                  <strong class="mr-auto">{{ message.user?.firstname }}</strong>
                   <small class="text-muted">{{ message.createdAt | date: 'dd.MM.yyyy' }}</small>
                 </div>
                 <div class="toast-body small">
@@ -20,7 +20,7 @@
                 </div>
               </div><!--ngif message.user.uid !== currentUserID-->
               <ng-template #positionRight>
-                <div class="card col-10 offset-2 col-md-8 offset-md-4 shadow-sm" role="alert" aria-live="assertive" aria-atomic="true"
+                <div class="card col-10 offset-2 col-md-8 offset-md-4 shadow-sm mb-3" role="alert" aria-live="assertive" aria-atomic="true"
                 data-autohide="false">
 
 
@@ -43,7 +43,7 @@
             <div class="col-md-8 offset-md-4">
               <div class="input-group">
                   <input type="text" class="form-control" [(ngModel)]="newMessage" name="messageInput" maxlength="100"
-                  (keydown.enter)="submit(chat.id)" placeholder="{{ 'chatroomItem.inputPlaceholder' | translate }}">
+                  (keydown.enter)="submit(chat.id)" placeholder="{{ 'chatroomItem.inputPlaceholder' | translate }}" autofocus>
                 <div class="input-group-append ml-2">
                     <button class="btn btn-outline-warning" type="button" (click)="submit(chat.id)"
                     [disabled]="!newMessage">
