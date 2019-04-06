@@ -6,7 +6,7 @@
       <!-- show all matchRequests which are saved in the Array of 'matchRequests'-->
       <div *ngFor="let match of unAcceptedMatches$ | paginate: { itemsPerPage: 5, currentPage: pageNumber }">
         <div class="card shadow my-3">
-          <h5 class="card-header">
+          <h5 class="card-header bg-white border-warning font-italic">
             {{ 'home.requestTitle' | translate}} {{ parseOfferForFrontend(match.matchedOffer) }}
           </h5>
           <div class="card-body accepted-match-cards">
