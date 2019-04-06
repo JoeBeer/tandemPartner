@@ -19,10 +19,14 @@ const chatrooms = express();
 chatrooms.use(cors);
 let chatroomsEndpoint = require('./chatroomsEndpoint')
 
-
 const searches = express();
 searches.use(cors);
 let searchesEnpoint = require('./searchesEndpoint');
+
+// TODO delete after utilities added to the db
+const utilities = express();
+utilities.use(cors);
+let utilitiesEndpoint = require('./utilitiesEndpoint');
 
 // users.get('/', usersEndpoint.getUsers); //Get all users
 // users.get('/:userId', usersEndpoint.getUserById);// Get one user
@@ -43,3 +47,7 @@ exports.chatrooms = functions.https.onRequest(chatrooms); //Enables function 'ch
 
 searches.post('/', searchesEnpoint.createSearch);
 exports.searches = functions.https.onRequest(searches); //Enables function 'searches' @ Cloud Functions
+
+// TODO delete after utilities added to the db
+utilities.post('/', utilitiesEndpoint.createUtilitiesDoc);
+exports.utilities = functions.https.onRequest(utilities);
