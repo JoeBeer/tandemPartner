@@ -42,6 +42,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
+import { SortPipe } from './pipes/sort.pipe';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -63,7 +64,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AboutPageComponent,
     ErrorPageComponent,
     FooterComponent,
-    NavbarComponent
+    NavbarComponent,
+    SortPipe
   ],
   imports: [
     BrowserModule,
