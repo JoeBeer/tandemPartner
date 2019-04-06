@@ -64,6 +64,8 @@ export class HomeComponent implements OnInit {
     this.matchStoreService.getAllUnAcceptedMatches().subscribe(matches => {
       this.unAcceptedMatchesLength = matches.length;
       this.unAcceptedMatches$ = matches;
+    }, error => {
+      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
     });
   }
 
@@ -73,7 +75,6 @@ export class HomeComponent implements OnInit {
     this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
       this.setAllUtilities();
     });
-    console.log('Aufruf - Home');
   }
 
   setAllUtilities() {

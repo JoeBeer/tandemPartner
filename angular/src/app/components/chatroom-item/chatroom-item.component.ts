@@ -28,7 +28,6 @@ export class ChatroomItemComponent implements OnInit {
     const chatroomId = this.route.snapshot.paramMap.get(`id`);
     const source = this.chatService.getChatroomById(chatroomId);
     this.chatroom$ = this.chatService.joinUsers(source);
-    console.log('Aufruf - Chatroom-Item');
   }
 
   submit(chatId) {

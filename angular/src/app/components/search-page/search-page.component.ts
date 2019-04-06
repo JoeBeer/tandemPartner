@@ -5,8 +5,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SearchService } from 'src/app/services/search.service';
-import { first } from 'rxjs/operators';
-import { DocumentReference } from '@angular/fire/firestore';
 import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
 
 @Component({
@@ -27,7 +25,7 @@ export class SearchPageComponent implements OnInit {
 
   // where the selected data will be saved
   selectedOffer: string;
-  selectedCity: string;
+  selectedCity: string[] = [];
   selectedSex: string;
 
   // settings for select fields
@@ -62,7 +60,7 @@ export class SearchPageComponent implements OnInit {
     this.initializeMultiselectSettings();
 
     this.recentSearchRequests$ = this.searchService.getRecentSearchRequests();
-    console.log('Aufruf - search');
+    // console.log('Aufruf - search');
   }
 
   setAllUtilities() {
@@ -112,8 +110,8 @@ export class SearchPageComponent implements OnInit {
       offerParam: this.offers.indexOf(this.selectedOffer[0]),
       cityParam:  this.cities.indexOf(this.selectedCity[0]),
       sexParam: this.sex.indexOf(this.selectedSex[0]),
-      minAgeParam: this.searchForm.value.searchFormMinAge,
-      maxAgeParam: this.searchForm.value.searchFormMaxAge,
+      minAgeParam: Number(this.searchForm.value.searchFormMinAge),
+      maxAgeParam: Number(this.searchForm.value.searchFormMaxAge),
       createdAt: Date.now(),
       uid: this.authService.currentUserID
     };

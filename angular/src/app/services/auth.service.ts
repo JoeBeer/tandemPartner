@@ -15,8 +15,9 @@ import { switchMap, first } from 'rxjs/operators';
 export class AuthService {
   user$: Observable<any>;
   currentUserID: string;
-  currentUsername: string;
+  // currentUsername: string;
   currentUserMail: string;
+  currentUserActivities: number[];
 
   isLoggedIn = false;
   // store the URL so we can redirect after logging in
@@ -31,7 +32,7 @@ export class AuthService {
       switchMap(user => {
         if (user) {
           this.currentUserID = user.uid;
-          this.currentUsername = user.displayName;
+          // this.currentUsername = user.displayName;
           this.currentUserMail = user.email;
           return this.angularFirestore.doc<any>(`users/${user.uid}`).valueChanges();
         } else {
@@ -39,6 +40,12 @@ export class AuthService {
         }
       })
     );
+
+    this.user$.subscribe(user => {
+      if (user !== null) {
+        this.currentUserActivities = user.activities;
+      }
+    });
   }
 
   isloggedIn(): boolean {

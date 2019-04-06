@@ -72,14 +72,20 @@ export class MatchListComponent implements OnInit {
     this.matchStoreService.getAllMatchrequests().subscribe(matches => {
       this.matchRequestLength = matches.length;
       this.matchRequests$ = matches;
+    }, error => {
+      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
     });
 
     this.matchStoreService.getAllAcceptedMatchesAsInitiator().subscribe(matches => {
       this.acceptedMatchesAsInitiator$ = matches;
+    }, error => {
+      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
     });
 
     this.matchStoreService.getAllAcceptedMatchesAsPartner().subscribe(matches => {
       this.acceptedMatchesAsPartner$ = matches;
+    }, error => {
+      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
     });
   }
 
@@ -88,7 +94,6 @@ export class MatchListComponent implements OnInit {
     this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
       this.setAllUtilities();
     });
-    console.log('Aufruf - Matches');
   }
 
   setAllUtilities() {
