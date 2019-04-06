@@ -2,9 +2,9 @@ export class Searchrequest {
   constructor(
   public minAgeParam: number,
   public maxAgeParam: number,
-  public sexParam: string,
-  public offerParam: string,
+  public sexParam: number,
+  public offerParam: number,
   public createdAt: Date,
-  public cityParam?: string
+  public cityParam?: number
   ) {}
 }

@@ -101,7 +101,9 @@
     "sendMatchrequestTooltip": "Matchanfrage senden",
     "results": "Suchergebnisse",
     "age": "Jahre alt",
-    "activities": "Aktivitäten"
+    "activities": "Aktivitäten",
+    "commonActivities": "Gemeinsame Aktivitäten",
+    "noResults": "Es wurden keine Nutzer gefunden, die deiner Suchanfrage entsprechen."
   },
 
   "chatroomList": {
