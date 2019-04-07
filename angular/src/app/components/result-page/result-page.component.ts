@@ -50,12 +50,6 @@ export class ResultPageComponent implements OnInit {
       this.setAllUtilities();
     });
     const searchRequestId = this.route.snapshot.paramMap.get('id');
-    // this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
-    //   this.matchedOffer = searchRequest.offerParam; // TODO check, if the error message occures again
-    //   this.searchResults$ = this.searchService.getSearchResult(searchRequest);
-    //   // this.searchService.getSearchResult(searchRequest).subscribe(); // TODO subscribe in a subscribe is bad code. Try to fix this!
-    // });
-
     this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
       if (searchRequest.offerParam !== undefined) {
         this.matchedOffer = searchRequest.offerParam; // TODO check, if the error message occures again, even inside the if-clause

@@ -47,7 +47,7 @@
     "password": "Password",
     "passwordConfirm": "Confirm your Password",
     "saveButton": "Save",
-    "quitButton": "Quit",
+    "quitButton": "Cancel",
     "requiredExplanation": "These fields are required"
   },
 

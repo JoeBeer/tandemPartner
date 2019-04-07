@@ -118,12 +118,12 @@ export class SearchPageComponent implements OnInit {
 
     this.searchService.createSearchrequest(searchdata)
       .subscribe(response => {
-        this.router.navigate([`/search/result/${response.id}`]);
+        this.router.navigate([`/result/${response.id}`]);
       });
   }
 
   useRecentSearchrequest(searchRequestId) {
-    this.router.navigate([`/search/result/${searchRequestId}`]);
+    this.router.navigate([`/result/${searchRequestId}`]);
   }
 
   // shorten the male/female-word and return one letter or 'no choice'
