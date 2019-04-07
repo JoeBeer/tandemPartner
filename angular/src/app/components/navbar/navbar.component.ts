@@ -30,7 +30,13 @@ export class NavbarComponent implements OnInit {
 
 
   ngOnInit() {
-    this.setUsername();
+    // this.setUsername();
+    this.authService.user$.subscribe(user => {
+      try {
+        this.currentUserFirstname = user.firstname;
+      } catch {
+      }
+    });
     // random greeting
     this.greeting = this.randomGreeting();
   }
@@ -45,14 +51,14 @@ export class NavbarComponent implements OnInit {
     return this.authService.isloggedIn();
   }
 
-  async setUsername() {
-    await this.authService.getCurrentUser().then(((user: User) => {
-      this.currentUserFirstname = user.firstname;
-    }))
-    .catch(() => {
-      console.log('Promises need a catch-block after the then-block');
-    });
-  }
+  // async setUsername() {
+  //   await this.authService.getCurrentUser().then(((user: User) => {
+  //     this.currentUserFirstname = user.firstname;
+  //   }))
+  //   .catch(() => {
+  //     console.log('Promises need a catch-block after the then-block');
+  //   });
+  // }
 
   switchLanguage(language: string) {
     this.translateService.use(language);
