@@ -135,9 +135,4 @@ export class ResultPageComponent implements OnInit {
     this.display = 'none';
     this.modalIsOpen = false;
   }
-
-  loadingButton(event) {
-    document.getElementById('loadingButton').innerText  = '.....';
-    event.target.classList.add('disabled');
-  }
 }

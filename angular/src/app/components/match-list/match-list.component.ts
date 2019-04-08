@@ -56,6 +56,7 @@ export class MatchListComponent implements OnInit {
   matchSex: string;
   city: string;
   matchActivities;
+  matchIDModal: string;
   age;
   // initiatorID: string;
   // partnerID: string;
@@ -144,12 +145,9 @@ export class MatchListComponent implements OnInit {
   }
 
   openModal(match) {
-    // save partnerID and initiatorID for Contact
-    // this.initiatorID = initiatorID;
-    // this.partnerID = partnerID;
 
     // infos for modal
-    // this.activities = '';
+    this.matchIDModal = match.uid;
     this.modalIsOpen = true;
     this.display = 'block';
     this.firstname = match.firstname;
@@ -210,7 +208,6 @@ export class MatchListComponent implements OnInit {
   }
 
   loadingButton(event) {
-    document.getElementById('loadingButton').innerText  = '.....';
     event.target.classList.add('disabled');
   }
 }

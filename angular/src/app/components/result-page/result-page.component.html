@@ -22,14 +22,14 @@
                       <p class="my-0"><small><i>{{ parseCityForFrontend(user.city) }}</i></small></p>
                       <p class="my-0"><small><i>{{ calculateAge(user.dateOfBirth) }}
                             {{ 'result.age' | translate }}</i></small></p>
-                      <p class="my-0"><small><i>{{ 'result.activities' | translate }}</i>:
-                          {{activitiesForModal(parseActivitiesForFrontend(user.activities))}}</small></p>
+                      <!-- <p class="my-0"><small><i>{{ 'result.activities' | translate }}</i>:
+                          {{activitiesForModal(parseActivitiesForFrontend(user.activities))}}</small></p> -->
                       <p class="my-0"><small><i>{{ 'result.commonActivities' | translate }}</i>:
                           <b>{{activitiesForModal(parseActivitiesForFrontend(user.commonActivities))}}</b></small></p>
                     </div>
                     <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
-                      <button type="button" class="btn btn-outline-success homebutton" id="loadingButton"
-                        (click)="sendMatchrequest(user);openModal();loadingButton($event);" data-toggle="tooltip" data-placement="top"
+                      <button type="button" class="btn btn-outline-success homebutton"
+                        (click)="sendMatchrequest(user);openModal();" data-toggle="tooltip" data-placement="top"
                         title="{{ 'result.sendMatchrequestTooltip' | translate }}">
                         <fa-icon [icon]="faUserCheck"></fa-icon>
                       </button>

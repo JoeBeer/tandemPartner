@@ -196,8 +196,11 @@ export class RegisterPageComponent implements OnInit {
     return this.registerForm.get('registerFormPasswordConfirm');
   }
 
+
   loadingButton(event) {
-    document.getElementById('loadingButton').innerText  = 'Bitte warten..';
+    this.translateService.stream('loading.button').subscribe(key => {
+      document.getElementById('loadingButton').innerText = key;
+    });
     event.target.classList.add('disabled');
   }
 }
