@@ -77,7 +77,7 @@
 
           <div class="row" role="toolbar">
             <div class="col-md-6">
-              <button type="button" type="submit" class="btn btn-warning d-flex mx-auto ml-md-auto mt-2"
+              <button type="button" type="submit" class="btn btn-warning d-flex mx-auto ml-md-auto mt-2" (click)="loadingButton($event)" id="loadingButton"
                       [disabled]="!searchFormOffer.valid || (searchFormMinAge.value > searchFormMaxAge.value  && searchFormMaxAge.touched)">
                       {{'search.searchButton' | translate }}
               </button>

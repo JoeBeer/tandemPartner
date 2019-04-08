@@ -163,4 +163,8 @@ export class SearchPageComponent implements OnInit {
     return this.searchForm.get('searchFormMaxAge');
   }
 
+  loadingButton(event) {
+    document.getElementById('loadingButton').innerText  = 'Bitte warten..';
+    event.target.classList.add('disabled');
+  }
 }

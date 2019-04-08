@@ -127,7 +127,7 @@ export class MatchListComponent implements OnInit {
   //     });
   // }
 
-  deleteMatchrequest(matchId: string) {
+  deleteMatchrequest(matchId) {
     let indexNumber: number;
     this.matchStoreService.deleteMatch(matchId)
       .subscribe(() => {
@@ -209,5 +209,8 @@ export class MatchListComponent implements OnInit {
     return this.cities[cityIndex];
   }
 
-
+  loadingButton(event) {
+    document.getElementById('loadingButton').innerText  = '.....';
+    event.target.classList.add('disabled');
+  }
 }

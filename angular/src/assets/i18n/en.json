@@ -83,7 +83,8 @@
     "unacceptedMatches": "Sent Requests",
     "matchrequestFor": "Request for",
     "contactTooltip": "Contact the Partner",
-    "deleteTooltip": "Withdraw the Offer"
+    "deleteTooltip": "Withdraw the Offer",
+    "deleteMatchTooltip": "Delete Match"
   },
 
   "search": {
@@ -142,6 +143,11 @@
     "details": "Details for",
     "accept": "Accept",
     "decline": "Decline",
-    "age": "Age"
+    "age": "Age",
+    "matchrequest": "A match request has been sent!"
+  },
+
+  "loading": {
+    "button": "Loading.."
   }
 }
