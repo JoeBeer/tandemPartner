@@ -51,7 +51,7 @@
                 [placeholder]="'register.pleaseChoose' | translate"
                 [data]="sex"
                 [(ngModel)]="selectedSex" [ngModelOptions]="{ standalone : true }"
-                [settings]="selectSexSettings">
+                [settings]="selectSexSettings" required>
               </ng-multiselect-dropdown>
             </div>
             </div>
@@ -75,7 +75,12 @@
             {{'validators.ageMismatch' | translate }}
           </div>
 
-          <div class="row" role="toolbar">
+          <div class="alert-danger pl-2" *ngIf="searchFormSex.errors && (searchFormSex.touched || searchFormSex.dirty)">
+          <div *ngIf="searchFormSex.errors.required" class="alert-danger">{{'register.sex' | translate }}
+            {{'validators.required' | translate }}</div>
+          </div>
+
+          <div class="row mt-2" role="toolbar">
             <div class="col-md-6">
               <button type="button" type="submit" class="btn btn-warning d-flex mx-auto ml-md-auto mt-2"
                       [disabled]="!searchFormOffer.valid || (searchFormMinAge.value > searchFormMaxAge.value  && searchFormMaxAge.touched)">
@@ -88,6 +93,8 @@
           </div>
 
         </form>
+        <p class="d-flex justify-content-end text-black-50 mr-4 mt-5 mb-0"><small>*
+          {{'register.requiredExplanation' | translate }}</small></p>
       </div>
 
       <!--recent searchrequests area-->

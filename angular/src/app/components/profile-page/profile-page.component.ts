@@ -95,10 +95,10 @@ export class ProfilePageComponent implements OnInit {
     // create the formGroup
     return this.formBuilder.group({
       // the field only contains letters or spaces
-      editFormFirstname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+      editFormFirstname: ['', [Validators.required, Validators.pattern('[a-zA-ZäÄüÜöÖß]*')]],
 
       // the field only contains letters or spaces
-      editFormLastname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+      editFormLastname: ['', [Validators.required, Validators.pattern('[a-zA-ZäÄüÜöÖß]*')]],
 
       editFormMail: ['', [Validators.required, Validators.email]],
 
