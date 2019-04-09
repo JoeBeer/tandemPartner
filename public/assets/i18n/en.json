@@ -46,8 +46,8 @@
     "activities": "My activities",
     "password": "Password",
     "passwordConfirm": "Confirm your Password",
-    "saveButton": "Save",
-    "quitButton": "Quit",
+    "saveButton": "Register",
+    "quitButton": "Cancel",
     "requiredExplanation": "These fields are required"
   },
 
@@ -55,6 +55,7 @@
     "headerTitle": "Edit your Profile",
     "newPassword": "New Password",
     "newPasswordConfirm": "Confirm your new Password",
+    "saveButton": "Save",
     "deleteButton": "Delete Profile",
     "deleteQuestion": "Do you really want to delete your profile?",
     "confirmButton": "Confirm",
@@ -94,7 +95,9 @@
     "maxAge": "Maximum Age",
     "searchButton": "Start new Search",
     "recentSearches": "Use recent Searchrequest",
-    "years": "Years"
+    "years": "Years",
+    "until": "up to",
+    "from": "from"
   },
 
   "result": {
@@ -108,7 +111,10 @@
 
   "chatroomList": {
     "messages": "Messages",
-    "deleteTooltip": "Delete Chat"
+    "deleteTooltip": "Delete Chat",
+    "deleteModalHeader": "Delete Chat",
+    "deleteModalQuestion": "Do you really want to delete this Chat?",
+    "deleteButton": "Delete Chat"
   },
 
   "chatroomItem": {
@@ -124,7 +130,7 @@
   },
 
   "about": {
-    "heading": "Über Uns",
+    "heading": "About Us",
     "blockquote": "\"An investment in knowledge still brings the best interest.\"",
     "explanation": "We want to make your investment as simple as possible. Therefore we are offering you one platform, with whom you can share your knowledge with other people and learn something new. The tandemPartner Team consists of students of HWR Berlin in their sixth semesters.",
     "imageExplanation": "This is the team from the left to the right:"

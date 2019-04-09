@@ -46,7 +46,7 @@
     "activities": "Meine Aktivitäten",
     "password": "Passwort",
     "passwordConfirm": "Passwort bestätigen",
-    "saveButton": "Speichern",
+    "saveButton": "Registrieren",
     "quitButton": "Abbrechen",
     "requiredExplanation": "Diese Felder müssen ausgefüllt sein"
   },
@@ -55,6 +55,7 @@
     "headerTitle": "Profil bearbeiten",
     "newPassword": "Neues Passwort",
     "newPasswordConfirm": "Neues Passwort bestätigen",
+    "saveButton": "Speichern",
     "deleteButton": "Profil löschen",
     "deleteQuestion": "Möchtest du wirklich dein Profil löschen?",
     "confirmButton": "Bestätigen",
@@ -94,7 +95,9 @@
     "maxAge": "Maximalalter",
     "searchButton": "Neue Suche starten",
     "recentSearches": "Letzte Suchanfragen",
-    "years": "Jahre"
+    "years": "Jahre",
+    "until": "bis",
+    "from": "ab"
   },
 
   "result": {
@@ -108,7 +111,10 @@
 
   "chatroomList": {
     "messages": "Nachrichten",
-    "deleteTooltip": "Chat löschen"
+    "deleteTooltip": "Chat löschen",
+    "deleteModalHeader": "Chat löschen",
+    "deleteModalQuestion": "Möchtest du wirklich diesen Chat löschen?",
+    "deleteButton": "Chat löschen"
   },
 
   "chatroomItem": {
