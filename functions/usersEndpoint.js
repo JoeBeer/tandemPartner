@@ -1,93 +1,138 @@
 const admin = require('firebase-admin');
-const firebase = require('firebase');
 const db = admin.firestore();
-const userCollection = db.collection("users");
-var config = {
-    apiKey: "AIzaSyBxiXuAZtfccGZDvZY0A-MbYnD45820tZE",
-    authDomain: "tandemdurchstichtest.firebaseapp.com"
-};
-firebase.initializeApp(config);
+const usersCollection = db.collection('users');
+const matchesCollection = db.collection('matches');
+const chatroomsCollection = db.collection('chatrooms');
 
-
-exports.getUsers = function (req, res) {
-    let users = [];
-    userCollection.get()
-        .then((snapshot) => {
-            // get for each user the data
-            snapshot.docs.forEach(user => {
-                // add each user to the users[]
-                users.push(user.data());
-            })
-            // send the users[] via the respond
-            res.status(200).send(users);
-            console.log('Succesfully got all users');
-        })
-        .catch((error) => {
-            console.log('Error getting users', error);
-            return res.send(false);
-
-        });
-};
-
-exports.getUserById = function (req, res) {
-    userCollection.doc(req.params.userId).get()
-        .then(user => {
-            if (!user.exists) {
-                console.log('No such user!');
-                return res.status(404).send('No such user!');
-            } else {
-                res.status(200).send(user.data());
-            }
-        })
-        .catch(error => {
-            console.log('Error getting user', error);
-            return res.send(false);
-
-        });
-};
-
-exports.createUser = function (req, res) {
+exports.createUser = async (req, res) => {
+    try {
         const user = req.body;
-    firebase.auth().createUserWithEmailAndPassword(req.body.mail, req.body.password)
-        .then(authRes => {
-            userCollection.doc(authRes.user.uid).set(user)
-                .then(function () {
-
-                    console.log('Succesfully inserted user');
-                    return res.status(201).send({uid: authRes.user.uid});
-                })
-                .catch((error) => {
-                    console.log('Error creating new user', error);
-                    return res.send(false);
-                });
+        const userRecord = await admin.auth().createUser({
+            email: user.mail,
+            password: user.password,
+            displayName: user.firstname + ' ' + user.lastname,
+            photoURL: "http://www.example.com/12345678/photo.png",
+            disabled: false
+        }).then(async (userRecord) => {
+            return await usersCollection.doc(userRecord.uid).set({
+                uid: userRecord.uid,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                photoURL: userRecord.photoURL,
+                dateOfBirth: user.dateOfBirth,
+                sex: user.sex,
+                city: user.city,
+                activities: user.activities,
+                offers: user.offers
+            })
         })
+        console.log("Successfully created new user:");
+        return res.status(200).send(userRecord);
+    }
+    catch (error) {
+        console.log("Error creating new user:", error);
+        return res.send(false);
+    }
 };
-
 
 exports.updateUser = function (req, res) {
-    userCollection.doc(req.params.userId).set(req.body)
-        .then(result => {
-            res.status(204).send(true);
-            console.log('Succesfully updated user');
+    let userAuthUpdate;
+    const updatedUser = req.body;
+
+    if (updatedUser.mail) {
+        userAuthUpdate = {
+            email: updatedUser.mail,
+            password: updatedUser.password,
+            displayName: updatedUser.firstname + ' ' + updatedUser.lastname,
+        }
+    } else {
+        userAuthUpdate = {
+            displayName: updatedUser.firstname + ' ' + updatedUser.lastname,
+        }
+    }
+
+    admin.auth().updateUser(req.params.userId, userAuthUpdate)
+        .then((userRecord) => {
+            console.log(req.params.userId)
+            console.log(userRecord.uid)
+            return usersCollection.doc(userRecord.uid).update({
+                firstname: updatedUser.firstname,
+                lastname: updatedUser.lastname,
+                sex: updatedUser.sex,
+                city: updatedUser.city,
+                activities: updatedUser.activities,
+                offers: updatedUser.offers
+            })
+        }).then(() => {
+            console.log("Successfully updated user:");
+            return res.status(200).send(true);
         })
         .catch((error) => {
-            res.send(false);
-            console.log('Error updating user', error);
+            console.log("Error updating user:", error);
+            return res.send(false);
         });
 };
 
-exports.deleteUser = function (req, res) {
-    userCollection.doc(req.params.userId).delete()
-        .then(() => {
-            res.status(204).send(true);
-            console.log('Succesfully deleted user');
-        })
-        .catch((error) => {
-            res.send(false);
-            console.log('Error deleted user', error);
-        });
-};
+exports.deleteUser = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const searchesCollection = usersCollection.doc(userId).collection('searches');
+        var matchesId = [];
+        var chatroomsId = [];
+        var searchesId = [];
 
-exports.getMatches = function (req, res) {
-    //TODO: Adding implementation
+        // find all matches of the user and delete them
+        var matchesAsPartner = await matchesCollection.where('partnerID', '==', userId).get();
+        var matchesAsInitiator = await matchesCollection.where('initiatorID', '==', userId).get();
+
+        matchesAsPartner.forEach(doc => {
+            matchesId.push(doc.id);
+        });
+        matchesAsInitiator.forEach(doc => {
+            matchesId.push(doc.id);
+        });
+
+        await Promise.all(matchesId.map(async (matchId) => {
+            await matchesCollection.doc(matchId).delete()
+        }));
+
+        // find all chatrooms of the user and delete them
+        var chatroomsAsUserA = await chatroomsCollection.where('userA', '==', userId).get();
+        var chatroomsAsUserB = await chatroomsCollection.where('userB', '==', userId).get();
+
+        chatroomsAsUserA.forEach(doc => {
+            chatroomsId.push(doc.id);
+        });
+        chatroomsAsUserB.forEach(doc => {
+            chatroomsId.push(doc.id);
+        });
+
+        await Promise.all(chatroomsId.map(async (chatroomId) => {
+            await chatroomsCollection.doc(chatroomId).delete()
+        }));
+
+        // delete searches collection in user doc
+        var searches = await searchesCollection.get();
+
+        searches.forEach(search => {
+            searchesId.push(search.id);
+        });
+
+        await Promise.all(searchesId.map(async (searchId) => {
+            await searchesCollection.doc(searchId).delete()
+        }));
+
+        // delete user doc in users collection
+        await usersCollection.doc(userId).delete();
+
+        // delete user in Firebase Authentication
+        await admin.auth().deleteUser(userId);
+
+        console.log('Successfully deleted user');
+        return res.status(200).send(true);
+    }
+    catch (error) {
+        console.log('Error deleting user', error);
+        return res.send(false);
+    }
 };

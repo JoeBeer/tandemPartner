@@ -46,27 +46,15 @@
               </ng-multiselect-dropdown>
             </div>
             <div class="col-md-6 form-group">
-              <label for="searchFormActivities">{{'search.activities' | translate }}:</label>
-              <ng-multiselect-dropdown  class="form-control shadow-sm" id="searchFormActivities" #searchFormActivities="ngModel"
-                 [placeholder]="'register.pleaseChoose' | translate"
-                 [data]="activities"
-                 [(ngModel)]="selectedActivities" [ngModelOptions]="{ standalone : true }"
-                 [settings]="selectActivitiesSettings">
-              </ng-multiselect-dropdown>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 form-group">
-              <label for="searchFormSex">{{'register.sex' | translate }}:</label>
+              <label for="searchFormSex">{{'register.sex' | translate }}:*</label>
               <ng-multiselect-dropdown  class="form-control shadow-sm" id="searchFormSex" #searchFormSex="ngModel"
                 [placeholder]="'register.pleaseChoose' | translate"
-                [data]="sexes"
+                [data]="sex"
                 [(ngModel)]="selectedSex" [ngModelOptions]="{ standalone : true }"
-                [settings]="selectOnlyOneSettings">
+                [settings]="selectSexSettings" required>
               </ng-multiselect-dropdown>
             </div>
-          </div>
+            </div>
 
           <div class="row">
             <div class="col-md-6 form-group">
@@ -83,14 +71,19 @@
             <div *ngIf="searchFormOffer.errors.required" class="alert-danger">{{'validators.minOffers' | translate }}</div>
           </div>
 
-          <div class="alert-danger pl-2" *ngIf="searchFormMinAge.value > searchFormMaxAge.value">
+          <div class="alert-danger pl-2" *ngIf="searchFormMinAge.value > searchFormMaxAge.value && searchFormMaxAge.touched">
             {{'validators.ageMismatch' | translate }}
           </div>
 
-          <div class="row" role="toolbar">
+          <div class="alert-danger pl-2" *ngIf="searchFormSex.errors && (searchFormSex.touched || searchFormSex.dirty)">
+          <div *ngIf="searchFormSex.errors.required" class="alert-danger">{{'register.sex' | translate }}
+            {{'validators.required' | translate }}</div>
+          </div>
+
+          <div class="row mt-2" role="toolbar">
             <div class="col-md-6">
               <button type="button" type="submit" class="btn btn-warning d-flex mx-auto ml-md-auto mt-2"
-                      [disabled]="!searchFormOffer.valid || (searchFormMinAge.value > searchFormMaxAge.value)">
+                      [disabled]="!searchFormOffer.valid || (searchFormMinAge.value > searchFormMaxAge.value  && searchFormMaxAge.touched)">
                       {{'search.searchButton' | translate }}
               </button>
             </div>
@@ -100,17 +93,21 @@
           </div>
 
         </form>
+        <p class="d-flex justify-content-end text-black-50 mr-4 mt-5 mb-0"><small>*
+          {{'register.requiredExplanation' | translate }}</small></p>
       </div>
 
       <!--recent searchrequests area-->
       <div *ngIf="recentRequestCollapsed" class="card-body collapse" id="collapseRecentSearches">
-        <div *ngFor="let request of recentSearchrequests">
+        <div *ngFor="let request of recentSearchRequests$ | async">
           <div class="card">
             <div class="card-body">
-              <a class="pointer-cursor" (click)="useRecentSearchrequest(request)">
-                <h5 class="font-weight-light">{{request.offerParam}}</h5>
-                <h6 class="font-weight-light">{{request.minAgeParam}} - {{request.maxAgeParam}} Jahre </h6>
-                <h6 class="font-weight-light">{{request.sexParam}}</h6>
+              <a class="pointer-cursor" (click)="useRecentSearchrequest(request.id)">
+                <h5 class="font-weight-light">{{ parseOfferForFrontend(request.offerParam) }}</h5>
+                <h6 *ngIf="request.minAgeParam > 0 && request.maxAgeParam > 0" class="font-weight-light">{{ request.minAgeParam }} - {{request.maxAgeParam}} {{'search.years' | translate }} </h6>
+                <h6 *ngIf="request.minAgeParam > 0 && request.maxAgeParam === 0" class="font-weight-light"> {{'search.from' | translate }} {{ request.minAgeParam }} {{'search.years' | translate }} </h6>
+                <h6 *ngIf="request.minAgeParam === 0 && request.maxAgeParam > 0" class="font-weight-light"> {{'search.until' | translate }} {{request.maxAgeParam}} {{'search.years' | translate }} </h6>
+                <h6 class="font-weight-light">{{ parseSexValueForFrontend(request.sexParam) }}</h6>
               </a>
             </div>
           </div>

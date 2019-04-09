@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserStoreService } from 'src/app/services/user-store.service';
-import { User } from 'src/app/models/user';
-import { AuthService } from 'src/app/services/auth.service';
-import { ActivitiesOffersCitiesStoreService } from '../../services/activities-offers-cities-store.service';
+import { UtilityStoreService } from '../../services/utility-store.service';
 import { Md5 } from 'ts-md5';
+import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register-page',
@@ -14,16 +13,17 @@ import { Md5 } from 'ts-md5';
 })
 export class RegisterPageComponent implements OnInit {
 
+  md5 = new Md5();
   registerForm: FormGroup;
 
-  sexes = ['female', 'male'];
+  sex: any[];
   offers: any[];
   activities: any[];
   cities: string[];
 
   selectedOffers: any[];
   selectedActivities: any[];
-  selectedCity: any;
+  selectedCity: any;     // TODO check if this is seen as an array.
   selectedSex: any[];
 
   selectOffersActivitiesSettings = {};
@@ -31,32 +31,40 @@ export class RegisterPageComponent implements OnInit {
   selectCitySettings = {};
 
 
-  constructor(private formBuilder: FormBuilder,
-              private router: Router,
-              private userStoreService: UserStoreService,
-              private authService: AuthService,
-              private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private userStoreService: UserStoreService,
+    private utliltyStoreService: UtilityStoreService,
+    private translateService: TranslateService) {
 
-              this.registerForm = this.createRegisterForm();
+    this.registerForm = this.createRegisterForm();
   }
 
   ngOnInit() {
     // initialzie all available offers & activities
-    this.offers = this.activitiesOffersCitiesStoreService.getAllOffers();
-    this.activities = this.activitiesOffersCitiesStoreService.getAllActivities();
-    this.cities = this.activitiesOffersCitiesStoreService.getAllCities();
-
+    this.setAllUtilities();
+    this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
+      this.setAllUtilities();
+    });
     this.initializeMultiselectSettings();
+  }
+
+  setAllUtilities() {
+    this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
+    this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
+    this.activities = this.utliltyStoreService.getAllActivities(this.translateService.getDefaultLang());
+    this.sex = this.utliltyStoreService.getAllSex(this.translateService.getDefaultLang());
   }
 
   createRegisterForm() {
     // create the formGroup
-    return this.formBuilder.group ({
+    return this.formBuilder.group({
       // the field only contains letters or spaces
-      registerFormFirstname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+      registerFormFirstname: ['', [Validators.required, Validators.pattern('[a-zA-ZäÄüÜöÖß]*')]],
 
       // the field only contains letters or spaces
-      registerFormLastname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+      registerFormLastname: ['', [Validators.required, Validators.pattern('[a-zA-ZäÄüÜöÖß]*')]],
 
       registerFormMail: ['', [Validators.required, Validators.email]],
 
@@ -64,13 +72,14 @@ export class RegisterPageComponent implements OnInit {
 
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
-      registerFormPassword: ['', [Validators.required, /*Validators.pattern('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$'),*/ Validators.minLength(6), Validators.maxLength(16)]],
+      registerFormPassword: ['', [Validators.required, Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,}$')]],
 
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
-      registerFormPasswordConfirm: ['', [Validators.required, /*Validators.pattern('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$'),*/ Validators.minLength(6), Validators.maxLength(16)]]
+      registerFormPasswordConfirm: ['', [Validators.required, Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,}$')]]
         // adds the custom validator for validating the passwords og their matching
     }, { validator: this.passwordMatchValidator});
+
   }
 
   initializeMultiselectSettings() {
@@ -89,7 +98,7 @@ export class RegisterPageComponent implements OnInit {
       idField: 'item_id',
       textField: 'item_text',
       enableCheckAll: false,
-      allowSearchFilter: false,
+      allowSearchFilter: true,
       closeDropDownOnSelection: true
     };
 
@@ -100,14 +109,14 @@ export class RegisterPageComponent implements OnInit {
       textField: 'item_text',
       enableCheckAll: false,
       itemsShowLimit: 3,
-      allowSearchFilter: false
+      allowSearchFilter: true
     };
   }
 
   // validate the passwords whether they are matching
-  passwordMatchValidator(control: AbstractControl): { invalid: boolean} {
+  passwordMatchValidator(control: AbstractControl): { invalid: boolean } {
     if (control.get('registerFormPassword').value !== control.get('registerFormPasswordConfirm').value) {
-      return {invalid: true };
+      return { invalid: true };
     }
   }
 
@@ -122,34 +131,44 @@ export class RegisterPageComponent implements OnInit {
     const userdata = {
       firstname: this.registerForm.value.registerFormFirstname,
       lastname: this.registerForm.value.registerFormLastname,
-      city: this.selectedCity,
-      dateOfBirth: this.registerForm.value.registerFormBirthday,
+      city: this.cities.indexOf(this.selectedCity[0]),
+      dateOfBirth: Number(this.registerForm.value.registerFormBirthday),
       // get the only one item from selectedSex-Array
       sex: this.parseSexValueForBackend(this.selectedSex[0]),
-      activities: this.selectedActivities,
-      offers: this.selectedOffers,
+      activities: this.parseActivitiesForBackend(this.selectedActivities),
+      offers: this.parseOffersForBackend(this.selectedOffers),
       mail: this.registerForm.value.registerFormMail,
-      password: Md5.hashStr(this.registerForm.value.registerFormPassword)
+      password: this.md5.appendStr(this.registerForm.value.registerFormMail)
+        .appendStr(this.registerForm.value.registerFormPassword).end()
     };
-
-
-      // create new user in cloud firestore and take the UID from the new created User
+    // create new user in Firebase Authentication and Cloud Firestore
     this.userStoreService.createUser(userdata).subscribe(() => {
-      // then go to page 'home'
-      this.router.navigate(['/home']);
+      // then go to page 'login'
+      this.router.navigate(['/login']);
     });
 
   }
 
-  // shorten the male/female-word and return one letter or 'no choice'
-  parseSexValueForBackend(sex: string): string {
-    if (sex === 'male' || sex === 'männlich') {
-      return 'm';
-    } else if (sex === 'female' || sex === 'weiblich') {
-      return 'f';
-    } else {
-      return 'there was no choice of sex';
-    }
+  parseSexValueForBackend(sex: string) {
+    return this.sex.indexOf(sex);
+  }
+
+  parseActivitiesForBackend(selectedActivities: string[]) {
+    const selectedActivitiesIndexes: number[] = [];
+
+    selectedActivities.forEach(activity => {
+      selectedActivitiesIndexes.push(this.activities.indexOf(activity));
+    });
+    return selectedActivitiesIndexes;
+  }
+
+  parseOffersForBackend(selectedOffers: string[]) {
+    const selectedOffersIndexes: number[] = [];
+
+    selectedOffers.forEach(offer => {
+      selectedOffersIndexes.push(this.offers.indexOf(offer));
+    });
+    return selectedOffersIndexes;
   }
 
   // getter for the inputfields

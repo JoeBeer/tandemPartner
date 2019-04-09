@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 import { UserStoreService } from 'src/app/services/user-store.service';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActivitiesOffersCitiesStoreService } from '../../services/activities-offers-cities-store.service';
+import { UtilityStoreService } from '../../services/utility-store.service';
+import { Md5 } from 'ts-md5';
+import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile-page',
@@ -13,74 +15,111 @@ import { ActivitiesOffersCitiesStoreService } from '../../services/activities-of
 })
 export class ProfilePageComponent implements OnInit {
 
+  md5 = new Md5();
+  md52 = new Md5();
+  currentUser;
+  userId: string;
   editForm: FormGroup;
+  modalForm: FormGroup;
 
   // for showing available offers, activities & cities
   offers: any[];
   activities: any[];
   cities: string[];
+  sex: string[];
 
   // for loading/saving the selected fields
   selectedOffers: any[];
   selectedActivities: any[];
-  selectedCity: any;
-  sex: string;
+  selectedCity;
+  selectedSex: string;
 
   // for selecting fields
   selectCitySettings = {};
   selectOffersActivitiesSettings = {};
 
+  // for passwordConfirming in confirmModal
+  updateSuccess = false;
+  invalidPassword = false;
 
-  constructor(private formBuilder: FormBuilder,
-              private router: Router,
-              private userStoreService: UserStoreService,
-              private authService: AuthService,
-              private activitiesOffersCitiesStoreService: ActivitiesOffersCitiesStoreService) {
+  // for modal
+  display = 'none';
+  modalIsOpen = false;
 
-              this.editForm = this.createEditForm();
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private userStoreService: UserStoreService,
+    private authService: AuthService,
+    private utliltyStoreService: UtilityStoreService,
+    private translateService: TranslateService) {
+
+    this.editForm = this.createEditForm();
+    this.modalForm = this.createModalForm();
   }
 
   ngOnInit() {
     // initialzie all available offers & activities
-    this.offers = this.activitiesOffersCitiesStoreService.getAllOffers();
-    this.activities = this.activitiesOffersCitiesStoreService.getAllActivities();
-    this.cities = this.activitiesOffersCitiesStoreService.getAllCities();
+    this.setAllUtilities();
+    this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
+      this.setAllUtilities();
+    });
 
-
-    this.sex = this.parseSexValueForFrontend(this.authService.getUser().sex);
-    this.selectedActivities = this.authService.getUser().activities;
-    this.selectedOffers = this.authService.getUser().offers,
-    this.selectedCity = this.authService.getUser().city;
-    this.editForm.get('editFormFirstname').setValue(this.authService.getUser().firstname);
-    this.editForm.get('editFormLastname').setValue(this.authService.getUser().lastname);
-    this.editForm.get('editFormMail').setValue(this.authService.firebaseUser.email);
-    this.editForm.get('editFormBirthday').setValue(this.authService.getUser().dateOfBirth);
+    this.userStoreService.getUserById(this.authService.currentUserID).subscribe((recievedUser: User) => {
+      this.selectedSex = this.parseSexValueForFrontend(recievedUser.sex);
+      this.selectedActivities = this.parseActivitiesForFrontend(recievedUser.activities);
+      this.selectedOffers = this.parseOffersForFrontend(recievedUser.offers);
+      this.selectedCity = Array.of(this.cities[recievedUser.city]);
+      this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
+      this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
+      this.editForm.get('editFormMail').setValue(this.authService.currentUserMail);
+      this.editForm.get('editFormBirthday').setValue(new Date(recievedUser.dateOfBirth));
+      // modalForm valid status will be validated, therefore has to be initialized in ngOnInit()
+      this.modalForm.get('modalFormPassword');
+    }, error => {
+      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+    });
 
     this.initializeMultiselectSettings();
   }
 
+  setAllUtilities() {
+    this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
+    this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
+    this.activities = this.utliltyStoreService.getAllActivities(this.translateService.getDefaultLang());
+    this.sex = this.utliltyStoreService.getAllSex(this.translateService.getDefaultLang());
+  }
+
   createEditForm() {
     // create the formGroup
-    return this.formBuilder.group ({
+    return this.formBuilder.group({
       // the field only contains letters or spaces
-      editFormFirstname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+      editFormFirstname: ['', [Validators.required, Validators.pattern('[a-zA-ZäÄüÜöÖß]*')]],
 
       // the field only contains letters or spaces
-      editFormLastname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+      editFormLastname: ['', [Validators.required, Validators.pattern('[a-zA-ZäÄüÜöÖß]*')]],
 
       editFormMail: ['', [Validators.required, Validators.email]],
 
-      editFormBirthday: [{value: '', disabled: true}],
+      editFormBirthday: [{ value: '', disabled: true }],
 
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
-      editFormPassword: ['', [ /*Validators.pattern('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$'),*/ Validators.minLength(6), Validators.maxLength(16)]],
+      editFormPassword: ['', [Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,16}$')]],
 
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
-      editFormPasswordConfirm: ['', [ /*Validators.pattern('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$'),*/ Validators.minLength(6), Validators.maxLength(16)]]
-        // adds the custom validator for validating the passwords og their matching
-    }, { validator: this.passwordMatchValidator});
+      editFormPasswordConfirm: ['', [Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,16}$')]]
+      // adds the custom validator for validating the passwords og their matching
+    }, { validator: this.passwordMatchValidator });
+
+  }
+
+  createModalForm() {
+    return this.formBuilder.group({
+      modalFormPassword: ['', [Validators.required]]
+    });
   }
 
   initializeMultiselectSettings() {
@@ -90,7 +129,7 @@ export class ProfilePageComponent implements OnInit {
       idField: 'item_id',
       textField: 'item_text',
       enableCheckAll: false,
-      allowSearchFilter: false,
+      allowSearchFilter: true,
       closeDropDownOnSelection: true
     };
     // selecting settings for the select fields of offers and activities
@@ -100,35 +139,82 @@ export class ProfilePageComponent implements OnInit {
       textField: 'item_text',
       enableCheckAll: false,
       itemsShowLimit: 3,
-      allowSearchFilter: false
+      allowSearchFilter: true
     };
   }
 
-  parseSexValueForFrontend(sex: string): string {
-    if (sex === 'm') {
-      return 'male';
-    } else if (sex === 'f') {
-      return 'female';
-    } else {
-      return 'there was no choice of sex';
-    }
+  parseSexValueForFrontend(sexIndex: number): string {
+    return this.sex[sexIndex];
   }
 
-  parseSexValueForBackend(sex: string): string {
-    if (sex === 'male' || sex === 'männlich') {
-      return 'm';
-    } else if (sex === 'female' || sex === 'weiblich') {
-      return 'f';
-    } else {
-      return 'there was no choice of sex';
-    }
+  parseSexValueForBackend(sex: string): number {
+    return this.sex.indexOf(sex);
+  }
+
+  parseActivitiesForFrontend(selectedActivitiesIndexes: number[]) {
+    const selectedActivities: string[] = [];
+
+    selectedActivitiesIndexes.forEach(activitiyIndex => {
+      selectedActivities.push(this.activities[activitiyIndex]);
+    });
+    return selectedActivities;
+  }
+
+  parseActivitiesForBackend(selectedActivities: string[]) {
+    const selectedActivitiesIndexes: number[] = [];
+
+    selectedActivities.forEach(activity => {
+      selectedActivitiesIndexes.push(this.activities.indexOf(activity));
+    });
+    return selectedActivitiesIndexes;
+  }
+
+  parseOffersForFrontend(selectedOffersIndexes: number[]) {
+    const selectedOffers: string[] = [];
+
+    selectedOffersIndexes.forEach(offerIndex => {
+      selectedOffers.push(this.offers[offerIndex]);
+    });
+    return selectedOffers;
+  }
+
+  parseOffersForBackend(selectedOffers: string[]) {
+    const selectedOffersIndexes: number[] = [];
+
+    selectedOffers.forEach(offer => {
+      selectedOffersIndexes.push(this.offers.indexOf(offer));
+    });
+    return selectedOffersIndexes;
   }
 
   // validate the passwords whether they are matching
-  passwordMatchValidator(control: AbstractControl): { invalid: boolean} {
+  passwordMatchValidator(control: AbstractControl): { invalid: boolean } {
     if (control.get('editFormPassword').value !== control.get('editFormPasswordConfirm').value) {
-      return {invalid: true };
+      return { invalid: true };
     }
+  }
+
+  confirmAndValidatePassword() {
+
+    // hash the input for conclusion with the saved password in firebase's Auth
+    const password: string = this.md52.appendStr(this.authService.currentUserMail)
+    .appendStr(this.modalForm.value.modalFormPassword).end() as string;
+
+    this.authService.validatePassword(password)
+    // when password was correct start editFormSave()
+    .then(() => {
+      this.invalidPassword = false;
+      this.editFormSave();
+    })
+    // when the password was incorrect, show the specific message
+    .catch(() => {
+      this.updateSuccess = false;
+      this.invalidPassword = true;
+      setTimeout(() => {
+        this.invalidPassword = false;
+      }, 3000);
+      this.modalForm.reset();
+    });
   }
 
   // validate the input & select fields and send the mail & password to Firebase Authentication
@@ -138,40 +224,64 @@ export class ProfilePageComponent implements OnInit {
     if (this.editForm.invalid) {
       return;
     }
-    // get data from the inputfields
-    const userdata = {
-      firstname: this.editForm.value.editFormFirstname,
-      lastname: this.editForm.value.editFormLastname,
-      city: this.selectedCity[0],
-      dateOfBirth: this.editForm.value.editFormBirthday,
-      // get the only one item from selectedSex-Array
-      sex: this.parseSexValueForBackend(this.sex),
-      activities: this.selectedActivities,
-      offers: this.selectedOffers
-    };
 
-
-    // mail and password are gonna be saved at Firebase Authentication and not in userdata
+    let userdata;
     const mail = this.editForm.value.editFormMail;
     const password = this.editForm.value.editFormPassword;
+    if (!!mail && !!password) {
+      // get data from the inputfields
+      userdata = {
+        firstname: this.editForm.value.editFormFirstname,
+        lastname: this.editForm.value.editFormLastname,
+        city: this.cities.indexOf(this.selectedCity[0]),
+        dateOfBirth: this.editForm.value.editFormBirthday,
+        // get the only one item from selectedSex-Array
+        sex: this.parseSexValueForBackend(this.selectedSex),
+        activities: this.parseActivitiesForBackend(this.selectedActivities),
+        offers: this.parseOffersForBackend(this.selectedOffers),
+        mail,
+        password: this.md5.appendStr(mail)
+          .appendStr(password).end()
+      };
 
-    if (password === !null || password === !undefined || password === !'' ) {
-      console.log('ausgefülltes password');
-      // this.authService.firebaseUser.updatePassword(password).then();
-    }
+      this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
+        // show the updateSuccess message
+        this.updateSuccess = true;
+        setTimeout(() => {
+          this.updateSuccess = false;
+        }, 3000);
+        this.modalForm.reset();
 
-    if (mail === !null || mail === !undefined || mail === !'' ) {
-      console.log('ausgefüllte mail');
-      // this.authService.firebaseUser.updateEmail(mail).then();
-    }
+        this.authService.logout();
+      });
+    } else {
+      userdata = {
+        firstname: this.editForm.value.editFormFirstname,
+        lastname: this.editForm.value.editFormLastname,
+        city: this.cities.indexOf(this.selectedCity[0]),
+        dateOfBirth: this.editForm.value.editFormBirthday,
+        // get the only one item from selectedSex-Array
+        sex: this.parseSexValueForBackend(this.selectedSex),
+        activities: this.parseActivitiesForBackend(this.selectedActivities),
+        offers: this.parseOffersForBackend(this.selectedOffers)
+      };
 
-   // // create new user in cloud firestore and take the UID from the new created User
-   // this.userStoreService.updateUser(this.authService.currentUser.uid, userdata).subscribe(() => {
-   //   // then go to page 'home'
-   //   this.router.navigate(['/home']);
-   // });
-
+      this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
+        // show the updateSuccess message
+        this.updateSuccess = true;
+        setTimeout(() => {
+          this.updateSuccess = false;
+        }, 3000);
+        this.modalForm.reset();
+      });
+    } // end else
   }
+
+  // deleteUser() {
+  //   this.userStoreService.deleteUser(this.authService.currentUserID).subscribe(() => {
+  //     this.authService.logout();
+  //   });
+  // }
 
 
   // getter for the inputfields
@@ -187,16 +297,40 @@ export class ProfilePageComponent implements OnInit {
     return this.editForm.get('editFormBirthday');
   }
 
- get editFormMail() {
-   return this.editForm.get('editFormMail');
- }
+  get editFormMail() {
+    return this.editForm.get('editFormMail');
+  }
 
- get editFormPassword() {
-   return this.editForm.get('editFormPassword');
- }
- get editFormPasswordConfirm() {
-   return this.editForm.get('editFormPasswordConfirm');
- }
+  get editFormPassword() {
+    return this.editForm.get('editFormPassword');
+  }
+  get editFormPasswordConfirm() {
+    return this.editForm.get('editFormPasswordConfirm');
+  }
+
+  get modalFormPassword() {
+    return this.editForm.get('modalFormPassword');
+  }
 
 
+  openModal(id: string) {
+    console.log('id: ' + id);
+    this.modalIsOpen = true;
+    this.display = 'block';
+
+  }
+
+  closeModal() {
+    this.display = 'none';
+    this.modalIsOpen = false;
+  }
+
+  deleteProfile() {
+    this.userStoreService.deleteUser(this.authService.currentUserID).subscribe(() => {
+      this.closeModal();
+      this.authService.logout().then(() => {
+        alert('Profil wurde gelöscht');
+      });
+    });
+  }
 }

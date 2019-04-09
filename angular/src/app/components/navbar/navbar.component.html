@@ -7,7 +7,7 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand">
+      <a class="navbar-brand" [routerLink]="['/home']">
         <img src="../../../assets/images/navbarLogo.png" width="40" height="40" class="d-inline-block align-top" alt="Tandem Logo">
       </a>
 
@@ -40,17 +40,11 @@
           <!--dropdown menu-->
           <li class="nav-item dropdown">
             <!--showing english or german language, via checking whether english language was clicked or not -->
-            <a *ngIf="showEnglish; else elseBlock" class="nav-link dropdown-toggle pointer-cursor border-right" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              En
+            <a class="nav-link dropdown-toggle pointer-cursor" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuLink">
+              {{ 'navbar.lang' | translate }}
             </a>
-            <!--German language-->
-            <ng-template #elseBlock>
-                <a class="dropdown-toggle nav-link pointer-cursor border-right" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    De
-                </a>
-            </ng-template>
             <!--dropdown links-->
-            <div class="dropdown-menu">
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <a class="dropdown-item pointer-cursor" (click)="switchLanguage('de')">De</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item pointer-cursor" (click)="switchLanguage('en')" >En</a>
@@ -58,16 +52,18 @@
           </li>
 
           <!--username-->
-          <span *ngIf="isLoggedIn()" class="navbar-text font-italic mx-lg-2">
-            Username
+          <span *ngIf="isLoggedIn()" class="navbar-text font-italic px-2 border-right border-left">
+
+           {{ currentUserFirstname }}
+
           </span>
 
           <!--Logout-->
-          <li *ngIf="isLoggedIn()" class="nav-item border-left">
+          <li *ngIf="isLoggedIn()" class="nav-item">
             <a class="nav-link pointer-cursor" (click)="logout()">{{ 'navbar.logout' | translate }}</a>
           </li>
           <!--Login-->
-          <li *ngIf="!isLoggedIn() " class="nav-item border-left">
+          <li *ngIf="!isLoggedIn() " class="nav-item">
             <a class="nav-link" [routerLink]="['/login']">{{ 'navbar.login' | translate }}</a>
           </li>
         </ul>

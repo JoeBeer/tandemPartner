@@ -3,8 +3,10 @@
     "homeLink": "Startseite",
     "profileLink": "Mein Profil",
     "searchLink": "Suchanfrage",
+    "searchResults": "Suchergebnisse",
     "matchesLink": "Matches",
     "chatLink": "Nachrichten",
+    "lang": "De",
     "logout": "Ausloggen",
     "login": "Einloggen"
   },
@@ -20,5 +22,124 @@
     "requestTitle": "Matchanfrage für: ",
     "previous": "Vorherige",
     "next": "Nächste"
+  },
+
+  "login": {
+    "tandemSlogan": " - gemeinsam lernen",
+    "mailPlaceholder": "E-Mailadresse",
+    "passwordPlaceholder": "Passwort",
+    "loginButton": "Einloggen",
+    "registerButton": "Account erstellen"
+  },
+
+  "register": {
+    "headerTitle": "Registrieren",
+    "firstname": "Vorname",
+    "lastname": "Nachname",
+    "sex": "Geschlecht",
+    "mail": "E-Mail",
+    "city": "Wohnort",
+    "birthday": "Geburtstag",
+    "birthdayShort": "tt.mm.jjjj",
+    "offers": "Ich biete an",
+    "pleaseChoose": "bitte wählen",
+    "activities": "Meine Aktivitäten",
+    "password": "Passwort",
+    "passwordConfirm": "Passwort bestätigen",
+    "saveButton": "Speichern",
+    "quitButton": "Abbrechen",
+    "requiredExplanation": "Diese Felder müssen ausgefüllt sein"
+  },
+
+  "profile": {
+    "headerTitle": "Profil bearbeiten",
+    "newPassword": "Neues Passwort",
+    "newPasswordConfirm": "Neues Passwort bestätigen",
+    "deleteButton": "Profil löschen",
+    "deleteQuestion": "Möchtest du wirklich dein Profil löschen?",
+    "confirmButton": "Bestätigen",
+    "modalHeader": "Aktuelles Passwort bestätigen"
+  },
+
+  "validators": {
+    "required": " muss ausgefüllt sein!",
+    "letterSpaces": "Nur Buchstaben sind erlaubt",
+    "email": "Nur E-Mail Format erlaubt!",
+    "city": "Wohnort muss ausgewählt sein!",
+    "birthday": "Geburtstag muss ausgewählt sein!",
+    "passwordPattern": "mind. 6 Zeichen inkl. 1 Großbuchstabe, 1 Kleinbuchstabe, 1 Zahl!",
+    "passwordMismatch": "Passwörter stimmen nicht überein!",
+    "minOffers": "mind. ein  Angebot muss ausgewählt sein!",
+    "minActivities": "mind. eine Aktivität muss ausgewählt sein!",
+    "ageMismatch": "Das Mindestalter muss kleiner als das Maximalalter sein!",
+    "updateSuccess": "Aktualisierung erfoglreich!",
+    "incorrectPassword": "Falsches Passwort! Bitte erneut versuchen!"
+  },
+
+  "matchlist": {
+    "matchHeaderTitle": "Übersicht aller Matches",
+    "accpetedMatches": "Akzeptierte Matches",
+    "matchedOffer": "Match für",
+    "unacceptedMatches": "Versendete Anfragen",
+    "matchrequestFor": "Anfrage für",
+    "contactTooltip": "Partner kontaktieren",
+    "deleteTooltip": "Anfrage zurückziehen"
+  },
+
+  "search": {
+    "newSearch": "Neue Suche",
+    "offer": "Ich möchte lernen",
+    "city": "Stadt",
+    "minAge": "Mindestalter",
+    "maxAge": "Maximalalter",
+    "searchButton": "Neue Suche starten",
+    "recentSearches": "Letzte Suchanfragen",
+    "years": "Jahre"
+  },
+
+  "result": {
+    "sendMatchrequestTooltip": "Matchanfrage senden",
+    "results": "Suchergebnisse",
+    "age": "Jahre alt",
+    "activities": "Aktivitäten",
+    "commonActivities": "Gemeinsame Aktivitäten",
+    "noResults": "Es wurden keine Nutzer gefunden, die deiner Suchanfrage entsprechen."
+  },
+
+  "chatroomList": {
+    "messages": "Nachrichten",
+    "deleteTooltip": "Chat löschen"
+  },
+
+  "chatroomItem": {
+    "currentUser": "Du",
+    "inputPlaceholder": "Schreib etwas...",
+    "sendButton": "Senden"
+  },
+
+  "impressum": {
+    "team": "Das Entwicklerteam",
+    "contact": "Kontakt",
+    "study": "Wirtschaftsinformatik"
+  },
+
+  "about": {
+    "heading": "Über Uns",
+    "blockquote": "\"Eine Investition in Wissen bringt immer noch die besten Zinsen.\"",
+    "explanation": "Wir möchten Dir deine Investition so einfach wie möglich machen und bieten Dir deshalb eine Plattform, mit dieser Du jeder Zeit dein eigenes Wissen mit anderen teilen und auch neues erlangen kannst. Das tandemPartner Team besteht aus Studenten des 6. Semester an der HWR Berlin.",
+    "imageExplanation": "Hier das Team von links nach rechts:"
+  },
+
+  "sex": {
+    "male": "männlich",
+    "female": "weiblich"
+  },
+
+  "modals": {
+    "details": "Details zu",
+    "accept": "Annehmen",
+    "decline": "Ablehnen",
+    "age": "Alter"
   }
 }
+

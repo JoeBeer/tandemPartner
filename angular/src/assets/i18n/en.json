@@ -6,6 +6,7 @@
     "searchResults": "Searching Results",
     "matchesLink": "Matches",
     "chatLink": "Chats",
+    "lang": "En",
     "logout": "Logout",
     "login": "Login"
   },
@@ -25,9 +26,9 @@
 
   "login": {
     "tandemSlogan": " - learn together",
-    "mailPlaceholder": "Mailadress",
+    "mailPlaceholder": "Mailaddress",
     "passwordPlaceholder": "Password",
-    "loginButton": "Einloggen",
+    "loginButton": "Sign In",
     "registerButton": "Register now"
   },
 
@@ -39,20 +40,26 @@
     "mail": "Mailadress",
     "city": "Residence",
     "birthday": "Birthday",
+    "birthdayShort": "dd.mm.yyyy",
     "offers": "I'm offering",
     "pleaseChoose": "choose an option",
     "activities": "My activities",
     "password": "Password",
     "passwordConfirm": "Confirm your Password",
-    "saveButton": "Save",
-    "quitButton": "Quit"
+    "saveButton": "Register",
+    "quitButton": "Cancel",
+    "requiredExplanation": "These fields are required"
   },
 
   "profile": {
     "headerTitle": "Edit your Profile",
     "newPassword": "New Password",
     "newPasswordConfirm": "Confirm your new Password",
-    "deleteButton": "Delete Profile"
+    "saveButton": "Save",
+    "deleteButton": "Delete Profile",
+    "deleteQuestion": "Do you really want to delete your profile?",
+    "confirmButton": "Confirm",
+    "modalHeader": "Confirm you current Password"
   },
 
   "validators": {
@@ -65,7 +72,9 @@
     "passwordMismatch": "Passwords not match!",
     "minOffers": "at least one offer is required!",
     "minActivities": "at least one activity is required!",
-    "ageMismatch": "The minimum Age has to be smaller than the maximum Age!"
+    "ageMismatch": "The minimum Age has to be smaller than the maximum Age!",
+    "updateSuccess": "Update successful!",
+    "incorrectPassword": "Incorrect Password! Please try again!"
   },
 
   "matchlist": {
@@ -82,16 +91,60 @@
     "newSearch": "New Search",
     "offer": "I want to learn",
     "city": "City",
-    "activities": "Activities",
     "minAge": "Minimum Age",
     "maxAge": "Maximum Age",
     "searchButton": "Start new Search",
-    "recentSearches": "Use recent Searchparametres"
+    "recentSearches": "Use recent Searchrequest",
+    "years": "Years",
+    "until": "up to",
+    "from": "from"
   },
 
   "result": {
     "sendMatchrequestTooltip": "Send Matchrequest",
     "results": "Searching Results",
-    "age": "years old"
+    "age": "years old",
+    "activities": "Activities",
+    "commonActivities": "Common Activities",
+    "noResults": "No users were found that match your search request."
+  },
+
+  "chatroomList": {
+    "messages": "Messages",
+    "deleteTooltip": "Delete Chat",
+    "deleteModalHeader": "Delete Chat",
+    "deleteModalQuestion": "Do you really want to delete this Chat?",
+    "deleteButton": "Delete Chat"
+  },
+
+  "chatroomItem": {
+    "currentUser": "You",
+    "inputPlaceholder": "Write something...",
+    "sendButton": "Send"
+  },
+
+  "impressum": {
+    "team": "The Developers",
+    "contact": "Contact",
+    "study": "Business Economics"
+  },
+
+  "about": {
+    "heading": "About Us",
+    "blockquote": "\"An investment in knowledge still brings the best interest.\"",
+    "explanation": "We want to make your investment as simple as possible. Therefore we are offering you one platform, with whom you can share your knowledge with other people and learn something new. The tandemPartner Team consists of students of HWR Berlin in their sixth semesters.",
+    "imageExplanation": "This is the team from the left to the right:"
+  },
+
+  "sex": {
+    "male": "male",
+    "female": "female"
+  },
+
+  "modals": {
+    "details": "Details for",
+    "accept": "Accept",
+    "decline": "Decline",
+    "age": "Age"
   }
 }
