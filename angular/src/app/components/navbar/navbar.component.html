@@ -40,7 +40,7 @@
           <!--dropdown menu-->
           <li class="nav-item dropdown">
             <!--showing english or german language, via checking whether english language was clicked or not -->
-            <a class="nav-link dropdown-toggle pointer-cursor border-right" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuLink">
+            <a class="nav-link dropdown-toggle pointer-cursor" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenuLink">
               {{ 'navbar.lang' | translate }}
             </a>
             <!--dropdown links-->
@@ -52,18 +52,18 @@
           </li>
 
           <!--username-->
-          <span *ngIf="isLoggedIn()" class="navbar-text font-italic mx-lg-2">
+          <span *ngIf="isLoggedIn()" class="navbar-text font-italic px-2 border-right border-left">
 
-            {{ greeting }} {{ currentUserFirstname }}
+           {{ currentUserFirstname }}
 
           </span>
 
           <!--Logout-->
-          <li *ngIf="isLoggedIn()" class="nav-item border-left">
+          <li *ngIf="isLoggedIn()" class="nav-item">
             <a class="nav-link pointer-cursor" (click)="logout()">{{ 'navbar.logout' | translate }}</a>
           </li>
           <!--Login-->
-          <li *ngIf="!isLoggedIn() " class="nav-item border-left">
+          <li *ngIf="!isLoggedIn() " class="nav-item">
             <a class="nav-link" [routerLink]="['/login']">{{ 'navbar.login' | translate }}</a>
           </li>
         </ul>
