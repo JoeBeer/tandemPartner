@@ -2,14 +2,14 @@ const admin = require('firebase-admin');
 const db = admin.firestore();
 const chatroomsCollection = db.collection("chatrooms");
 
-// Validation of the request to create a new chatroom.
-// Then create a new chatroom document in the database with the Firebase Admin SDK.
+// Validating the request to create a new chatroom.
+// Then creating a new chatroom document in the database with the Firebase Admin SDK.
 exports.createChatroom = async (req, res) => {
     try {
         const chatroom = req.body;
 
         if (req.body.userA === req.body.userB) {
-            console.log("Error - Can't create Chatroom with two identical userID's!")
+            console.error("Error - Can't create Chatroom with two identical userID's!")
             return res.send(false);
         }
         var resultA = await chatroomsCollection.where("userA", "==", req.body.userA)
@@ -40,8 +40,8 @@ exports.createChatroom = async (req, res) => {
             });
         }
         else {
-            const err = 'Error creating new chatroom - Chatroom aready exists';
-            console.log(err)
+            const info = 'Chatroom couldn\'t be created - Chatroom aready exists';
+            console.log(info)
             if (IDResultA) {
                 return res.send({
                     result: false,
@@ -57,16 +57,15 @@ exports.createChatroom = async (req, res) => {
         }
     }
     catch (error) {
-        console.log('Error creating new chatroom', error)
+        console.error('Error creating new chatroom', error)
         return res.send(false);
     }
 }
 
-// Validation of the request to write a new message in the message field of the chatroom document.
+// Validating the request to write a new message in the message field of the chatroom document.
 // Then updating the chatroom document.
 exports.updateChatroom = function (req, res) {
     const message = req.body
-    // console.log(req.body)
     return chatroomsCollection.doc(req.params.chatroomId)
         .update({
             updated: Date.now(),
@@ -81,7 +80,7 @@ exports.updateChatroom = function (req, res) {
             return res.status(200).send(true);
         })
         .catch((error) => {
-            console.log('Error creating new message', error)
+            console.error('Error creating new message', error)
             return res.status(500).send(false);
         })
 }
@@ -94,7 +93,7 @@ exports.deleteChatroom = (req, res) => {
             return res.status(200).send(true)
         })
         .catch((error) => {
-            console.log('Error - deleting chatroom failed')
+            console.error('Error - deleting chatroom failed')
             return res.status(500).send(false)
         })
 }

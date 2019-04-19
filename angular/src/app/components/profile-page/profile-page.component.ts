@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
-import { Router } from '@angular/router';
 import { UserStoreService } from 'src/app/services/user-store.service';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
@@ -49,7 +48,6 @@ export class ProfilePageComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,
     private userStoreService: UserStoreService,
     private authService: AuthService,
     private utliltyStoreService: UtilityStoreService,
@@ -305,13 +303,6 @@ export class ProfilePageComponent implements OnInit {
     } // end else
   }
 
-  // deleteUser() {
-  //   this.userStoreService.deleteUser(this.authService.currentUserID).subscribe(() => {
-  //     this.authService.logout();
-  //   });
-  // }
-
-
   // getter for the inputfields
   get editFormFirstname() {
     return this.editForm.get('editFormFirstname');
@@ -339,7 +330,6 @@ export class ProfilePageComponent implements OnInit {
   get modalFormPassword() {
     return this.editForm.get('modalFormPassword');
   }
-
 
   openModal(id: string) {
     console.log('id: ' + id);

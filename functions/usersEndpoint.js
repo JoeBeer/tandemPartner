@@ -4,6 +4,7 @@ const usersCollection = db.collection('users');
 const matchesCollection = db.collection('matches');
 const chatroomsCollection = db.collection('chatrooms');
 
+// Creates new user in Firebase Authentication and Firebase Firestore with the given information inside the request.
 exports.createUser = async (req, res) => {
     try {
         const user = req.body;
@@ -30,11 +31,12 @@ exports.createUser = async (req, res) => {
         return res.status(200).send(userRecord);
     }
     catch (error) {
-        console.log("Error creating new user:", error);
+        console.error("Error creating new user:", error);
         return res.send(false);
     }
 };
 
+// Updates an existing user in Firebase Authentication and Firebase Firestore with the given information inside the request. 
 exports.updateUser = function (req, res) {
     let userAuthUpdate;
     const updatedUser = req.body;
@@ -68,11 +70,12 @@ exports.updateUser = function (req, res) {
             return res.status(200).send(true);
         })
         .catch((error) => {
-            console.log("Error updating user:", error);
+            console.error("Error updating user:", error);
             return res.send(false);
         });
 };
 
+// Deletes an user in Firebase Authentication and Firebase Firestore. Also deletes every match, searches and chatrooms including the users ID.
 exports.deleteUser = async (req, res) => {
     try {
         const userId = req.params.userId;
@@ -132,7 +135,7 @@ exports.deleteUser = async (req, res) => {
         return res.status(200).send(true);
     }
     catch (error) {
-        console.log('Error deleting user', error);
+        console.error('Error deleting user', error);
         return res.send(false);
     }
 };

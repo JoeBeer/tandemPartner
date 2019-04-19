@@ -84,7 +84,8 @@
     "unacceptedMatches": "Versendete Anfragen",
     "matchrequestFor": "Anfrage für",
     "contactTooltip": "Partner kontaktieren",
-    "deleteTooltip": "Anfrage zurückziehen"
+    "deleteTooltip": "Anfrage zurückziehen",
+    "deleteMatchTooltip": "Match löschen"
   },
 
   "search": {
@@ -145,7 +146,12 @@
     "details": "Details zu",
     "accept": "Annehmen",
     "decline": "Ablehnen",
-    "age": "Alter"
+    "age": "Alter",
+    "matchrequest": "Eine Matchanfrage wurde versendet!"
+  },
+
+  "loading": {
+    "button": "Bitte warten.."
   }
 }
 

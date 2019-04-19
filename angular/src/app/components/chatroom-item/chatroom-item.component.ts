@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { faReply } from '@fortawesome/free-solid-svg-icons';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-chatroom-item',
@@ -35,7 +34,7 @@ export class ChatroomItemComponent implements OnInit {
       return alert('you need to enter something');
     }
     this.chatService.sendMessage(chatId, this.newMessage)
-    .subscribe();
+      .subscribe();
     this.newMessage = ``;
     setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 500);
   }

@@ -1,8 +1,8 @@
-// TODO delete after utilities added to the db
 const admin = require('firebase-admin');
 const db = admin.firestore();
 const utilitiesCollection = db.collection("utilities");
 
+// Creates the utilities document in Firebase Firestore, that contains identifiers for activities, cities, offers and sex.
 exports.createUtilitiesDoc = (req, res) => {
     const activitiesDe =
         [
@@ -439,15 +439,15 @@ exports.createUtilitiesDoc = (req, res) => {
             'Computer game Call of Duty'
         ]
     const sexDe =
-    [
-        'weiblich',
-        'männlich'
-    ]
+        [
+            'weiblich',
+            'männlich'
+        ]
     const sexEn =
-    [
-        'female',
-        'male'
-    ]
+        [
+            'female',
+            'male'
+        ]
 
     utilitiesCollection.doc('utilitiesDoc').set({
         activitiesDe: activitiesDe,
@@ -463,7 +463,7 @@ exports.createUtilitiesDoc = (req, res) => {
             return res.send(true);
         })
         .catch((error) => {
-            console.log(error);
+            console.error(error);
             return res.send(false)
         })
 }

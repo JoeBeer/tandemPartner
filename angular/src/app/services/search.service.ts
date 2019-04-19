@@ -14,8 +14,10 @@ import { combineLatest } from 'rxjs';
 })
 export class SearchService {
 
-  private apiUrl = 'http://localhost:5000/tandemfirebase/us-central1';
-  // private apiUrl = 'https://us-central1-tandemfirebase.cloudfunctions.net';
+  // TODO Try to refactor service, if there is still time at the end
+
+  // private apiUrl = 'http://localhost:5000/tandemfirebase/us-central1';
+  private apiUrl = 'https://us-central1-tandemfirebase.cloudfunctions.net';
   private headers: Headers = new Headers();
 
   constructor(
@@ -301,7 +303,7 @@ export class SearchService {
 
   searchQueryWithCityAndSexAndMinAndMax(searchRequest: Searchrequest) {
     const minAge = searchRequest.minAgeParam;
-    const maxAge = searchRequest.maxAgeParam + 1; // TODO Why does this shows the right results?
+    const maxAge = searchRequest.maxAgeParam + 1;
 
     const today = new Date();
     const todayYear = today.getFullYear();
