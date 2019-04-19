@@ -2828,6 +2828,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var MatchStoreService = /** @class */ (function () {
+    // private apiUrl = 'https://us-central1-livechattandem.cloudfunctions.net';
     function MatchStoreService(http, angularFirestore, authService, userStoreService) {
         this.http = http;
         this.angularFirestore = angularFirestore;

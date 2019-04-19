@@ -108,7 +108,7 @@ export class SearchPageComponent implements OnInit {
 
     const searchdata = {
       offerParam: this.offers.indexOf(this.selectedOffer[0]),
-      cityParam:  this.cities.indexOf(this.selectedCity[0]),
+      cityParam: this.cities.indexOf(this.selectedCity[0]),
       sexParam: this.sex.indexOf(this.selectedSex[0]),
       minAgeParam: Number(this.searchForm.value.searchFormMinAge),
       maxAgeParam: Number(this.searchForm.value.searchFormMaxAge),
@@ -163,4 +163,10 @@ export class SearchPageComponent implements OnInit {
     return this.searchForm.get('searchFormMaxAge');
   }
 
+  loadingButton(event) {
+    this.translateService.stream('loading.button').subscribe(key => {
+      document.getElementById('loadingButton').innerText = key;
+    });
+    event.target.classList.add('disabled');
+  }
 }

@@ -35,6 +35,10 @@ export class ResultPageComponent implements OnInit {
 
   matchedOffer;
 
+    // for modal
+    display = 'none';
+    modalIsOpen = false;
+
   constructor(
     private matchStoreService: MatchStoreService,
     private authService: AuthService,
@@ -60,9 +64,11 @@ export class ResultPageComponent implements OnInit {
         this.searchResults$ = searchResults;
       }, error => {
         console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+        console.error(error);
       });
     }, error => {
       console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+      console.error(error);
     });
   }
 
@@ -122,4 +128,13 @@ export class ResultPageComponent implements OnInit {
     return age + '';
   }
 
+  openModal() {
+    this.modalIsOpen = true;
+    this.display = 'block';
+  }
+
+  closeModal() {
+    this.display = 'none';
+    this.modalIsOpen = false;
+  }
 }

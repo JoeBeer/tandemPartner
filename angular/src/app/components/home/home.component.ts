@@ -173,4 +173,7 @@ export class HomeComponent implements OnInit {
     return this.cities[cityIndex];
   }
 
+  loadingButton(event) {
+    event.target.classList.add('disabled');
+  }
 }

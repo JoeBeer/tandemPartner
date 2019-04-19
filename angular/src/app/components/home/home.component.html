@@ -20,10 +20,10 @@
                   </a>
                 </div>
                 <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
-                  <button type="button" class="btn btn-success mr-2 homebutton" (click)="acceptMatch(match.matchId)">
+                  <button type="button" class="btn btn-success mr-2 homebutton" (click)="acceptMatch(match.matchId);loadingButton($event);">
                     <fa-icon [icon]="faCheck"></fa-icon>
                   </button>
-                  <button type="button" class="btn btn-outline-danger homebutton" (click)="declineMatch(match.matchId)">
+                  <button type="button" class="btn btn-outline-danger homebutton" (click)="declineMatch(match.matchId);loadingButton($event);">
                     <fa-icon [icon]="faTimes"></fa-icon>
                   </button>
                 </div>
@@ -90,10 +90,10 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success mr-2" (click)="acceptMatch(matchId)">
+        <button type="button" class="btn btn-success mr-2" (click)="acceptMatch(matchId);loadingButton($event);">
           {{ 'modals.accept' | translate}}
         </button>
-        <button type="button" class="btn btn-outline-danger" (click)="declineMatch(matchId)">
+        <button type="button" class="btn btn-outline-danger" (click)="declineMatch(matchId);loadingButton($event);">
           {{ 'modals.decline' | translate}}
         </button>
       </div>

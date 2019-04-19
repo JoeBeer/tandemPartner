@@ -1,3 +1,4 @@
+import { ChatroomListComponent } from './../chatroom-list/chatroom-list.component';
 import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
 import { UserStoreService } from './../../services/user-store.service';
 import { Match } from './../../models/match';
@@ -7,8 +8,6 @@ import { Component, OnInit } from '@angular/core';
 import { faTrash, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { ChatService } from 'src/app/services/chat.service';
-import { User } from './../../models/user';
-// import { ChatService } from './../../services/chat.service';
 import { UtilityStoreService } from 'src/app/services/utility-store.service';
 
 @Component({
@@ -29,6 +28,8 @@ export class MatchListComponent implements OnInit {
   acceptedMatchesAsPartner$: any[] = [];
 
   matchRequestLength: number;
+  acceptedMatchesAsInitiatorLength: number;
+  acceptedMatchesAsPartnerLength: number;
 
   offers;
   activities;
@@ -56,6 +57,7 @@ export class MatchListComponent implements OnInit {
   matchSex: string;
   city: string;
   matchActivities;
+  matchIDModal: string;
   age;
   // initiatorID: string;
   // partnerID: string;
@@ -67,25 +69,33 @@ export class MatchListComponent implements OnInit {
     private chatservice: ChatService,
     private userStoreService: UserStoreService,
     private utliltyStoreService: UtilityStoreService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private chatroomListComponent: ChatroomListComponent
   ) {
     this.matchStoreService.getAllMatchrequests().subscribe(matches => {
       this.matchRequestLength = matches.length;
       this.matchRequests$ = matches;
     }, error => {
       console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+      console.error(error);
     });
 
     this.matchStoreService.getAllAcceptedMatchesAsInitiator().subscribe(matches => {
+      this.acceptedMatchesAsInitiatorLength = matches.length;
       this.acceptedMatchesAsInitiator$ = matches;
     }, error => {
       console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+      console.error(error);
     });
 
+    // this.acceptedMatchesAsInitiator$ = this.matchStoreService.getAllAcceptedMatchesAsInitiator();
+
     this.matchStoreService.getAllAcceptedMatchesAsPartner().subscribe(matches => {
+      this.acceptedMatchesAsPartnerLength = matches.length;
       this.acceptedMatchesAsPartner$ = matches;
     }, error => {
       console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+      console.error(error);
     });
   }
 
@@ -127,7 +137,61 @@ export class MatchListComponent implements OnInit {
   //     });
   // }
 
-  deleteMatchrequest(matchId: string) {
+  deleteAcceptedMatchAndCorrespondingChatroom(acceptedMatchesArrayName: string, matchId: string, matchPartner: string) {
+    let indexNumber: number;
+    const chatsAsUserAArray = this.chatroomListComponent.userChatsAsUserA$;
+    const chatsAsUserBArray = this.chatroomListComponent.userChatsAsUserB$;
+    if (acceptedMatchesArrayName === 'acceptedMatchesAsInitiator$') {
+      this.matchStoreService.deleteMatch(matchId).subscribe(() => {
+        for (let index = 0; index < this.acceptedMatchesAsInitiator$.length; index++) {
+          if (this.acceptedMatchesAsInitiator$[index].id === matchId) {
+            indexNumber = index;
+          }
+        }
+        this.acceptedMatchesAsInitiator$.splice(indexNumber, 1);
+      });
+    } else if (acceptedMatchesArrayName === 'acceptedMatchesAsPartner$') {
+      this.matchStoreService.deleteMatch(matchId).subscribe(() => {
+        for (let index = 0; index < this.acceptedMatchesAsPartner$.length; index++) {
+          if (this.acceptedMatchesAsPartner$[index].id === matchId) {
+            indexNumber = index;
+          }
+        }
+        this.acceptedMatchesAsPartner$.splice(indexNumber, 1);
+      });
+    }
+
+    // this.chatservice.getAllChatroomsAsUserA().subscribe(chatrooms => {
+    //   chatrooms.forEach(chat => {
+    //     if (chat.userB === matchPartner) {
+    //       this.chatservice.deleteChatroom(chat.id).subscribe();
+    //     }
+    //   });
+    // });
+
+    // this.chatservice.getAllChatroomsAsUserB().subscribe(chatrooms => {
+    //   chatrooms.forEach(chat => {
+    //     if (chat.userA === matchPartner) {
+    //       this.chatservice.deleteChatroom(chat.id).subscribe();
+    //     }
+    //   });
+    // });
+
+    chatsAsUserAArray.forEach(chat => {
+      if (chat.userB === matchPartner) {
+        this.chatservice.deleteChatroom(chat.id).subscribe();
+      }
+    });
+
+    chatsAsUserBArray.forEach(chat => {
+      if (chat.userA === matchPartner) {
+        this.chatservice.deleteChatroom(chat.id).subscribe();
+      }
+    });
+
+  }
+
+  deleteMatchrequest(matchId) {
     let indexNumber: number;
     this.matchStoreService.deleteMatch(matchId)
       .subscribe(() => {
@@ -144,12 +208,9 @@ export class MatchListComponent implements OnInit {
   }
 
   openModal(match) {
-    // save partnerID and initiatorID for Contact
-    // this.initiatorID = initiatorID;
-    // this.partnerID = partnerID;
 
     // infos for modal
-    // this.activities = '';
+    this.matchIDModal = match.uid;
     this.modalIsOpen = true;
     this.display = 'block';
     this.firstname = match.firstname;
@@ -209,5 +270,7 @@ export class MatchListComponent implements OnInit {
     return this.cities[cityIndex];
   }
 
-
+  loadingButton(event) {
+    event.target.classList.add('disabled');
+  }
 }
