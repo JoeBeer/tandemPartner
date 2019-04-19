@@ -30,35 +30,17 @@ export class NavbarComponent implements OnInit {
 
 
   ngOnInit() {
-    // this.setUsername();
     this.authService.user$.subscribe(user => {
       try {
         this.currentUserFirstname = user.firstname;
       } catch {
       }
     });
-    // random greeting
-    this.greeting = this.randomGreeting();
-  }
-
-  randomGreeting(): string {
-    const arr: string[] = ['Grüß dich', 'Hallo', 'Hi', 'Hey', 'Guten Tag', 'Servus', 'Huhu', 'Willkommen', 'Moin'];
-    const randomNumber: number = Math.floor(Math.random() * (arr.length - 1));
-    return arr[randomNumber];
   }
 
   isLoggedIn() {
     return this.authService.isloggedIn();
   }
-
-  // async setUsername() {
-  //   await this.authService.getCurrentUser().then(((user: User) => {
-  //     this.currentUserFirstname = user.firstname;
-  //   }))
-  //   .catch(() => {
-  //     console.log('Promises need a catch-block after the then-block');
-  //   });
-  // }
 
   switchLanguage(language: string) {
     this.translateService.use(language);

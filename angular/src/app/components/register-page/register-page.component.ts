@@ -61,10 +61,10 @@ export class RegisterPageComponent implements OnInit {
     // create the formGroup
     return this.formBuilder.group({
       // the field only contains letters or spaces
-      registerFormFirstname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+      registerFormFirstname: ['', [Validators.required, Validators.pattern('[a-zA-ZäÄüÜöÖß]*')]],
 
       // the field only contains letters or spaces
-      registerFormLastname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+      registerFormLastname: ['', [Validators.required, Validators.pattern('[a-zA-ZäÄüÜöÖß]*')]],
 
       registerFormMail: ['', [Validators.required, Validators.email]],
 

@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyA60SCLQd6f7KOT_UmUml5RgMnAC3F5E_A',
-    projectId: 'livechattandem'
+    apiKey: 'AIzaSyCww8YKdmbCbawimU1yEzpNDb6jHpr8fzs',
+    projectId: 'tandemfirebase'
   }
 };
 
