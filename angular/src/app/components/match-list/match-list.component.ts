@@ -56,6 +56,7 @@ export class MatchListComponent implements OnInit {
   matchSex: string;
   city: string;
   matchActivities;
+  matchIDModal: string;
   age;
   // initiatorID: string;
   // partnerID: string;
@@ -127,7 +128,7 @@ export class MatchListComponent implements OnInit {
   //     });
   // }
 
-  deleteMatchrequest(matchId: string) {
+  deleteMatchrequest(matchId) {
     let indexNumber: number;
     this.matchStoreService.deleteMatch(matchId)
       .subscribe(() => {
@@ -144,12 +145,9 @@ export class MatchListComponent implements OnInit {
   }
 
   openModal(match) {
-    // save partnerID and initiatorID for Contact
-    // this.initiatorID = initiatorID;
-    // this.partnerID = partnerID;
 
     // infos for modal
-    // this.activities = '';
+    this.matchIDModal = match.uid;
     this.modalIsOpen = true;
     this.display = 'block';
     this.firstname = match.firstname;
@@ -209,5 +207,7 @@ export class MatchListComponent implements OnInit {
     return this.cities[cityIndex];
   }
 
-
+  loadingButton(event) {
+    event.target.classList.add('disabled');
+  }
 }

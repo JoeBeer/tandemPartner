@@ -35,14 +35,19 @@
                     <a class="pointer-cursor" (click)="openModal(match)">
                       <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
                       <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->
-                      <p class="my-0"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>
+                      <p class="my-0"><small>Aktivitäten:
+                          {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>
                     </a>
                   </div>
                   <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
-                    <button type="button" class="btn btn-outline-warning homebutton"
-                      (click)="contactUser(match.uid)" data-toggle="tooltip"
-                      data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
+                    <button type="button" class="btn btn-outline-warning mr-2 homebutton" (click)="loadingButton($event);contactUser(match.uid);"
+                      data-toggle="tooltip" data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
                       <fa-icon [icon]="faEnvelope"></fa-icon>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger homebutton"
+                      (click)="deleteMatchrequest(match.matchId);loadingButton($event);" data-toggle="tooltip" data-placement="top"
+                      title="{{ 'matchlist.deleteMatchTooltip' | translate }}">
+                      <fa-icon [icon]="faTrash"></fa-icon>
                     </button>
                   </div>
                 </div>
@@ -70,14 +75,19 @@
                     <a class="pointer-cursor" (click)="openModal(match)">
                       <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
                       <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->
-                      <p class="my-0"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>
+                      <p class="my-0"><small>Aktivitäten:
+                          {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>
                     </a>
                   </div>
                   <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
-                    <button type="button" class="btn btn-outline-warning homebutton"
-                      (click)="contactUser(match.uid)" data-toggle="tooltip"
-                      data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
+                    <button type="button" class="btn btn-outline-warning mr-2 homebutton" (click)="loadingButton($event);contactUser(match.uid);"
+                      data-toggle="tooltip" data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
                       <fa-icon [icon]="faEnvelope"></fa-icon>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger homebutton"
+                      (click)="deleteMatchrequest(match.matchId);loadingButton($event);" data-toggle="tooltip" data-placement="top"
+                      title="{{ 'matchlist.deleteMatchTooltip' | translate }}">
+                      <fa-icon [icon]="faTrash"></fa-icon>
                     </button>
                   </div>
                 </div>
@@ -118,12 +128,13 @@
 
                     <p class="my-0"><small>{{ matchrequest.firstname }} {{ matchrequest.lastname }}</small></p>
                     <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(matchrequest.dateOfBirth)}}</small></p> -->
-                    <p class="my-0"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(matchrequest.activities))}}</small></p>
+                    <p class="my-0"><small>Aktivitäten:
+                        {{activitiesForModal(parseActivitiesForFrontend(matchrequest.activities))}}</small></p>
 
                   </div>
                   <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
                     <button type="button" class="btn btn-outline-danger homebutton"
-                      (click)="deleteMatchrequest(matchrequest.matchId)" data-toggle="tooltip" data-placement="top"
+                      (click)="deleteMatchrequest(matchrequest.matchId);loadingButton($event);" data-toggle="tooltip" data-placement="top"
                       title="{{ 'matchlist.deleteTooltip' | translate }}">
                       <fa-icon [icon]="faTrash"></fa-icon>
                     </button>
@@ -198,7 +209,7 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-warning homebutton" (click)="contactUser(initiatorID, partnerID)"
+        <button type="button" class="btn btn-outline-warning homebutton" (click)="loadingButton($event);contactUser(matchIDModal);"
           data-toggle="tooltip" data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
           <fa-icon [icon]="faEnvelope"></fa-icon>
         </button>

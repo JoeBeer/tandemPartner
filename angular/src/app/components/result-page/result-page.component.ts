@@ -35,6 +35,10 @@ export class ResultPageComponent implements OnInit {
 
   matchedOffer;
 
+    // for modal
+    display = 'none';
+    modalIsOpen = false;
+
   constructor(
     private matchStoreService: MatchStoreService,
     private authService: AuthService,
@@ -122,4 +126,13 @@ export class ResultPageComponent implements OnInit {
     return age + '';
   }
 
+  openModal() {
+    this.modalIsOpen = true;
+    this.display = 'block';
+  }
+
+  closeModal() {
+    this.display = 'none';
+    this.modalIsOpen = false;
+  }
 }

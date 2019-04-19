@@ -51,4 +51,5 @@ export class LoginPageComponent implements OnInit {
   get loginFormPassword() {
     return this.loginForm.get('loginFormPassword');
   }
+
 }
