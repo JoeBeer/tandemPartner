@@ -47,7 +47,7 @@
     "password": "Password",
     "passwordConfirm": "Confirm your Password",
     "saveButton": "Save",
-    "quitButton": "Quit",
+    "quitButton": "Cancel",
     "requiredExplanation": "These fields are required"
   },
 
@@ -108,7 +108,10 @@
 
   "chatroomList": {
     "messages": "Messages",
-    "deleteTooltip": "Delete Chat"
+    "deleteTooltip": "Delete Chat",
+    "deleteModalHeader": "Delete Chat",
+    "deleteModalQuestion": "Do you really want to delete this Chat?",
+    "deleteButton": "Delete Chat"
   },
 
   "chatroomItem": {
