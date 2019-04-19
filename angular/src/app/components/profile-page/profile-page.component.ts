@@ -196,6 +196,7 @@ export class ProfilePageComponent implements OnInit {
 
   confirmAndValidatePassword() {
 
+    const enteredPassword = this.modalForm.value.modalFormPassword;
     // hash the input for conclusion with the saved password in firebase's Auth
     const password: string = this.md52.appendStr(this.authService.currentUserMail)
     .appendStr(this.modalForm.value.modalFormPassword).end() as string;
@@ -204,7 +205,7 @@ export class ProfilePageComponent implements OnInit {
     // when password was correct start editFormSave()
     .then(() => {
       this.invalidPassword = false;
-      this.editFormSave();
+      this.editFormSave(enteredPassword);
     })
     // when the password was incorrect, show the specific message
     .catch(() => {
@@ -219,7 +220,7 @@ export class ProfilePageComponent implements OnInit {
 
   // validate the input & select fields and send the mail & password to Firebase Authentication
   // after that the rest of userdata incl. the recieved UserID will be send to the API(Firebase Cloud Functions)
-  editFormSave() {
+  editFormSave(enteredPassword: string) {
 
     if (this.editForm.invalid) {
       return;
@@ -254,7 +255,33 @@ export class ProfilePageComponent implements OnInit {
 
         this.authService.logout();
       });
-    } else {
+    } else if (mail !== this.authService.currentUserMail) {
+      userdata = {
+        firstname: this.editForm.value.editFormFirstname,
+        lastname: this.editForm.value.editFormLastname,
+        city: this.cities.indexOf(this.selectedCity[0]),
+        dateOfBirth: this.editForm.value.editFormBirthday,
+        // get the only one item from selectedSex-Array
+        sex: this.parseSexValueForBackend(this.selectedSex),
+        activities: this.parseActivitiesForBackend(this.selectedActivities),
+        offers: this.parseOffersForBackend(this.selectedOffers),
+        mail,
+        password: this.md5.appendStr(mail)
+          .appendStr(enteredPassword).end()
+      };
+
+      this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
+        // show the updateSuccess message
+        this.updateSuccess = true;
+        setTimeout(() => {
+          this.updateSuccess = false;
+        }, 3000);
+        this.modalForm.reset();
+
+        this.authService.logout();
+      });
+    }
+    else {
       userdata = {
         firstname: this.editForm.value.editFormFirstname,
         lastname: this.editForm.value.editFormLastname,
