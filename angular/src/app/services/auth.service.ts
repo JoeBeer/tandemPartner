@@ -17,7 +17,7 @@ export class AuthService {
   currentUserID: string;
   // currentUsername: string;
   currentUserMail: string;
-  currentUserActivities: number[];
+  currentUserActivities: number[] = [];
 
   isLoggedIn = false;
   // store the URL so we can redirect after logging in
@@ -41,10 +41,19 @@ export class AuthService {
       })
     );
 
+    // this.user$.pipe(first()).toPromise().then(user => {
+    //   this.currentUserActivities = user.activities;
+    // })
+    // .catch(error => {
+    //   console.error(error);
+    // });
+
     this.user$.subscribe(user => {
-      if (user !== null) {
+      if (user !== null && user !== undefined) {
         this.currentUserActivities = user.activities;
       }
+    }, error => {
+      console.log('Error in auth-service - TODO delete this console.log() before finishing WebProg!');
     });
   }
 

@@ -67,16 +67,18 @@ export class ProfilePageComponent implements OnInit {
     });
 
     this.userStoreService.getUserById(this.authService.currentUserID).subscribe((recievedUser: User) => {
-      this.selectedSex = this.parseSexValueForFrontend(recievedUser.sex);
-      this.selectedActivities = this.parseActivitiesForFrontend(recievedUser.activities);
-      this.selectedOffers = this.parseOffersForFrontend(recievedUser.offers);
-      this.selectedCity = Array.of(this.cities[recievedUser.city]);
-      this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
-      this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
-      this.editForm.get('editFormMail').setValue(this.authService.currentUserMail);
-      this.editForm.get('editFormBirthday').setValue(new Date(recievedUser.dateOfBirth));
-      // modalForm valid status will be validated, therefore has to be initialized in ngOnInit()
-      this.modalForm.get('modalFormPassword');
+      if (recievedUser !== undefined) {
+        this.selectedSex = this.parseSexValueForFrontend(recievedUser.sex);
+        this.selectedActivities = this.parseActivitiesForFrontend(recievedUser.activities);
+        this.selectedOffers = this.parseOffersForFrontend(recievedUser.offers);
+        this.selectedCity = Array.of(this.cities[recievedUser.city]);
+        this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
+        this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
+        this.editForm.get('editFormMail').setValue(this.authService.currentUserMail);
+        this.editForm.get('editFormBirthday').setValue(new Date(recievedUser.dateOfBirth));
+        // modalForm valid status will be validated, therefore has to be initialized in ngOnInit()
+        this.modalForm.get('modalFormPassword');
+      }
     }, error => {
       console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
     });
@@ -199,23 +201,23 @@ export class ProfilePageComponent implements OnInit {
     const enteredPassword = this.modalForm.value.modalFormPassword;
     // hash the input for conclusion with the saved password in firebase's Auth
     const password: string = this.md52.appendStr(this.authService.currentUserMail)
-    .appendStr(this.modalForm.value.modalFormPassword).end() as string;
+      .appendStr(this.modalForm.value.modalFormPassword).end() as string;
 
     this.authService.validatePassword(password)
-    // when password was correct start editFormSave()
-    .then(() => {
-      this.invalidPassword = false;
-      this.editFormSave(enteredPassword);
-    })
-    // when the password was incorrect, show the specific message
-    .catch(() => {
-      this.updateSuccess = false;
-      this.invalidPassword = true;
-      setTimeout(() => {
+      // when password was correct start editFormSave()
+      .then(() => {
         this.invalidPassword = false;
-      }, 3000);
-      this.modalForm.reset();
-    });
+        this.editFormSave(enteredPassword);
+      })
+      // when the password was incorrect, show the specific message
+      .catch(() => {
+        this.updateSuccess = false;
+        this.invalidPassword = true;
+        setTimeout(() => {
+          this.invalidPassword = false;
+        }, 3000);
+        this.modalForm.reset();
+      });
   }
 
   // validate the input & select fields and send the mail & password to Firebase Authentication
@@ -280,8 +282,7 @@ export class ProfilePageComponent implements OnInit {
 
         this.authService.logout();
       });
-    }
-    else {
+    } else {
       userdata = {
         firstname: this.editForm.value.editFormFirstname,
         lastname: this.editForm.value.editFormLastname,
