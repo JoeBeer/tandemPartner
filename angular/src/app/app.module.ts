@@ -96,6 +96,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     UtilityStoreService,
     ChatService,
     SearchService,
+    ChatroomListComponent,
     { provide: FirestoreSettingsToken, useValue: {} } // To solve the timestampInSnapshot-Error
   ],
   bootstrap: [AppComponent]

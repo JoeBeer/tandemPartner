@@ -39,7 +39,7 @@ export class ChatService {
     return this.http.post<IdResponse>(`${this.apiUrl2}`, data);
   }
 
-  // Send a message to the Cloud Firestore database by valling the corresponding endpoint.
+  // Send a message to the Cloud Firestore database by calling the corresponding endpoint.
   sendMessage(chatroomId, content) {
     const uid = this.authService.currentUserID;
     const data = {
@@ -50,16 +50,7 @@ export class ChatService {
     return this.http.put(`${this.apiUrl2}/${chatroomId}`, data);
   }
 
-  // Get all chatrooms of the current user and return it as an observable array with realtime changes.
-  getAllChatrooms() {
-    const resultA = this.queryChatrooms('userA');
-
-    const resultB = this.queryChatrooms('userB');
-
-    return combineLatest(resultA, resultB).pipe(
-      map(([users, otherUsers]) => users.concat(otherUsers)));
-  }
-
+  // TODO change user.uid to currentUserID
   getAllChatroomsAsUserA() {
     return this.authService.user$.pipe(
       switchMap(user => {
@@ -88,6 +79,7 @@ export class ChatService {
     );
   }
 
+  // TODO change user.uid to currentUserID
   getAllChatroomsAsUserB() {
     return this.authService.user$.pipe(
       switchMap(user => {
@@ -112,26 +104,6 @@ export class ChatService {
             })
           );
         }));
-      })
-    );
-  }
-
-  // Query chatrooms by field name.
-  private queryChatrooms(fieldName) {
-    return this.authService.user$.pipe(
-      switchMap(user => {
-        return this.angularFirestore
-          .collection('chatrooms', ref => ref.where(fieldName, '==', user ? user.uid : ''))
-          .snapshotChanges()
-          .pipe(
-            map(actions => {
-              return actions.map(a => {
-                const data = a.payload.doc.data();
-                const id = a.payload.doc.id;
-                return { id, ...data };
-              });
-            })
-          );
       })
     );
   }

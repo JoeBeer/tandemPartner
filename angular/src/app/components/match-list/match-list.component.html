@@ -45,7 +45,7 @@
                       <fa-icon [icon]="faEnvelope"></fa-icon>
                     </button>
                     <button type="button" class="btn btn-outline-danger homebutton"
-                      (click)="deleteMatchrequest(match.matchId);loadingButton($event);" data-toggle="tooltip" data-placement="top"
+                      (click)="deleteAcceptedMatchAndCorrespondingChatroom('acceptedMatchesAsInitiator$', match.matchId, match.uid);loadingButton($event);" data-toggle="tooltip" data-placement="top"
                       title="{{ 'matchlist.deleteMatchTooltip' | translate }}">
                       <fa-icon [icon]="faTrash"></fa-icon>
                     </button>
@@ -85,7 +85,7 @@
                       <fa-icon [icon]="faEnvelope"></fa-icon>
                     </button>
                     <button type="button" class="btn btn-outline-danger homebutton"
-                      (click)="deleteMatchrequest(match.matchId);loadingButton($event);" data-toggle="tooltip" data-placement="top"
+                      (click)="deleteAcceptedMatchAndCorrespondingChatroom('acceptedMatchesAsPartner$', match.matchId, match.uid);loadingButton($event);" data-toggle="tooltip" data-placement="top"
                       title="{{ 'matchlist.deleteMatchTooltip' | translate }}">
                       <fa-icon [icon]="faTrash"></fa-icon>
                     </button>

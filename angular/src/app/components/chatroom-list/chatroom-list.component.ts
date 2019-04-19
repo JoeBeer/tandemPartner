@@ -38,12 +38,15 @@ export class ChatroomListComponent implements OnInit {
       this.userChatsAsUserA$ = chatrooms;
     }, error => {
       console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+      console.error(error);
     });
+
     this.chatService.getAllChatroomsAsUserB().subscribe(chatrooms => {
       this.userChatsAsUserBLength = chatrooms.length;
       this.userChatsAsUserB$ = chatrooms;
     }, error => {
       console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+      console.error(error);
     });
   }
 
