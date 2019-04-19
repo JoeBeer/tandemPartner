@@ -64,9 +64,11 @@ export class ResultPageComponent implements OnInit {
         this.searchResults$ = searchResults;
       }, error => {
         console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+        console.error(error);
       });
     }, error => {
       console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+      console.error(error);
     });
   }
 

@@ -9,8 +9,8 @@ import { User } from '../models/user';
 export class UserStoreService {
 
 
-  // private apiUrl = 'http://localhost:5000/tandemfirebase/us-central1';
-  private apiUrl = 'https://us-central1-tandemfirebase.cloudfunctions.net';
+  private apiUrl = 'http://localhost:5000/tandemfirebase/us-central1';
+  // private apiUrl = 'https://us-central1-tandemfirebase.cloudfunctions.net';
   private headers: Headers = new Headers();
 
   constructor(

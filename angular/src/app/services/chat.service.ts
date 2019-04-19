@@ -15,8 +15,8 @@ export class ChatService {
 
   // TODO change if using over web
 
-  // private apiUrl2 = 'http://localhost:5000/tandemfirebase/us-central1/chatrooms';
-  private apiUrl2 = 'https://us-central1-tandemfirebase.cloudfunctions.net/chatrooms';
+  private apiUrl2 = 'http://localhost:5000/tandemfirebase/us-central1/chatrooms';
+  // private apiUrl2 = 'https://us-central1-tandemfirebase.cloudfunctions.net/chatrooms';
   private headers: Headers = new Headers();
 
   constructor(

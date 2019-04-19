@@ -14,8 +14,8 @@ import { combineLatest } from 'rxjs';
 })
 export class SearchService {
 
-  // private apiUrl = 'http://localhost:5000/tandemfirebase/us-central1';
-  private apiUrl = 'https://us-central1-tandemfirebase.cloudfunctions.net';
+  private apiUrl = 'http://localhost:5000/tandemfirebase/us-central1';
+  // private apiUrl = 'https://us-central1-tandemfirebase.cloudfunctions.net';
   private headers: Headers = new Headers();
 
   constructor(
