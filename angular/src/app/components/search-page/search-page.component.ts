@@ -60,7 +60,6 @@ export class SearchPageComponent implements OnInit {
     this.initializeMultiselectSettings();
 
     this.recentSearchRequests$ = this.searchService.getRecentSearchRequests();
-    // console.log('Aufruf - search');
   }
 
   setAllUtilities() {
@@ -73,7 +72,6 @@ export class SearchPageComponent implements OnInit {
     // create the formGroup
     return this.formBuilder.group({
       searchFormMinAge: [''],
-
       searchFormMaxAge: ['']
     }, { validator: this.ageCheckValidator });
   }
@@ -105,7 +103,6 @@ export class SearchPageComponent implements OnInit {
   }
 
   newSearchSave() {
-
     const searchdata = {
       offerParam: this.offers.indexOf(this.selectedOffer[0]),
       cityParam: this.cities.indexOf(this.selectedCity[0]),

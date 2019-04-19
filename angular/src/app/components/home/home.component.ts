@@ -1,15 +1,10 @@
 import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
 import { UtilityStoreService } from './../../services/utility-store.service';
-import { Match } from './../../models/match';
 import { MatchStoreService } from './../../services/match-store.service';
-import { AuthService } from './../../services/auth.service';
-import { UserStoreService } from 'src/app/services/user-store.service';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
-import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -54,9 +49,6 @@ export class HomeComponent implements OnInit {
   matchId: string;
 
   constructor(
-    private userStoreService: UserStoreService,
-    private authService: AuthService,
-    private router: Router,
     private matchStoreService: MatchStoreService,
     private utliltyStoreService: UtilityStoreService,
     private translateService: TranslateService
@@ -64,8 +56,8 @@ export class HomeComponent implements OnInit {
     this.matchStoreService.getAllUnAcceptedMatches().subscribe(matches => {
       this.unAcceptedMatchesLength = matches.length;
       this.unAcceptedMatches$ = matches;
-    }, error => {
-      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+    }, () => {
+      console.log('Error in home-page - TODO delete this console.log() before finishing WebProg!');
     });
   }
 

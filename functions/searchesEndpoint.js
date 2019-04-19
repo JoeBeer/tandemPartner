@@ -1,6 +1,8 @@
 const admin = require('firebase-admin');
 const db = admin.firestore();
 
+// Validates the existing searches of an user in the searches collection, 
+// then creates a new one 
 exports.createSearch = async (req, res) => {
     try {
         const search = req.body;
@@ -32,7 +34,7 @@ exports.createSearch = async (req, res) => {
             id: searchRef.id
         });
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).send(false);
     }
 }

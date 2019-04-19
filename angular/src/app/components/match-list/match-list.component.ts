@@ -1,6 +1,5 @@
 import { ChatroomListComponent } from './../chatroom-list/chatroom-list.component';
 import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
-import { UserStoreService } from './../../services/user-store.service';
 import { Match } from './../../models/match';
 import { MatchStoreService } from './../../services/match-store.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -51,7 +50,6 @@ export class MatchListComponent implements OnInit {
   // for modal
   display = 'none';
   modalIsOpen = false;
-  // modalUser: User;
   firstname: string;
   lastname: string;
   matchSex: string;
@@ -59,15 +57,12 @@ export class MatchListComponent implements OnInit {
   matchActivities;
   matchIDModal: string;
   age;
-  // initiatorID: string;
-  // partnerID: string;
 
   constructor(
     private authService: AuthService,
     private matchStoreService: MatchStoreService,
     private router: Router,
     private chatservice: ChatService,
-    private userStoreService: UserStoreService,
     private utliltyStoreService: UtilityStoreService,
     private translateService: TranslateService,
     private chatroomListComponent: ChatroomListComponent
@@ -75,27 +70,22 @@ export class MatchListComponent implements OnInit {
     this.matchStoreService.getAllMatchrequests().subscribe(matches => {
       this.matchRequestLength = matches.length;
       this.matchRequests$ = matches;
-    }, error => {
+    }, () => {
       console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
-      console.error(error);
     });
 
     this.matchStoreService.getAllAcceptedMatchesAsInitiator().subscribe(matches => {
       this.acceptedMatchesAsInitiatorLength = matches.length;
       this.acceptedMatchesAsInitiator$ = matches;
-    }, error => {
+    }, () => {
       console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
-      console.error(error);
     });
-
-    // this.acceptedMatchesAsInitiator$ = this.matchStoreService.getAllAcceptedMatchesAsInitiator();
 
     this.matchStoreService.getAllAcceptedMatchesAsPartner().subscribe(matches => {
       this.acceptedMatchesAsPartnerLength = matches.length;
       this.acceptedMatchesAsPartner$ = matches;
-    }, error => {
+    }, () => {
       console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
-      console.error(error);
     });
   }
 
@@ -113,7 +103,6 @@ export class MatchListComponent implements OnInit {
     this.sex = this.utliltyStoreService.getAllSex(this.translateService.getDefaultLang());
   }
 
-  // TODO refactor, because we seperate know between accepted matches as initiator and as partner
   contactUser(matchUid: string) {
     const currentUserID = this.authService.currentUserID;
 
@@ -126,16 +115,6 @@ export class MatchListComponent implements OnInit {
         }
       });
   }
-
-  // deleteMatchrequest(matchId: string) {
-  //   this.matchStoreService.deleteMatch(matchId)
-  //     .subscribe(() => {
-  //       if (this.matchRequestLength === 1) {
-  //         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-  //           this.router.navigate(['/matches']));
-  //       }
-  //     });
-  // }
 
   deleteAcceptedMatchAndCorrespondingChatroom(acceptedMatchesArrayName: string, matchId: string, matchPartner: string) {
     let indexNumber: number;
@@ -160,22 +139,6 @@ export class MatchListComponent implements OnInit {
         this.acceptedMatchesAsPartner$.splice(indexNumber, 1);
       });
     }
-
-    // this.chatservice.getAllChatroomsAsUserA().subscribe(chatrooms => {
-    //   chatrooms.forEach(chat => {
-    //     if (chat.userB === matchPartner) {
-    //       this.chatservice.deleteChatroom(chat.id).subscribe();
-    //     }
-    //   });
-    // });
-
-    // this.chatservice.getAllChatroomsAsUserB().subscribe(chatrooms => {
-    //   chatrooms.forEach(chat => {
-    //     if (chat.userA === matchPartner) {
-    //       this.chatservice.deleteChatroom(chat.id).subscribe();
-    //     }
-    //   });
-    // });
 
     chatsAsUserAArray.forEach(chat => {
       if (chat.userB === matchPartner) {
@@ -203,7 +166,6 @@ export class MatchListComponent implements OnInit {
         }
         // delete match at indexNumber
         this.matchRequests$.splice(indexNumber, 1);
-        // this.closeModal();
       });
   }
 

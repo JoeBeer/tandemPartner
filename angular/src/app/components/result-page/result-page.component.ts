@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user';
 import { faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import { Match } from '../..//models/match';
+import { flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-result-page',
@@ -35,9 +36,9 @@ export class ResultPageComponent implements OnInit {
 
   matchedOffer;
 
-    // for modal
-    display = 'none';
-    modalIsOpen = false;
+  // for modal
+  display = 'none';
+  modalIsOpen = false;
 
   constructor(
     private matchStoreService: MatchStoreService,
@@ -53,23 +54,37 @@ export class ResultPageComponent implements OnInit {
     this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
       this.setAllUtilities();
     });
+
     const searchRequestId = this.route.snapshot.paramMap.get('id');
-    this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
-      if (searchRequest.offerParam !== undefined) {
-        this.matchedOffer = searchRequest.offerParam; // TODO check, if the error message occures again, even inside the if-clause
-      }
-      // TODO subscribe in a subscribe is bad code. Try to fix this!
-      this.searchService.getSearchResult(searchRequest).subscribe(searchResults => {
-        this.searchResultLength = searchResults.length;
-        this.searchResults$ = searchResults;
-      }, error => {
-        console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
-        console.error(error);
-      });
-    }, error => {
-      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
-      console.error(error);
+
+    this.searchService.getSearchRequestById(searchRequestId).pipe(
+      flatMap((searchRequest: Searchrequest) => {
+        if (searchRequest.offerParam !== undefined) {
+          this.matchedOffer = searchRequest.offerParam;
+        }
+        return this.searchService.getSearchResult(searchRequest);
+      })
+    ).subscribe(searchResults => {
+      this.searchResultLength = searchResults.length;
+      this.searchResults$ = searchResults;
     });
+
+    // TODO check if the new implementation works, then delete the following lines.
+    // this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
+    //   if (searchRequest.offerParam !== undefined) {
+    //     this.matchedOffer = searchRequest.offerParam;
+    //   }
+    //   this.searchService.getSearchResult(searchRequest).subscribe(searchResults => {
+    //     this.searchResultLength = searchResults.length;
+    //     this.searchResults$ = searchResults;
+    //   }, error => {
+    //     console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+    //     console.error(error);
+    //   });
+    // }, error => {
+    //   console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+    //   console.error(error);
+    // });
   }
 
   setAllUtilities() {

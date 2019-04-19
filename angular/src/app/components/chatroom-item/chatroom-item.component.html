@@ -6,7 +6,7 @@
 
         <div #chatBox class="card shadow mb-2">
           <div class="card-body">
-            <div *ngFor="let message of chat.messages; trackBy: trackByCreated"><!-- TODO trackBy seems not working.-->
+            <div *ngFor="let message of chat.messages; trackBy: trackByCreated">
               <div *ngIf="message.user?.uid !== authService.currentUserID; else positionRight" class="card col-10 col-md-8 shadow-sm mb-3" role="alert" aria-live="assertive" aria-atomic="true"
                 data-autohide="false">
 

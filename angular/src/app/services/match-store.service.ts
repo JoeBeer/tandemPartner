@@ -5,15 +5,15 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { switchMap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { combineLatest, forkJoin, of, Observable } from 'rxjs';
+import { combineLatest } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MatchStoreService {
 
-  private apiUrl = 'http://localhost:5000/tandemfirebase/us-central1';
-  // private apiUrl = 'https://us-central1-tandemfirebase.cloudfunctions.net';
+  // private apiUrl = 'http://localhost:5000/tandemfirebase/us-central1';
+  private apiUrl = 'https://us-central1-tandemfirebase.cloudfunctions.net';
 
   constructor(
     private http: HttpClient,
@@ -63,35 +63,6 @@ export class MatchStoreService {
     );
   }
 
-  // getAllAcceptedMatchesAsInitiator() {
-  //   return this.authService.user$.pipe(
-  //     switchMap(user => {
-  //       return this.angularFirestore
-  //         .collection('matches', ref => ref.where('initiatorID', '==', user ? user.uid : '')
-  //           .where('accepted', '==', true))
-  //         .snapshotChanges()
-  //         .pipe(
-  //           map(actions => {
-  //             return actions.map(a => {
-  //               const data = a.payload.doc.data() as Match;
-  //               const matchId = a.payload.doc.id;
-  //               return { matchId, ...data };
-  //             });
-  //           })
-  //         );
-  //     }),
-  //     switchMap(matches => {
-  //       return combineLatest(matches.map(match => {
-  //         return this.userStoreService.getUserById(match.partnerID).pipe(
-  //           map(user => {
-  //             return { ...match, ...user };
-  //           })
-  //         );
-  //       }));
-  //     })
-  //   );
-  // }
-
   getAllAcceptedMatchesAsInitiator() {
     return this.angularFirestore
       .collection('matches', ref => ref.where('initiatorID', '==', this.authService.user$ ? this.authService.currentUserID : '')
@@ -116,35 +87,6 @@ export class MatchStoreService {
         })
       );
   }
-
-  // getAllAcceptedMatchesAsPartner() {
-  //   return this.authService.user$.pipe(
-  //     switchMap(user => {
-  //       return this.angularFirestore
-  //         .collection('matches', ref => ref.where('partnerID', '==', user ? user.uid : '')
-  //           .where('accepted', '==', true))
-  //         .snapshotChanges()
-  //         .pipe(
-  //           map(actions => {
-  //             return actions.map(a => {
-  //               const data = a.payload.doc.data() as Match;
-  //               const matchId = a.payload.doc.id;
-  //               return { matchId, ...data };
-  //             });
-  //           })
-  //         );
-  //     }),
-  //     mergeMap(matches => {
-  //       return combineLatest(matches.map(match => {
-  //         return this.userStoreService.getUserById(match.initiatorID).pipe(
-  //           map(user => {
-  //             return { ...match, ...user };
-  //           })
-  //         );
-  //       }));
-  //     })
-  //   );
-  // }
 
   getAllAcceptedMatchesAsPartner() {
     return this.angularFirestore
@@ -171,34 +113,29 @@ export class MatchStoreService {
       );
   }
 
-  // TODO change user.uid to currentUserID
   getAllMatchrequests() {
-    return this.authService.user$.pipe(
-      switchMap(user => {
-        return this.angularFirestore
-          .collection('matches', ref => ref.where('initiatorID', '==', user ? user.uid : '')
-            .where('accepted', '==', false))
-          .snapshotChanges()
-          .pipe(
-            map(actions => {
-              return actions.map(a => {
-                const data = a.payload.doc.data() as Match;
-                const matchId = a.payload.doc.id;
-                return { matchId, ...data };
-              });
-            })
-          );
-      }),
-      switchMap(matches => {
-        return combineLatest(matches.map(match => {
-          return this.userStoreService.getUserById(match.partnerID).pipe(
-            map(user => {
-              return { ...match, ...user };
-            })
-          );
-        }));
-      })
-    );
+    return this.angularFirestore
+      .collection('matches', ref => ref.where('initiatorID', '==', this.authService.user$ ? this.authService.currentUserID : '')
+        .where('accepted', '==', false))
+      .snapshotChanges()
+      .pipe(
+        map(actions => {
+          return actions.map(a => {
+            const data = a.payload.doc.data() as Match;
+            const matchId = a.payload.doc.id;
+            return { matchId, ...data };
+          });
+        }),
+        switchMap(matches => {
+          return combineLatest(matches.map(match => {
+            return this.userStoreService.getUserById(match.partnerID).pipe(
+              map(userMatch => {
+                return { ...match, ...userMatch };
+              })
+            );
+          }));
+        })
+      );
   }
 
   private queryAllMatches(fieldNameOfRole) {
