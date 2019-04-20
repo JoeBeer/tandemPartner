@@ -55,8 +55,6 @@ exports.updateUser = function (req, res) {
 
     admin.auth().updateUser(req.params.userId, userAuthUpdate)
         .then((userRecord) => {
-            console.log(req.params.userId)
-            console.log(userRecord.uid)
             return usersCollection.doc(userRecord.uid).update({
                 firstname: updatedUser.firstname,
                 lastname: updatedUser.lastname,

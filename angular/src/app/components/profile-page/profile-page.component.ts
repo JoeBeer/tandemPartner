@@ -340,7 +340,6 @@ export class ProfilePageComponent implements OnInit {
   }
 
   openModal(id: string) {
-    console.log('id: ' + id);
     this.modalIsOpen = true;
     this.display = 'block';
 

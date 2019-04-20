@@ -71,7 +71,6 @@ export class ChatroomListComponent implements OnInit {
   }
 
   openModal(chatroomId: string, chatsArrayName: string) {
-    console.log('id: ' + chatroomId);
     this.modalIsOpen = true;
     this.display = 'block';
     this.roomToBeDeleted = chatroomId;

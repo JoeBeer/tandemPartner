@@ -40,8 +40,7 @@ exports.createChatroom = async (req, res) => {
             });
         }
         else {
-            const info = 'Chatroom couldn\'t be created - Chatroom aready exists';
-            console.log(info)
+            console.log('Chatroom couldn\'t be created - Chatroom aready exists')
             if (IDResultA) {
                 return res.send({
                     result: false,
