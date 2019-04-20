@@ -84,7 +84,7 @@ export class AuthService {
       this.isLoggedIn = true;
       this.router.navigate(['/home']);
     } catch (error) {
-      alert('Not able to sign in!' + error.message);
+      window.location.reload();
     }
   }
 }
