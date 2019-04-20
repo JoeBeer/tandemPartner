@@ -1,4 +1,4 @@
-import { UserStoreService } from 'src/app/services/user-store.service';
+// import { UserStoreService } from 'src/app/services/user-store.service';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -27,12 +27,11 @@ export class AuthService {
     private angularFireAuth: AngularFireAuth,
     private angularFirestore: AngularFirestore,
     private router: Router) {
-
+    // initalize the current user
     this.user$ = this.angularFireAuth.authState.pipe(
       switchMap(user => {
         if (user) {
           this.currentUserID = user.uid;
-          // this.currentUsername = user.displayName;
           this.currentUserMail = user.email;
           return this.angularFirestore.doc<any>(`users/${user.uid}`).valueChanges();
         } else {
@@ -41,18 +40,12 @@ export class AuthService {
       })
     );
 
-    // this.user$.pipe(first()).toPromise().then(user => {
-    //   this.currentUserActivities = user.activities;
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
-
+    // get the activities of the current user
     this.user$.subscribe(user => {
       if (user !== null && user !== undefined) {
         this.currentUserActivities = user.activities;
       }
-    }, error => {
+    }, () => {
       console.log('Error in auth-service - TODO delete this console.log() before finishing WebProg!');
     });
   }
@@ -66,6 +59,7 @@ export class AuthService {
     }
   }
 
+  // get the current user
   getCurrentUser() {
     return this.user$.pipe(first()).toPromise();
   }
@@ -75,6 +69,7 @@ export class AuthService {
     await this.angularFireAuth.auth.currentUser.reauthenticateAndRetrieveDataWithCredential(credential);
   }
 
+  // logout the current user
   async logout() {
     await this.angularFireAuth.auth.signOut();
     this.isLoggedIn = false;
@@ -82,6 +77,7 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  // login with given mail and password
   async login(mail: string, password: string) {
     try {
       await this.angularFireAuth.auth.signInWithEmailAndPassword(mail, password);

@@ -16,9 +16,9 @@ export class RegisterPageComponent implements OnInit {
   md5 = new Md5();
   registerForm: FormGroup;
 
-  sex: any[];
-  offers: any[];
-  activities: any[];
+  sex: string[];
+  offers: string[];
+  activities: string[];
   cities: string[];
 
   selectedOffers: any[];
@@ -49,6 +49,7 @@ export class RegisterPageComponent implements OnInit {
     this.initializeMultiselectSettings();
   }
 
+  // loads the lists with cities, offers, activities and sex
   setAllUtilities() {
     this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
     this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
@@ -148,10 +149,12 @@ export class RegisterPageComponent implements OnInit {
 
   }
 
+  // converts the sex value from the frontend for the database
   parseSexValueForBackend(sex: string) {
     return this.sex.indexOf(sex);
   }
 
+  // converts the activities from the frontend for the database
   parseActivitiesForBackend(selectedActivities: string[]) {
     const selectedActivitiesIndexes: number[] = [];
 
@@ -161,6 +164,7 @@ export class RegisterPageComponent implements OnInit {
     return selectedActivitiesIndexes;
   }
 
+  // converts the offers from the frontend for the database
   parseOffersForBackend(selectedOffers: string[]) {
     const selectedOffersIndexes: number[] = [];
 

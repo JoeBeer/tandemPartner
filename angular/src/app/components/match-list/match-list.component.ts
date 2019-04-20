@@ -30,10 +30,10 @@ export class MatchListComponent implements OnInit {
   acceptedMatchesAsInitiatorLength: number;
   acceptedMatchesAsPartnerLength: number;
 
-  offers;
-  activities;
-  cities;
-  sex;
+  offers: string[];
+  activities: string[];
+  cities: string[];
+  sex: string[];
 
   // for fontawesome icons
   faTrash = faTrash;
@@ -67,25 +67,28 @@ export class MatchListComponent implements OnInit {
     private translateService: TranslateService,
     private chatroomListComponent: ChatroomListComponent
   ) {
+    // initialize all the matchrequests from the current user, where the current user ID is equal to initiatorID
     this.matchStoreService.getAllMatchrequests().subscribe(matches => {
       this.matchRequestLength = matches.length;
       this.matchRequests$ = matches;
     }, () => {
-      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+      console.log('Error in match-list-page - TODO delete this console.log() before finishing WebProg!');
     });
 
+    // initialize all the accepted matches from the current user, where the current user ID is equal to initiatorID
     this.matchStoreService.getAllAcceptedMatchesAsInitiator().subscribe(matches => {
       this.acceptedMatchesAsInitiatorLength = matches.length;
       this.acceptedMatchesAsInitiator$ = matches;
     }, () => {
-      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+      console.log('Error in match-list-page - TODO delete this console.log() before finishing WebProg!');
     });
 
+    // initialize all the accepted matches from the current user, where the current user ID is equal to partnerID
     this.matchStoreService.getAllAcceptedMatchesAsPartner().subscribe(matches => {
       this.acceptedMatchesAsPartnerLength = matches.length;
       this.acceptedMatchesAsPartner$ = matches;
     }, () => {
-      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+      console.log('Error in match-list-page - TODO delete this console.log() before finishing WebProg!');
     });
   }
 
@@ -96,6 +99,7 @@ export class MatchListComponent implements OnInit {
     });
   }
 
+  // loads the lists with cities, offers, activities and sex
   setAllUtilities() {
     this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
     this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
@@ -103,6 +107,7 @@ export class MatchListComponent implements OnInit {
     this.sex = this.utliltyStoreService.getAllSex(this.translateService.getDefaultLang());
   }
 
+  // try to create a chatroom, if there exists already a chatroom for these users, then redirect to that chatroom
   contactUser(matchUid: string) {
     const currentUserID = this.authService.currentUserID;
 
@@ -116,6 +121,7 @@ export class MatchListComponent implements OnInit {
       });
   }
 
+  // delete accepted match and corresponding chatroom from the database
   deleteAcceptedMatchAndCorrespondingChatroom(acceptedMatchesArrayName: string, matchId: string, matchPartner: string) {
     let indexNumber: number;
     const chatsAsUserAArray = this.chatroomListComponent.userChatsAsUserA$;
@@ -154,6 +160,7 @@ export class MatchListComponent implements OnInit {
 
   }
 
+  // delete matchrequest from database
   deleteMatchrequest(matchId) {
     let indexNumber: number;
     this.matchStoreService.deleteMatch(matchId)
@@ -170,7 +177,6 @@ export class MatchListComponent implements OnInit {
   }
 
   openModal(match) {
-
     // infos for modal
     this.matchIDModal = match.uid;
     this.modalIsOpen = true;
@@ -192,23 +198,20 @@ export class MatchListComponent implements OnInit {
     return arr.substring(0, (arr.length - 2));
   }
 
+  // converts the sex value from the database for the frontend
   parseSexValueForFrontend(sexIndex: number): string {
     return this.sex[sexIndex];
   }
 
-  closeModal() {
-    this.display = 'none';
-    this.modalIsOpen = false;
-  }
+  // validateCurrentUser(initiatorID: string, partnerID: string) {
+  //   if (this.authService.currentUserID === initiatorID) {
+  //     return partnerID;
+  //   } else {
+  //     return initiatorID;
+  //   }
+  // }
 
-  validateCurrentUser(initiatorID: string, partnerID: string) {
-    if (this.authService.currentUserID === initiatorID) {
-      return partnerID;
-    } else {
-      return initiatorID;
-    }
-  }
-
+  // converts the activities from the database for the frontend
   parseActivitiesForFrontend(activitiesIndex: number[]) {
     const activities: string[] = [];
 
@@ -218,18 +221,26 @@ export class MatchListComponent implements OnInit {
     return activities;
   }
 
+  // converts the offers from the database for the frontend
   parseOfferForFrontend(selectedOfferIndex: number) {
     return this.offers[selectedOfferIndex];
   }
 
+  // converts the date of birth value from the database for the frontend
   parseDateOfBirthForFrontend(dateOfBirth: number) {
     const ageDifMs = Date.now() - dateOfBirth;
     const ageDate = new Date(ageDifMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 
+  // converts the city value from the database for the frontend
   parseCityForFrontend(cityIndex: number) {
     return this.cities[cityIndex];
+  }
+
+  closeModal() {
+    this.display = 'none';
+    this.modalIsOpen = false;
   }
 
   loadingButton(event) {

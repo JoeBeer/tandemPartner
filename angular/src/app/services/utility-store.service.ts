@@ -7,18 +7,19 @@ import { Injectable } from '@angular/core';
 })
 export class UtilityStoreService {
 
-  offersDe;
-  offersEn;
-  activitiesDe;
-  activitiesEn;
-  citiesDe;
-  citiesEn;
-  sexDe;
-  sexEn;
+  offersDe: string[];
+  offersEn: string[];
+  activitiesDe: string[];
+  activitiesEn: string[];
+  citiesDe: string[];
+  citiesEn: string[];
+  sexDe: string[];
+  sexEn: string[];
 
   constructor(
     private angularFirestore: AngularFirestore
   ) {
+    // initalize the utilities document from the database
     this.angularFirestore.collection('utilities')
       .doc('utilitiesDoc')
       .get()
@@ -35,6 +36,7 @@ export class UtilityStoreService {
       });
   }
 
+  // get all offers depending on the language
   getAllOffers(language: string) {
     if (language === 'de') {
       return this.offersDe;
@@ -43,6 +45,7 @@ export class UtilityStoreService {
     }
   }
 
+  // get all activities depending on the language
   getAllActivities(language: string) {
     if (language === 'de') {
       return this.activitiesDe;
@@ -51,6 +54,7 @@ export class UtilityStoreService {
     }
   }
 
+  // get all cities depending on the language
   getAllCities(language: string) {
     if (language === 'de') {
       return this.citiesDe;
@@ -59,6 +63,7 @@ export class UtilityStoreService {
     }
   }
 
+  // get all sex values depending on the language
   getAllSex(language: string) {
     if (language === 'de') {
       return this.sexDe;

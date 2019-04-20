@@ -19,16 +19,14 @@ export class UserStoreService {
     this.headers.append('Content-Type', 'application/json');
   }
 
-  getAllUsers() {
-    return this.http.get(`${this.apiUrl}/users/`);
-  }
-
+  // get user with the given id
   getUserById(uid) {
     return this.angularFirestore
       .collection<any>(`users`)
       .doc<User>(uid).valueChanges();
   }
 
+  // create new user with the given user object
   createUser(user: any) {
     // generate new API-User
     const data = {
@@ -46,10 +44,12 @@ export class UserStoreService {
     return this.http.post(`${this.apiUrl}/users/`, data);
   }
 
+  // update user with the given id
   updateUser(id: string, user: any) {
     return this.http.put(`${this.apiUrl}/users/${id}`, user);
   }
 
+  // delete user with the given id
   deleteUser(id: string) {
     return this.http.delete(`${this.apiUrl}/users/${id}`);
   }

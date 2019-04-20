@@ -52,16 +52,18 @@ export class SearchPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    // initialzie all available offers & cities
+    // initialize all available offers & cities
     this.setAllUtilities();
     this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
       this.setAllUtilities();
     });
     this.initializeMultiselectSettings();
 
+    // initialize all recent search requests from the current user
     this.recentSearchRequests$ = this.searchService.getRecentSearchRequests();
   }
 
+  // loads the lists with cities, offers, activities and sex
   setAllUtilities() {
     this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
     this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
@@ -102,6 +104,7 @@ export class SearchPageComponent implements OnInit {
     }
   }
 
+  // create new search request
   newSearchSave() {
     const searchdata = {
       offerParam: this.offers.indexOf(this.selectedOffer[0]),
@@ -119,31 +122,22 @@ export class SearchPageComponent implements OnInit {
       });
   }
 
+  // use recent search request
   useRecentSearchrequest(searchRequestId) {
     this.router.navigate([`/result/${searchRequestId}`]);
   }
 
-  // shorten the male/female-word and return one letter or 'no choice'
-  parseSexValueForBackend(sex: string): string {
-    if (sex === 'male' || sex === 'männlich') {
-      return 'm';
-    } else if (sex === 'female' || sex === 'weiblich') {
-      return 'f';
-    } else if (sex === 'both' || sex === 'egal') {
-      return 'b';
-    } else {
-      return 'there was no choice of sex';
-    }
-  }
-
+  // converts the sex value from the database for the frontend
   parseSexValueForFrontend(sexIndex: number): string {
     return this.sex[sexIndex];
   }
 
+  // converts the offer value from the database for the frontend
   parseOfferForFrontend(offerIndex: number) {
     return this.offers[offerIndex];
   }
 
+  // get the sex value depending on the language
   getSex(language: string) {
     if (language === 'de') {
       return this.sexDe;

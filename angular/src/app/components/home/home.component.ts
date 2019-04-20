@@ -22,10 +22,10 @@ export class HomeComponent implements OnInit {
   unAcceptedMatches$: any[] = [];
   unAcceptedMatchesLength: number;
 
-  activities;
-  cities;
-  offers;
-  sex;
+  activities: string[];
+  cities: string[];
+  offers: string[];
+  sex: string[];
 
   openedModal: any;
 
@@ -39,13 +39,12 @@ export class HomeComponent implements OnInit {
   // for modal
   display = 'none';
   modalIsOpen = false;
-  // modalUser: User;
   firstname: string;
   lastname: string;
   matchSex: string;
   city: string;
-  matchActivities;
-  age;
+  matchActivities: string;
+  age: number;
   matchId: string;
 
   constructor(
@@ -53,6 +52,7 @@ export class HomeComponent implements OnInit {
     private utliltyStoreService: UtilityStoreService,
     private translateService: TranslateService
   ) {
+    // initialize all the unaccepted matches from the current user, where the current user ID is equal to partnerID
     this.matchStoreService.getAllUnAcceptedMatches().subscribe(matches => {
       this.unAcceptedMatchesLength = matches.length;
       this.unAcceptedMatches$ = matches;
@@ -69,6 +69,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  // loads the lists with cities, offers, activities and sex
   setAllUtilities() {
     this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
     this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
@@ -138,10 +139,12 @@ export class HomeComponent implements OnInit {
     return arr.substring(0, (arr.length - 2));
   }
 
+  // converts the sex value from the database for the frontend
   parseSexValueForFrontend(sexIndex: number): string {
     return this.sex[sexIndex];
   }
 
+  // converts the activities from the database for the frontend
   parseActivitiesForFrontend(activitiesIndex: number[]) {
     const activities: string[] = [];
 
@@ -151,16 +154,19 @@ export class HomeComponent implements OnInit {
     return activities;
   }
 
+  // converts the offers from the database for the frontend
   parseOfferForFrontend(selectedOfferIndex: number) {
     return this.offers[selectedOfferIndex];
   }
 
+  // converts the date of birth value from the database for the frontend
   parseDateOfBirthForFrontend(dateOfBirth: number) {
     const ageDifMs = Date.now() - dateOfBirth;
     const ageDate = new Date(ageDifMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 
+  // converts the city value from the database for the frontend
   parseCityForFrontend(cityIndex: number) {
     return this.cities[cityIndex];
   }

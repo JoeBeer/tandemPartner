@@ -39,7 +39,6 @@ export class LoginPageComponent implements OnInit {
     const mail = this.loginForm.value.loginFormMail;
     const password = this.md5.appendStr(this.loginForm.value.loginFormMail)
       .appendStr(this.loginForm.value.loginFormPassword).end() as string;
-    // const password = this.loginForm.value.loginFormPassword;
 
     this.authService.login(mail, password);
   }

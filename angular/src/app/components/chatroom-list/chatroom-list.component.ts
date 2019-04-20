@@ -14,8 +14,6 @@ export class ChatroomListComponent implements OnInit {
   currentUser = this.authService.getCurrentUser();
   userChatsAsUserA$: any[] = [];
   userChatsAsUserB$: any[] = [];
-  userChatsAsUserALength: number;
-  userChatsAsUserBLength: number;
 
   faTimes = faTimes;
 
@@ -29,24 +27,25 @@ export class ChatroomListComponent implements OnInit {
     private authService: AuthService,
     private chatService: ChatService,
   ) {
+    // initialize all the chatrooms from the current user, where the current user ID is equal to userA
     this.chatService.getAllChatroomsAsUserA().subscribe(chatrooms => {
-      this.userChatsAsUserALength = chatrooms.length;
       this.userChatsAsUserA$ = chatrooms;
     }, () => {
-      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+      console.log('Error in chatroom-list-page - TODO delete this console.log() before finishing WebProg!');
     });
 
+    // initialize all the chatrooms from the current user, where the current user ID is equal to userB
     this.chatService.getAllChatroomsAsUserB().subscribe(chatrooms => {
-      this.userChatsAsUserBLength = chatrooms.length;
       this.userChatsAsUserB$ = chatrooms;
     }, () => {
-      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+      console.log('Error in chatroom-list-page - TODO delete this console.log() before finishing WebProg!');
     });
   }
 
   ngOnInit() {
   }
 
+  // delete chatroom from database
   deleteChatroom() {
     let indexNumber: number;
     if (this.chatsArrayName === 'userChatsAsUserA$') {
@@ -58,7 +57,7 @@ export class ChatroomListComponent implements OnInit {
         }
         this.userChatsAsUserA$.splice(indexNumber, 1);
       });
-    } else {
+    } else if (this.chatsArrayName === 'userChatsAsUserB$') {
       this.chatService.deleteChatroom(this.roomToBeDeleted).subscribe(() => {
         for (let index = 0; index < this.userChatsAsUserB$.length; index++) {
           if (this.userChatsAsUserB$[index].id === this.roomToBeDeleted) {

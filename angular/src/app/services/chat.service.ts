@@ -48,6 +48,7 @@ export class ChatService {
     return this.http.put(`${this.apiUrl2}/${chatroomId}`, data);
   }
 
+  // get all chatrooms where the current user is equal to userA
   getAllChatroomsAsUserA() {
     return this.angularFirestore
       .collection('chatrooms', ref => ref.where('userA', '==', this.authService.user$ ? this.authService.currentUserID : ''))
@@ -72,6 +73,7 @@ export class ChatService {
       );
   }
 
+  // get all chatrooms where the current user is equal to userB
   getAllChatroomsAsUserB() {
     return this.angularFirestore
       .collection('chatrooms', ref => ref.where('userB', '==', this.authService.user$ ? this.authService.currentUserID : ''))
@@ -137,6 +139,7 @@ export class ChatService {
     );
   }
 
+  // delete chatroom with given chatroomId
   deleteChatroom(chatroomId: string) {
     return this.http.delete(`${this.apiUrl2}/${chatroomId}`);
   }

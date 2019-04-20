@@ -58,12 +58,13 @@ export class ProfilePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    // initialzie all available offers & activities
+    // initialize all available offers & activities
     this.setAllUtilities();
     this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
       this.setAllUtilities();
     });
 
+    // load all neccessary information of the current user
     this.userStoreService.getUserById(this.authService.currentUserID).subscribe((recievedUser: User) => {
       if (recievedUser !== undefined) {
         this.selectedSex = this.parseSexValueForFrontend(recievedUser.sex);
@@ -77,13 +78,14 @@ export class ProfilePageComponent implements OnInit {
         // modalForm valid status will be validated, therefore has to be initialized in ngOnInit()
         this.modalForm.get('modalFormPassword');
       }
-    }, error => {
+    }, () => {
       console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
     });
 
     this.initializeMultiselectSettings();
   }
 
+  // loads the lists with cities, offers, activities and sex
   setAllUtilities() {
     this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
     this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
@@ -143,14 +145,17 @@ export class ProfilePageComponent implements OnInit {
     };
   }
 
+  // converts the sex value from the database for the frontend
   parseSexValueForFrontend(sexIndex: number): string {
     return this.sex[sexIndex];
   }
 
+  // converts the sex value from the frontend for the database
   parseSexValueForBackend(sex: string): number {
     return this.sex.indexOf(sex);
   }
 
+  // converts the activities from the database for the frontend
   parseActivitiesForFrontend(selectedActivitiesIndexes: number[]) {
     const selectedActivities: string[] = [];
 
@@ -160,6 +165,7 @@ export class ProfilePageComponent implements OnInit {
     return selectedActivities;
   }
 
+  // converts the activities from the frontend for the database
   parseActivitiesForBackend(selectedActivities: string[]) {
     const selectedActivitiesIndexes: number[] = [];
 
@@ -169,6 +175,7 @@ export class ProfilePageComponent implements OnInit {
     return selectedActivitiesIndexes;
   }
 
+  // converts the offers from the database for the frontend
   parseOffersForFrontend(selectedOffersIndexes: number[]) {
     const selectedOffers: string[] = [];
 
@@ -178,6 +185,7 @@ export class ProfilePageComponent implements OnInit {
     return selectedOffers;
   }
 
+  // converts the offers from the frontend for the database
   parseOffersForBackend(selectedOffers: string[]) {
     const selectedOffersIndexes: number[] = [];
 
@@ -347,7 +355,7 @@ export class ProfilePageComponent implements OnInit {
     this.userStoreService.deleteUser(this.authService.currentUserID).subscribe(() => {
       this.closeModal();
       this.authService.logout().then(() => {
-        alert('Profil wurde gelöscht');
+        alert('Profil wurde gelöscht'); // TODO @Arne or @Eric: What about the english version?
       });
     });
   }

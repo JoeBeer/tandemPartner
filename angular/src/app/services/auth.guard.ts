@@ -12,13 +12,12 @@ export class AuthGuard implements CanActivate {
     private router: Router
   ) { }
 
+  // verifies if an user is signed in
   async canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
     ): Promise<boolean> {
     const user = await this.authService.getCurrentUser();
-    // console.log('Auth Guard');
-    // console.log(user);
     if (!user) {
       this.router.navigate(['/']);
     }

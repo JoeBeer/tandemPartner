@@ -22,10 +22,12 @@ export class MatchStoreService {
     private userStoreService: UserStoreService) {
   }
 
+  // create match with given properties
   createMatch(match: Match) {
     return this.http.post(`${this.apiUrl}/matches/`, match);
   }
 
+  // get all matches where the current user is equal to initiatorID and all matches where the current user is equal to partnerID
   getAllMatches() {
     const resultA = this.queryAllMatches('initiatorID');
     const resultB = this.queryAllMatches('partnerID');
@@ -34,35 +36,33 @@ export class MatchStoreService {
       map(([users, otherUsers]) => users.concat(otherUsers)));
   }
 
+  // get all unaccepted matches where the current user is equal to partnerID
   getAllUnAcceptedMatches() {
-    return this.authService.user$.pipe(
-      switchMap(user => {
-        return this.angularFirestore
-          .collection('matches', ref => ref.where('partnerID', '==', user ? user.uid : '')
-            .where('accepted', '==', false))
-          .snapshotChanges()
-          .pipe(
-            map(actions => {
-              return actions.map(a => {
-                const data = a.payload.doc.data() as Match;
-                const matchId = a.payload.doc.id;
-                return { matchId, ...data };
-              });
-            })
-          );
-      }),
-      switchMap(matches => {
-        return combineLatest(matches.map(match => {
-          return this.userStoreService.getUserById(match.initiatorID).pipe(
-            map(user => {
-              return { ...match, ...user };
-            })
-          );
-        }));
-      })
-    );
+    return this.angularFirestore
+      .collection('matches', ref => ref.where('partnerID', '==', this.authService.user$ ? this.authService.currentUserID : '')
+        .where('accepted', '==', false))
+      .snapshotChanges()
+      .pipe(
+        map(actions => {
+          return actions.map(a => {
+            const data = a.payload.doc.data() as Match;
+            const matchId = a.payload.doc.id;
+            return { matchId, ...data };
+          });
+        }),
+        switchMap(matches => {
+          return combineLatest(matches.map(match => {
+            return this.userStoreService.getUserById(match.initiatorID).pipe(
+              map(user => {
+                return { ...match, ...user };
+              })
+            );
+          }));
+        })
+      );
   }
 
+  // get all accepted macthes where the current user is equal to initiatorID
   getAllAcceptedMatchesAsInitiator() {
     return this.angularFirestore
       .collection('matches', ref => ref.where('initiatorID', '==', this.authService.user$ ? this.authService.currentUserID : '')
@@ -88,6 +88,7 @@ export class MatchStoreService {
       );
   }
 
+  // get all accepted macthes where the current user is equal to partnerID
   getAllAcceptedMatchesAsPartner() {
     return this.angularFirestore
       .collection('matches', ref => ref.where('partnerID', '==', this.authService.user$ ? this.authService.currentUserID : '')
@@ -113,6 +114,7 @@ export class MatchStoreService {
       );
   }
 
+  // get all mactherequests where the current user is equal to initiatorID
   getAllMatchrequests() {
     return this.angularFirestore
       .collection('matches', ref => ref.where('initiatorID', '==', this.authService.user$ ? this.authService.currentUserID : '')
@@ -138,11 +140,10 @@ export class MatchStoreService {
       );
   }
 
+  // get all macthes where the current user is equal to the value of filedNameOfRole
   private queryAllMatches(fieldNameOfRole) {
-    return this.authService.user$.pipe(
-      switchMap(user => {
         return this.angularFirestore
-          .collection('matches', ref => ref.where(fieldNameOfRole, '==', user ? user.uid : ''))
+          .collection('matches', ref => ref.where(fieldNameOfRole, '==', this.authService.user$ ? this.authService.currentUserID : ''))
           .snapshotChanges()
           .pipe(
             map(actions => {
@@ -153,14 +154,14 @@ export class MatchStoreService {
               });
             })
           );
-      })
-    );
   }
 
+  // update match with the given matchId
   updateMatch(matchId: string, data: any) {
     return this.http.put(`${this.apiUrl}/matches/${matchId}`, data);
   }
 
+  // delete match with the given matchId
   deleteMatch(matchId: string) {
     return this.http.delete(`${this.apiUrl}/matches/${matchId}`);
   }
