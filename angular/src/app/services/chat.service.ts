@@ -13,8 +13,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class ChatService {
 
-  // private apiUrl2 = 'http://localhost:5000/tandemfirebase/us-central1/chatrooms';
-  private apiUrl2 = 'https://us-central1-tandemfirebase.cloudfunctions.net/chatrooms';
+  // private apiUrl = 'http://localhost:5000/tandemfirebase/us-central1/chatrooms';
+  private apiUrl = 'https://us-central1-tandemfirebase.cloudfunctions.net/chatrooms';
   private headers: Headers = new Headers();
 
   constructor(
@@ -34,7 +34,7 @@ export class ChatService {
       updated: Date.now(),
       messages: []
     };
-    return this.http.post<IdResponse>(`${this.apiUrl2}`, data);
+    return this.http.post<IdResponse>(`${this.apiUrl}`, data);
   }
 
   // Send a message to the Cloud Firestore database by calling the corresponding endpoint.
@@ -45,7 +45,7 @@ export class ChatService {
       content,
       createdAt: Date.now()
     };
-    return this.http.put(`${this.apiUrl2}/${chatroomId}`, data);
+    return this.http.put(`${this.apiUrl}/${chatroomId}`, data);
   }
 
   // get all chatrooms where the current user is equal to userA
@@ -141,7 +141,7 @@ export class ChatService {
 
   // delete chatroom with given chatroomId
   deleteChatroom(chatroomId: string) {
-    return this.http.delete(`${this.apiUrl2}/${chatroomId}`);
+    return this.http.delete(`${this.apiUrl}/${chatroomId}`);
   }
 
 }
