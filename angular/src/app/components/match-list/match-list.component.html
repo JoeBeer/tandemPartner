@@ -21,7 +21,7 @@
 
       <!--show all accepted Matches-->
       <div *ngIf="acceptedCollapsed" class="card-body" id="collapseAccepted">
-        <!-- show all accepted matches which are saved in acceptedMatches[]-->
+        <!-- show all accepted matches which are saved in acceptedMatchesAsInitiator$[]-->
         <div
           *ngFor="let match of acceptedMatchesAsInitiator$ | paginate: { itemsPerPage: 5, currentPage: pageNumberAcceptedMatches, id: 'firstPagination' }">
           <div class="card shadow my-3">
@@ -35,7 +35,7 @@
                     <a class="pointer-cursor" (click)="openModal(match)">
                       <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
                       <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->
-                      <p class="my-0"><small>Aktivitäten:
+                      <p class="my-0"><small>{{ 'result.activities' | translate}}:
                           {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>
                     </a>
                   </div>
@@ -61,7 +61,7 @@
         </div>
         <!--ngFor-->
 
-        <!-- show all accepted matches which are saved in acceptedMatches[]-->
+        <!-- show all accepted matches which are saved in acceptedMatchesAsPartner$[]-->
         <div
           *ngFor="let match of acceptedMatchesAsPartner$ | paginate: { itemsPerPage: 5, currentPage: pageNumberAcceptedMatches, id: 'firstPagination' }">
           <div class="card shadow my-3">
@@ -75,7 +75,7 @@
                     <a class="pointer-cursor" (click)="openModal(match)">
                       <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
                       <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->
-                      <p class="my-0"><small>Aktivitäten:
+                      <p class="my-0"><small>{{ 'result.activities' | translate}}:
                           {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>
                     </a>
                   </div>
@@ -128,7 +128,7 @@
 
                     <p class="my-0"><small>{{ matchrequest.firstname }} {{ matchrequest.lastname }}</small></p>
                     <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(matchrequest.dateOfBirth)}}</small></p> -->
-                    <p class="my-0"><small>Aktivitäten:
+                    <p class="my-0"><small>{{ 'result.activities' | translate}}:
                         {{activitiesForModal(parseActivitiesForFrontend(matchrequest.activities))}}</small></p>
 
                   </div>

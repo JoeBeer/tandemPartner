@@ -23,7 +23,7 @@
                             {{ 'result.age' | translate }}</i></small></p>
                       <!-- <p class="my-0"><small><i>{{ 'result.activities' | translate }}</i>:
                           {{activitiesForModal(parseActivitiesForFrontend(user.activities))}}</small></p> -->
-                      <p class="my-0"><small><i>{{ 'result.commonActivities' | translate }}</i>:
+                      <p *ngIf="activitiesForModal(parseActivitiesForFrontend(user.commonActivities))" class="my-0"><small><i>{{ 'result.commonActivities' | translate }}</i>:
                           <b>{{activitiesForModal(parseActivitiesForFrontend(user.commonActivities))}}</b></small></p>
                     </div>
                     <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
