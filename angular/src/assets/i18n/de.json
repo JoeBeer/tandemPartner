@@ -85,7 +85,8 @@
     "matchrequestFor": "Anfrage für",
     "contactTooltip": "Partner kontaktieren",
     "deleteTooltip": "Anfrage zurückziehen",
-    "deleteMatchTooltip": "Match löschen"
+    "deleteMatchTooltip": "Match löschen",
+    "deleteMatch": "Möchtest du dein Match wirklich löschen?"
   },
 
   "search": {

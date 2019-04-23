@@ -45,7 +45,7 @@
                       <fa-icon [icon]="faEnvelope"></fa-icon>
                     </button>
                     <button type="button" class="btn btn-outline-danger homebutton"
-                      (click)="deleteAcceptedMatchAndCorrespondingChatroom('acceptedMatchesAsInitiator$', match.matchId, match.uid);loadingButton($event);" data-toggle="tooltip" data-placement="top"
+                      (click)="openDeleteModal(match);loadingButton($event);" data-toggle="tooltip" data-placement="top"
                       title="{{ 'matchlist.deleteMatchTooltip' | translate }}">
                       <fa-icon [icon]="faTrash"></fa-icon>
                     </button>
@@ -85,7 +85,7 @@
                       <fa-icon [icon]="faEnvelope"></fa-icon>
                     </button>
                     <button type="button" class="btn btn-outline-danger homebutton"
-                      (click)="deleteAcceptedMatchAndCorrespondingChatroom('acceptedMatchesAsPartner$', match.matchId, match.uid);loadingButton($event);" data-toggle="tooltip" data-placement="top"
+                      (click)="openDeleteModal(match);loadingButton($event);" data-toggle="tooltip" data-placement="top"
                       title="{{ 'matchlist.deleteMatchTooltip' | translate }}">
                       <fa-icon [icon]="faTrash"></fa-icon>
                     </button>
@@ -215,5 +215,27 @@
         </button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Deletemodal -->
+<div class="modal-backdrop fade in" [ngStyle]="{'display':display}"></div>
+<div *ngIf="deleteModalIsOpen" class="modal" [ngStyle]="{'display': display}" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ 'matchlist.deleteMatchTooltip' | translate}}</h5>
+        <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          {{ 'matchlist.deleteMatch' | translate}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-warning" (click)="deleteAcceptedMatchAndCorrespondingChatroom('acceptedMatchesAsPartner$', matchID, matchIDModal);closeModal();">{{ 'matchlist.deleteMatchTooltip' | translate}}</button>
+        <button type="button" class="btn btn-warning" (click)="closeModal()">{{ 'register.quitButton' | translate}}</button>
+      </div>
+  </div>
   </div>
 </div>
