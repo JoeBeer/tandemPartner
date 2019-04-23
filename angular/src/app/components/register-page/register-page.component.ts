@@ -16,14 +16,14 @@ export class RegisterPageComponent implements OnInit {
   md5 = new Md5();
   registerForm: FormGroup;
 
-  sex: any[];
-  offers: any[];
-  activities: any[];
+  sex: string[];
+  offers: string[];
+  activities: string[];
   cities: string[];
 
   selectedOffers: any[];
   selectedActivities: any[];
-  selectedCity: any;     // TODO check if this is seen as an array.
+  selectedCity: any;
   selectedSex: any[];
 
   selectOffersActivitiesSettings = {};
@@ -37,7 +37,6 @@ export class RegisterPageComponent implements OnInit {
     private userStoreService: UserStoreService,
     private utliltyStoreService: UtilityStoreService,
     private translateService: TranslateService) {
-
     this.registerForm = this.createRegisterForm();
   }
 
@@ -50,6 +49,7 @@ export class RegisterPageComponent implements OnInit {
     this.initializeMultiselectSettings();
   }
 
+  // loads the lists with cities, offers, activities and sex
   setAllUtilities() {
     this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
     this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
@@ -77,8 +77,8 @@ export class RegisterPageComponent implements OnInit {
       // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
       // tslint:disable-next-line:max-line-length
       registerFormPasswordConfirm: ['', [Validators.required, Validators.pattern('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d).{6,}$')]]
-        // adds the custom validator for validating the passwords og their matching
-    }, { validator: this.passwordMatchValidator});
+      // adds the custom validator for validating the passwords og their matching
+    }, { validator: this.passwordMatchValidator });
 
   }
 
@@ -149,10 +149,12 @@ export class RegisterPageComponent implements OnInit {
 
   }
 
+  // converts the sex value from the frontend for the database
   parseSexValueForBackend(sex: string) {
     return this.sex.indexOf(sex);
   }
 
+  // converts the activities from the frontend for the database
   parseActivitiesForBackend(selectedActivities: string[]) {
     const selectedActivitiesIndexes: number[] = [];
 
@@ -162,6 +164,7 @@ export class RegisterPageComponent implements OnInit {
     return selectedActivitiesIndexes;
   }
 
+  // converts the offers from the frontend for the database
   parseOffersForBackend(selectedOffers: string[]) {
     const selectedOffersIndexes: number[] = [];
 
@@ -196,4 +199,10 @@ export class RegisterPageComponent implements OnInit {
     return this.registerForm.get('registerFormPasswordConfirm');
   }
 
+  loadingButton(event) {
+    this.translateService.stream('loading.button').subscribe(key => {
+      document.getElementById('loadingButton').innerText = key;
+    });
+    event.target.classList.add('disabled');
+  }
 }

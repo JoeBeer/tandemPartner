@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { faReply } from '@fortawesome/free-solid-svg-icons';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-chatroom-item',
@@ -24,22 +23,25 @@ export class ChatroomItemComponent implements OnInit {
     public authService: AuthService
   ) { }
 
+  // initalize the chatroom with the messages and user information
   ngOnInit() {
     const chatroomId = this.route.snapshot.paramMap.get(`id`);
     const source = this.chatService.getChatroomById(chatroomId);
     this.chatroom$ = this.chatService.joinUsers(source);
   }
 
+  // send written message to the backend
   submit(chatId) {
     if (!this.newMessage) {
       return alert('you need to enter something');
     }
     this.chatService.sendMessage(chatId, this.newMessage)
-    .subscribe();
+      .subscribe();
     this.newMessage = ``;
     setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 500);
   }
 
+  // sort the messages by the time they are created
   trackByCreated(message) {
     return message.createdAt;
   }

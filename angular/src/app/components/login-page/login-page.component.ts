@@ -38,8 +38,7 @@ export class LoginPageComponent implements OnInit {
   loginFormSave() {
     const mail = this.loginForm.value.loginFormMail;
     const password = this.md5.appendStr(this.loginForm.value.loginFormMail)
-                    .appendStr(this.loginForm.value.loginFormPassword).end() as string;
-    // const password = this.loginForm.value.loginFormPassword;
+      .appendStr(this.loginForm.value.loginFormPassword).end() as string;
 
     this.authService.login(mail, password);
   }
@@ -51,4 +50,5 @@ export class LoginPageComponent implements OnInit {
   get loginFormPassword() {
     return this.loginForm.get('loginFormPassword');
   }
+
 }

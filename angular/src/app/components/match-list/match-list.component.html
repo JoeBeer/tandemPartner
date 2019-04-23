@@ -21,7 +21,7 @@
 
       <!--show all accepted Matches-->
       <div *ngIf="acceptedCollapsed" class="card-body" id="collapseAccepted">
-        <!-- show all accepted matches which are saved in acceptedMatches[]-->
+        <!-- show all accepted matches which are saved in acceptedMatchesAsInitiator$[]-->
         <div
           *ngFor="let match of acceptedMatchesAsInitiator$ | paginate: { itemsPerPage: 5, currentPage: pageNumberAcceptedMatches, id: 'firstPagination' }">
           <div class="card shadow my-3">
@@ -35,14 +35,19 @@
                     <a class="pointer-cursor" (click)="openModal(match)">
                       <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
                       <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->
-                      <p class="my-0"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>
+                      <p class="my-0"><small>{{ 'result.activities' | translate}}:
+                          {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>
                     </a>
                   </div>
                   <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
-                    <button type="button" class="btn btn-outline-warning homebutton"
-                      (click)="contactUser(match.uid)" data-toggle="tooltip"
-                      data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
+                    <button type="button" class="btn btn-outline-warning mr-2 homebutton" (click)="loadingButton($event);contactUser(match.uid);"
+                      data-toggle="tooltip" data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
                       <fa-icon [icon]="faEnvelope"></fa-icon>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger homebutton"
+                      (click)="deleteAcceptedMatchAndCorrespondingChatroom('acceptedMatchesAsInitiator$', match.matchId, match.uid);loadingButton($event);" data-toggle="tooltip" data-placement="top"
+                      title="{{ 'matchlist.deleteMatchTooltip' | translate }}">
+                      <fa-icon [icon]="faTrash"></fa-icon>
                     </button>
                   </div>
                 </div>
@@ -56,7 +61,7 @@
         </div>
         <!--ngFor-->
 
-        <!-- show all accepted matches which are saved in acceptedMatches[]-->
+        <!-- show all accepted matches which are saved in acceptedMatchesAsPartner$[]-->
         <div
           *ngFor="let match of acceptedMatchesAsPartner$ | paginate: { itemsPerPage: 5, currentPage: pageNumberAcceptedMatches, id: 'firstPagination' }">
           <div class="card shadow my-3">
@@ -70,14 +75,19 @@
                     <a class="pointer-cursor" (click)="openModal(match)">
                       <p class="my-0"><small>{{ match.firstname }} {{ match.lastname }}</small></p>
                       <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->
-                      <p class="my-0"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>
+                      <p class="my-0"><small>{{ 'result.activities' | translate}}:
+                          {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>
                     </a>
                   </div>
                   <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
-                    <button type="button" class="btn btn-outline-warning homebutton"
-                      (click)="contactUser(match.uid)" data-toggle="tooltip"
-                      data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
+                    <button type="button" class="btn btn-outline-warning mr-2 homebutton" (click)="loadingButton($event);contactUser(match.uid);"
+                      data-toggle="tooltip" data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
                       <fa-icon [icon]="faEnvelope"></fa-icon>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger homebutton"
+                      (click)="deleteAcceptedMatchAndCorrespondingChatroom('acceptedMatchesAsPartner$', match.matchId, match.uid);loadingButton($event);" data-toggle="tooltip" data-placement="top"
+                      title="{{ 'matchlist.deleteMatchTooltip' | translate }}">
+                      <fa-icon [icon]="faTrash"></fa-icon>
                     </button>
                   </div>
                 </div>
@@ -118,12 +128,13 @@
 
                     <p class="my-0"><small>{{ matchrequest.firstname }} {{ matchrequest.lastname }}</small></p>
                     <!-- <p class="my-0"><small>Age: {{calculateAgeForModal(matchrequest.dateOfBirth)}}</small></p> -->
-                    <p class="my-0"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(matchrequest.activities))}}</small></p>
+                    <p class="my-0"><small>{{ 'result.activities' | translate}}:
+                        {{activitiesForModal(parseActivitiesForFrontend(matchrequest.activities))}}</small></p>
 
                   </div>
                   <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
                     <button type="button" class="btn btn-outline-danger homebutton"
-                      (click)="deleteMatchrequest(matchrequest.matchId)" data-toggle="tooltip" data-placement="top"
+                      (click)="deleteMatchrequest(matchrequest.matchId);loadingButton($event);" data-toggle="tooltip" data-placement="top"
                       title="{{ 'matchlist.deleteTooltip' | translate }}">
                       <fa-icon [icon]="faTrash"></fa-icon>
                     </button>
@@ -198,7 +209,7 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-warning homebutton" (click)="contactUser(initiatorID, partnerID)"
+        <button type="button" class="btn btn-outline-warning homebutton" (click)="loadingButton($event);contactUser(matchIDModal);"
           data-toggle="tooltip" data-placement="top" title="{{ 'matchlist.contactTooltip' | translate }}">
           <fa-icon [icon]="faEnvelope"></fa-icon>
         </button>

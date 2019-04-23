@@ -110,7 +110,7 @@ var routes = [
         canActivate: [_services_auth_guard__WEBPACK_IMPORTED_MODULE_1__["AuthGuard"]]
     },
     {
-        path: 'search/result/:id',
+        path: 'result/:id',
         component: _components_result_page_result_page_component__WEBPACK_IMPORTED_MODULE_13__["ResultPageComponent"],
         canActivate: [_services_auth_guard__WEBPACK_IMPORTED_MODULE_1__["AuthGuard"]]
     },
@@ -348,6 +348,7 @@ var AppModule = /** @class */ (function () {
                 _services_utility_store_service__WEBPACK_IMPORTED_MODULE_31__["UtilityStoreService"],
                 _services_chat_service__WEBPACK_IMPORTED_MODULE_33__["ChatService"],
                 _services_search_service__WEBPACK_IMPORTED_MODULE_32__["SearchService"],
+                _components_chatroom_list_chatroom_list_component__WEBPACK_IMPORTED_MODULE_17__["ChatroomListComponent"],
                 { provide: _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_36__["FirestoreSettingsToken"], useValue: {} } // To solve the timestampInSnapshot-Error
             ],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
@@ -423,7 +424,7 @@ var AboutPageComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row mt-4\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-12\">\r\n    <ng-container *ngIf=\"chatroom$ | async as chat\">\r\n      <ng-container *ngIf=\" authService.user$ | async as user\">\r\n\r\n        <div #chatBox class=\"card shadow mb-2\">\r\n          <div class=\"card-body\">\r\n            <div *ngFor=\"let message of chat.messages; trackBy: trackByCreated\"><!-- TODO trackBy seems not working.-->\r\n              <div *ngIf=\"message.user?.uid !== authService.currentUserID; else positionRight\" class=\"card col-10 col-md-8 shadow-sm\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\"\r\n                data-autohide=\"false\">\r\n\r\n\r\n                <div class=\"toast-header border-info\">\r\n                  <strong class=\"mr-auto\">{{ 'chatroomItem.currentUser' | translate }}</strong>\r\n                  <small class=\"text-muted\">{{ message.createdAt | date: 'dd.MM.yyyy' }}</small>\r\n                </div>\r\n                <div class=\"toast-body small\">\r\n                  {{ message.content }}\r\n                </div>\r\n              </div><!--ngif message.user.uid !== currentUserID-->\r\n              <ng-template #positionRight>\r\n                <div class=\"card col-10 offset-2 col-md-8 offset-md-4 shadow-sm\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\"\r\n                data-autohide=\"false\">\r\n\r\n\r\n                <div class=\"toast-header border-warning\">\r\n                  <strong class=\"mr-auto\">{{ 'chatroomItem.currentUser' | translate }}</strong>\r\n                  <small class=\"text-muted\">{{ message.createdAt | date: 'dd.MM.yyyy' }}</small>\r\n                </div>\r\n                <div class=\"toast-body small\">\r\n                  {{ message.content }}\r\n                </div>\r\n              </div>\r\n              </ng-template>\r\n            </div>\r\n          </div>\r\n\r\n\r\n        <form>\r\n          <div class=\"form-row mb-3 mx-3\">\r\n\r\n            <div class=\"col-md-8 offset-md-4\">\r\n              <div class=\"input-group\">\r\n                  <input type=\"text\" class=\"form-control\" [(ngModel)]=\"newMessage\" name=\"messageInput\" maxlength=\"100\"\r\n                  (keydown.enter)=\"submit(chat.id)\" placeholder=\"{{ 'chatroomItem.inputPlaceholder' | translate }}\">\r\n                <div class=\"input-group-append ml-2\">\r\n                    <button class=\"btn btn-outline-warning\" type=\"button\" (click)=\"submit(chat.id)\"\r\n                    [disabled]=\"!newMessage\">\r\n                    <fa-icon [icon]=\"faReply\"></fa-icon>\r\n                  </button>\r\n                </div>\r\n              </div>\r\n\r\n            </div>\r\n\r\n          </div>\r\n        </form>\r\n      </div>\r\n\r\n      </ng-container>\r\n    </ng-container>\r\n  </div>\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n"
+module.exports = "<div class=\"row mt-4\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-12\">\r\n    <ng-container *ngIf=\"chatroom$ | async as chat\">\r\n      <ng-container *ngIf=\" authService.user$ | async as user\">\r\n\r\n        <div #chatBox class=\"card shadow mb-2\">\r\n          <div class=\"card-body\">\r\n            <div *ngFor=\"let message of chat.messages; trackBy: trackByCreated\">\r\n              <div *ngIf=\"message.user?.uid !== authService.currentUserID; else positionRight\" class=\"card col-10 col-md-8 shadow-sm mb-3\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\"\r\n                data-autohide=\"false\">\r\n\r\n\r\n                <div class=\"toast-header border-info\">\r\n                  <strong class=\"mr-auto\">{{ message.user?.firstname }}</strong>\r\n                  <small class=\"text-muted\">{{ message.createdAt | date: 'dd.MM.yyyy' }}</small>\r\n                </div>\r\n                <div class=\"toast-body small\">\r\n                  {{ message.content }}\r\n                </div>\r\n              </div><!--ngif message.user.uid !== currentUserID-->\r\n              <ng-template #positionRight>\r\n                <div class=\"card col-10 offset-2 col-md-8 offset-md-4 shadow-sm mb-3\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\"\r\n                data-autohide=\"false\">\r\n\r\n\r\n                <div class=\"toast-header border-warning\">\r\n                  <strong class=\"mr-auto\">{{ 'chatroomItem.currentUser' | translate }}</strong>\r\n                  <small class=\"text-muted\">{{ message.createdAt | date: 'dd.MM.yyyy' }}</small>\r\n                </div>\r\n                <div class=\"toast-body small\">\r\n                  {{ message.content }}\r\n                </div>\r\n              </div>\r\n              </ng-template>\r\n            </div>\r\n          </div>\r\n\r\n\r\n        <form>\r\n          <div class=\"form-row mb-3 mx-3\">\r\n\r\n            <div class=\"col-md-8 offset-md-4\">\r\n              <div class=\"input-group\">\r\n                  <input type=\"text\" class=\"form-control\" [(ngModel)]=\"newMessage\" name=\"messageInput\" maxlength=\"100\"\r\n                  (keydown.enter)=\"submit(chat.id)\" placeholder=\"{{ 'chatroomItem.inputPlaceholder' | translate }}\" autofocus>\r\n                <div class=\"input-group-append ml-2\">\r\n                    <button class=\"btn btn-outline-warning\" type=\"button\" (click)=\"submit(chat.id)\"\r\n                    [disabled]=\"!newMessage\">\r\n                    <fa-icon [icon]=\"faReply\"></fa-icon>\r\n                  </button>\r\n                </div>\r\n              </div>\r\n\r\n            </div>\r\n\r\n          </div>\r\n        </form>\r\n      </div>\r\n\r\n      </ng-container>\r\n    </ng-container>\r\n  </div>\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -471,7 +472,6 @@ var ChatroomItemComponent = /** @class */ (function () {
         var chatroomId = this.route.snapshot.paramMap.get("id");
         var source = this.chatService.getChatroomById(chatroomId);
         this.chatroom$ = this.chatService.joinUsers(source);
-        console.log('Aufruf - Chatroom-Item');
     };
     ChatroomItemComponent.prototype.submit = function (chatId) {
         if (!this.newMessage) {
@@ -509,7 +509,7 @@ var ChatroomItemComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row mt-4\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10\">\r\n    <div class=\"card shadow my-3\" *ngFor=\"let chatroom of userChatsAsUserA$\">\r\n      <div class=\"card-body py-2 accepted-match-cards\">\r\n        <div class=\"row\">\r\n          <div class=\"col-10\">\r\n            <!-- TODO map the userA or userB (depending on the currentUser) to a modal to display profile pic and name  -->\r\n            <a [routerLink]=\"chatroom.id\">\r\n              <span class=\"text-decoration-none text-dark\">{{ chatroom.firstname }} {{ chatroom.lastname }}</span>\r\n              <hr class=\"border-warning border-bottom mt-0 mb-1\">\r\n              <p class=\"text-muted mb-0\">{{ chatroom.messages.length }} {{'chatroomList.messages' | translate }}</p>\r\n            </a>\r\n          </div>\r\n          <div class=\"col-2 d-flex align-items-center justify-content-end\">\r\n            <button type=\"button\" class=\"btn btn-outline-danger homebutton\" (click)=\"openModal(chatroom.id, 'userChatsAsUserA$')\"\r\n            data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{ 'chatroomList.deleteTooltip' | translate }}\">\r\n              <fa-icon [icon]=\"faTimes\"></fa-icon>\r\n            </button>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"card shadow my-3\" *ngFor=\"let chatroom of userChatsAsUserB$\">\r\n      <div class=\"card-body py-2 accepted-match-cards\">\r\n        <div class=\"row\">\r\n          <div class=\"col-10\">\r\n            <!-- TODO map the userA or userB (depending on the currentUser) to a modal to display profile pic and name  -->\r\n            <a [routerLink]=\"chatroom.id\">\r\n              <span class=\"text-decoration-none text-dark\">{{ chatroom.firstname }} {{ chatroom.lastname }}</span>\r\n              <hr class=\"border-warning border-bottom mt-0 mb-1\">\r\n              <p class=\"text-muted mb-0\">{{ chatroom.messages.length }} {{'chatroomList.messages' | translate }}</p>\r\n            </a>\r\n          </div>\r\n          <div class=\"col-2 d-flex align-items-center justify-content-end\">\r\n            <button type=\"button\" class=\"btn btn-outline-danger homebutton\" (click)=\"openModal(chatroom.id, 'userChatsAsUserB$')\"\r\n            data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{ 'chatroomList.deleteTooltip' | translate }}\">\r\n              <fa-icon [icon]=\"faTimes\"></fa-icon>\r\n            </button>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n  </div>\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n\r\n<!-- Modal -->\r\n<div class=\"modal-backdrop fade in\" [ngStyle]=\"{'display':display}\"></div>\r\n<div *ngIf=\"modalIsOpen\" class=\"modal\" [ngStyle]=\"{'display': display}\" tabindex=\"-1\" role=\"dialog\">\r\n    <div class=\"modal-dialog\" role=\"document\">\r\n      <div class=\"modal-content\">\r\n        <div class=\"modal-header\">\r\n          <h5 class=\"modal-title\">{{ 'home.requestTitle' | translate}} Kochen</h5>\r\n          <button type=\"button\" class=\"close\" (click)=\"closeModal()\" aria-label=\"Close\">\r\n            <span aria-hidden=\"true\">&times;</span>\r\n          </button>\r\n        </div>\r\n        <div class=\"modal-body\">\r\n\r\n        </div>\r\n        <div class=\"modal-footer\">\r\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"closeModal()\">Close</button>\r\n          <button type=\"button\" class=\"btn btn-primary\" (click)=\"deleteChatroom()\">DELETE</button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n"
+module.exports = "<div class=\"row mt-4\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10\">\r\n    <div class=\"card shadow my-3\" *ngFor=\"let chatroom of userChatsAsUserA$\">\r\n      <div class=\"card-body py-2 accepted-match-cards\">\r\n        <div class=\"row\">\r\n          <div class=\"col-10\">\r\n            <a [routerLink]=\"chatroom.id\">\r\n              <span class=\"text-decoration-none text-dark\">{{ chatroom.firstname }} {{ chatroom.lastname }}</span>\r\n              <hr class=\"border-warning border-bottom mt-0 mb-1\">\r\n              <p class=\"text-muted mb-0\">{{ chatroom.messages.length }} {{'chatroomList.messages' | translate }}</p>\r\n            </a>\r\n          </div>\r\n          <div class=\"col-2 d-flex align-items-center justify-content-end\">\r\n            <button type=\"button\" class=\"btn btn-outline-danger homebutton\" (click)=\"openModal(chatroom.id, 'userChatsAsUserA$')\"\r\n            data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{ 'chatroomList.deleteTooltip' | translate }}\">\r\n              <fa-icon [icon]=\"faTimes\"></fa-icon>\r\n            </button>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"card shadow my-3\" *ngFor=\"let chatroom of userChatsAsUserB$\">\r\n      <div class=\"card-body py-2 accepted-match-cards\">\r\n        <div class=\"row\">\r\n          <div class=\"col-10\">\r\n            <a [routerLink]=\"chatroom.id\">\r\n              <span class=\"text-decoration-none text-dark\">{{ chatroom.firstname }} {{ chatroom.lastname }}</span>\r\n              <hr class=\"border-warning border-bottom mt-0 mb-1\">\r\n              <p class=\"text-muted mb-0\">{{ chatroom.messages.length }} {{'chatroomList.messages' | translate }}</p>\r\n            </a>\r\n          </div>\r\n          <div class=\"col-2 d-flex align-items-center justify-content-end\">\r\n            <button type=\"button\" class=\"btn btn-outline-danger homebutton\" (click)=\"openModal(chatroom.id, 'userChatsAsUserB$')\"\r\n            data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{ 'chatroomList.deleteTooltip' | translate }}\">\r\n              <fa-icon [icon]=\"faTimes\"></fa-icon>\r\n            </button>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n  </div>\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n\r\n<!-- Modal -->\r\n<div class=\"modal-backdrop fade in\" [ngStyle]=\"{'display':display}\"></div>\r\n<div *ngIf=\"modalIsOpen\" class=\"modal\" [ngStyle]=\"{'display': display}\" tabindex=\"-1\" role=\"dialog\">\r\n    <div class=\"modal-dialog\" role=\"document\">\r\n      <div class=\"modal-content\">\r\n        <div class=\"modal-header\">\r\n          <h5 class=\"modal-title\">{{ 'chatroomList.deleteModalHeader' | translate }}</h5>\r\n          <button type=\"button\" class=\"close\" (click)=\"closeModal()\" aria-label=\"Close\">\r\n            <span aria-hidden=\"true\">&times;</span>\r\n          </button>\r\n        </div>\r\n        <div class=\"modal-body\">\r\n          {{ 'chatroomList.deleteModalQuestion' | translate}}\r\n        </div>\r\n        <div class=\"modal-footer\">\r\n          <button type=\"button\" class=\"btn btn-outline-warning\" (click)=\"deleteChatroom()\">{{ 'chatroomList.deleteButton' | translate }}</button>\r\n          <button type=\"button\" class=\"btn btn-warning\" (click)=\"closeModal()\">{{ 'register.quitButton' | translate }}</button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n"
 
 /***/ }),
 
@@ -535,55 +535,42 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ChatroomListComponent", function() { return ChatroomListComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _services_user_store_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../services/user-store.service */ "./src/app/services/user-store.service.ts");
-/* harmony import */ var _services_chat_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../services/chat.service */ "./src/app/services/chat.service.ts");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_services_auth_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/services/auth.service */ "./src/app/services/auth.service.ts");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
-
-
+/* harmony import */ var _services_chat_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../services/chat.service */ "./src/app/services/chat.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_services_auth_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
 
 
 
 
 
 var ChatroomListComponent = /** @class */ (function () {
-    function ChatroomListComponent(authService, chatService, router, userStoreService) {
+    function ChatroomListComponent(authService, chatService) {
         var _this = this;
         this.authService = authService;
         this.chatService = chatService;
-        this.router = router;
-        this.userStoreService = userStoreService;
         this.currentUser = this.authService.getCurrentUser();
         this.userChatsAsUserA$ = [];
         this.userChatsAsUserB$ = [];
-        this.faTimes = _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_6__["faTimes"];
+        this.faTimes = _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__["faTimes"];
         // for modal
         this.display = 'none';
         this.modalIsOpen = false;
         this.chatService.getAllChatroomsAsUserA().subscribe(function (chatrooms) {
             _this.userChatsAsUserALength = chatrooms.length;
             _this.userChatsAsUserA$ = chatrooms;
+        }, function () {
+            console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
         });
         this.chatService.getAllChatroomsAsUserB().subscribe(function (chatrooms) {
             _this.userChatsAsUserBLength = chatrooms.length;
             _this.userChatsAsUserB$ = chatrooms;
+        }, function () {
+            console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
         });
     }
     ChatroomListComponent.prototype.ngOnInit = function () {
-        console.log('Aufruf - Chatroom-List');
     };
-    // deleteChatroom() {
-    //   this.chatService.deleteChatroom(this.roomToBeDeleted).subscribe(() => {
-    //     if (this.userChatsAsUserALength === 1 || this.userChatsAsUserBLength === 1) {
-    //       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-    //         this.router.navigate(['/chats']));
-    //     }
-    //   });
-    //   this.closeModal();
-    // }
-    // TODO doesn't work properly
     ChatroomListComponent.prototype.deleteChatroom = function () {
         var _this = this;
         var indexNumber;
@@ -621,15 +608,13 @@ var ChatroomListComponent = /** @class */ (function () {
         this.modalIsOpen = false;
     };
     ChatroomListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
             selector: 'app-chatroom-list',
             template: __webpack_require__(/*! ./chatroom-list.component.html */ "./src/app/components/chatroom-list/chatroom-list.component.html"),
             styles: [__webpack_require__(/*! ./chatroom-list.component.scss */ "./src/app/components/chatroom-list/chatroom-list.component.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_services_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"],
-            _services_chat_service__WEBPACK_IMPORTED_MODULE_2__["ChatService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"],
-            _services_user_store_service__WEBPACK_IMPORTED_MODULE_1__["UserStoreService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_services_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"],
+            _services_chat_service__WEBPACK_IMPORTED_MODULE_1__["ChatService"]])
     ], ChatroomListComponent);
     return ChatroomListComponent;
 }());
@@ -768,7 +753,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1 class=\"text-center font-weight-light mb-3 mt-4\">{{ 'home.openMatchrequests' | translate }}</h1>\r\n<div class=\"row\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10\">\r\n    <div *ngIf=\"unAcceptedMatchesLength, else elseBlock\">\r\n      <!-- show all matchRequests which are saved in the Array of 'matchRequests'-->\r\n      <div *ngFor=\"let match of unAcceptedMatches$ | paginate: { itemsPerPage: 5, currentPage: pageNumber }\">\r\n        <div class=\"card shadow my-3\">\r\n          <h5 class=\"card-header\">\r\n            {{ 'home.requestTitle' | translate}} {{ parseOfferForFrontend(match.matchedOffer) }}\r\n          </h5>\r\n          <div class=\"card-body accepted-match-cards\">\r\n            <div class=\"card-text\">\r\n              <div class=\"row\">\r\n                <div class=\"col-8 col-md-10\">\r\n                  <a class=\"pointer-cursor\" (click)=\"openModal(match)\">\r\n                    <p class=\"my-0\"><small>{{ match.firstname }} {{ match.lastname }}</small></p>\r\n                    <!-- <p class=\"my-0\"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->\r\n                    <p class=\"my-0\"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>\r\n                  </a>\r\n                </div>\r\n                <div class=\"col-4 col-md-2 d-flex justify-content-end my-auto\">\r\n                  <button type=\"button\" class=\"btn btn-success mr-2 homebutton\" (click)=\"acceptMatch(match.matchId)\">\r\n                    <fa-icon [icon]=\"faCheck\"></fa-icon>\r\n                  </button>\r\n                  <button type=\"button\" class=\"btn btn-outline-danger homebutton\" (click)=\"declineMatch(match.matchId)\">\r\n                    <fa-icon [icon]=\"faTimes\"></fa-icon>\r\n                  </button>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <!--ngFor-->\r\n\r\n      <!--controls for pagination, which are only visible at the length of matchRequest-array bigger than 5-->\r\n      <pagination-controls autoHide=\"true\" class=\"pagination justify-content-center\" (pageChange)=\"pageNumber = $event\"\r\n        previousLabel=\"{{'home.previous' | translate }}\" nextLabel=\"{{'home.next' | translate }}\"></pagination-controls>\r\n    </div>\r\n    <!--ngIf-->\r\n\r\n    <!-- if there are no matchrequests-->\r\n    <ng-template #elseBlock>\r\n      <p class=\"text-center\">{{ 'home.noRequests' | translate}}</p>\r\n    </ng-template>\r\n  </div>\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n\r\n\r\n<div class=\"modal-backdrop fade in\" [ngStyle]=\"{'display':display}\"></div>\r\n<div *ngIf=\"modalIsOpen\" class=\"modal\" [ngStyle]=\"{'display': display}\" tabindex=\"-1\" role=\"dialog\">\r\n  <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <div class=\"modal-header\">\r\n        <h5 class=\"modal-title\">{{ 'modals.details' | translate}} {{firstname}}</h5>\r\n        <button type=\"button\" class=\"close\" (click)=\"closeModal()\" aria-label=\"Close\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n        <table class=\"table table-light\">\r\n          <tbody>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'modals.details' | translate}}:</th>\r\n              <td>{{firstname}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'register.lastname' | translate}}:</th>\r\n              <td>{{lastname}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'modals.age' | translate}}:</th>\r\n              <td>{{age}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">Geschlecht:</th>\r\n              <td>{{matchSex}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'search.city' | translate}}:</th>\r\n              <td>{{city}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">Interessen:</th>\r\n              <td>{{matchActivities}}</td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n      <div class=\"modal-footer\">\r\n        <button type=\"button\" class=\"btn btn-success mr-2\" (click)=\"acceptMatch(matchId)\">\r\n          {{ 'modals.accept' | translate}}\r\n        </button>\r\n        <button type=\"button\" class=\"btn btn-outline-danger\" (click)=\"declineMatch(matchId)\">\r\n          {{ 'modals.decline' | translate}}\r\n        </button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<h1 class=\"text-center font-weight-light mb-3 mt-4\">{{ 'home.openMatchrequests' | translate }}</h1>\r\n<div class=\"row\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10\">\r\n    <div *ngIf=\"unAcceptedMatchesLength, else elseBlock\">\r\n      <!-- show all matchRequests which are saved in the Array of 'matchRequests'-->\r\n      <div *ngFor=\"let match of unAcceptedMatches$ | paginate: { itemsPerPage: 5, currentPage: pageNumber }\">\r\n        <div class=\"card shadow my-3\">\r\n          <h5 class=\"card-header bg-white border-warning font-italic\">\r\n            {{ 'home.requestTitle' | translate}} {{ parseOfferForFrontend(match.matchedOffer) }}\r\n          </h5>\r\n          <div class=\"card-body accepted-match-cards\">\r\n            <div class=\"card-text\">\r\n              <div class=\"row\">\r\n                <div class=\"col-8 col-md-10\">\r\n                  <a class=\"pointer-cursor\" (click)=\"openModal(match)\">\r\n                    <p class=\"my-0\"><small>{{ match.firstname }} {{ match.lastname }}</small></p>\r\n                    <!-- <p class=\"my-0\"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->\r\n                    <p class=\"my-0\"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>\r\n                  </a>\r\n                </div>\r\n                <div class=\"col-4 col-md-2 d-flex justify-content-end my-auto\">\r\n                  <button type=\"button\" class=\"btn btn-success mr-2 homebutton\" (click)=\"acceptMatch(match.matchId);loadingButton($event);\">\r\n                    <fa-icon [icon]=\"faCheck\"></fa-icon>\r\n                  </button>\r\n                  <button type=\"button\" class=\"btn btn-outline-danger homebutton\" (click)=\"declineMatch(match.matchId);loadingButton($event);\">\r\n                    <fa-icon [icon]=\"faTimes\"></fa-icon>\r\n                  </button>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <!--ngFor-->\r\n\r\n      <!--controls for pagination, which are only visible at the length of matchRequest-array bigger than 5-->\r\n      <pagination-controls autoHide=\"true\" class=\"pagination justify-content-center\" (pageChange)=\"pageNumber = $event\"\r\n        previousLabel=\"{{'home.previous' | translate }}\" nextLabel=\"{{'home.next' | translate }}\"></pagination-controls>\r\n    </div>\r\n    <!--ngIf-->\r\n\r\n    <!-- if there are no matchrequests-->\r\n    <ng-template #elseBlock>\r\n      <p class=\"text-center\">{{ 'home.noRequests' | translate}}</p>\r\n    </ng-template>\r\n  </div>\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n\r\n\r\n<div class=\"modal-backdrop fade in\" [ngStyle]=\"{'display':display}\"></div>\r\n<div *ngIf=\"modalIsOpen\" class=\"modal\" [ngStyle]=\"{'display': display}\" tabindex=\"-1\" role=\"dialog\">\r\n  <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <div class=\"modal-header\">\r\n        <h5 class=\"modal-title\">{{ 'modals.details' | translate}} {{firstname}}</h5>\r\n        <button type=\"button\" class=\"close\" (click)=\"closeModal()\" aria-label=\"Close\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n        <table class=\"table table-light\">\r\n          <tbody>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'modals.details' | translate}}:</th>\r\n              <td>{{firstname}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'register.lastname' | translate}}:</th>\r\n              <td>{{lastname}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'modals.age' | translate}}:</th>\r\n              <td>{{age}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">Geschlecht:</th>\r\n              <td>{{matchSex}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'search.city' | translate}}:</th>\r\n              <td>{{city}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">Interessen:</th>\r\n              <td>{{matchActivities}}</td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n      <div class=\"modal-footer\">\r\n        <button type=\"button\" class=\"btn btn-success mr-2\" (click)=\"acceptMatch(matchId);loadingButton($event);\">\r\n          {{ 'modals.accept' | translate}}\r\n        </button>\r\n        <button type=\"button\" class=\"btn btn-outline-danger\" (click)=\"declineMatch(matchId);loadingButton($event);\">\r\n          {{ 'modals.decline' | translate}}\r\n        </button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -786,14 +771,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngx-translate/core */ "./node_modules/@ngx-translate/core/fesm5/ngx-translate-core.js");
 /* harmony import */ var _services_utility_store_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../services/utility-store.service */ "./src/app/services/utility-store.service.ts");
 /* harmony import */ var _services_match_store_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../services/match-store.service */ "./src/app/services/match-store.service.ts");
-/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../services/auth.service */ "./src/app/services/auth.service.ts");
-/* harmony import */ var src_app_services_user_store_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/services/user-store.service */ "./src/app/services/user-store.service.ts");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-
-
-
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
 
 
 
@@ -802,18 +781,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var HomeComponent = /** @class */ (function () {
-    function HomeComponent(userStoreService, authService, router, matchStoreService, utliltyStoreService, translateService) {
+    function HomeComponent(matchStoreService, utliltyStoreService, translateService) {
         var _this = this;
-        this.userStoreService = userStoreService;
-        this.authService = authService;
-        this.router = router;
         this.matchStoreService = matchStoreService;
         this.utliltyStoreService = utliltyStoreService;
         this.translateService = translateService;
         this.unAcceptedMatches$ = [];
         // for fontawesome icons
-        this.faCheck = _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_7__["faCheck"];
-        this.faTimes = _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_7__["faTimes"];
+        this.faCheck = _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faCheck"];
+        this.faTimes = _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faTimes"];
         // for pagination
         this.pageNumber = 1;
         // for modal
@@ -822,6 +798,8 @@ var HomeComponent = /** @class */ (function () {
         this.matchStoreService.getAllUnAcceptedMatches().subscribe(function (matches) {
             _this.unAcceptedMatchesLength = matches.length;
             _this.unAcceptedMatches$ = matches;
+        }, function () {
+            console.log('Error in home-page - TODO delete this console.log() before finishing WebProg!');
         });
     }
     // when home-component was called, the written methods in ngOnInit gonna start
@@ -831,7 +809,6 @@ var HomeComponent = /** @class */ (function () {
         this.translateService.onDefaultLangChange.subscribe(function (event) {
             _this.setAllUtilities();
         });
-        console.log('Aufruf - Home');
     };
     HomeComponent.prototype.setAllUtilities = function () {
         this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
@@ -920,16 +897,16 @@ var HomeComponent = /** @class */ (function () {
     HomeComponent.prototype.parseCityForFrontend = function (cityIndex) {
         return this.cities[cityIndex];
     };
+    HomeComponent.prototype.loadingButton = function (event) {
+        event.target.classList.add('disabled');
+    };
     HomeComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_6__["Component"])({
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["Component"])({
             selector: 'app-home',
             template: __webpack_require__(/*! ./home.component.html */ "./src/app/components/home/home.component.html"),
             styles: [__webpack_require__(/*! ./home.component.css */ "./src/app/components/home/home.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_services_user_store_service__WEBPACK_IMPORTED_MODULE_5__["UserStoreService"],
-            _services_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_8__["Router"],
-            _services_match_store_service__WEBPACK_IMPORTED_MODULE_3__["MatchStoreService"],
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_match_store_service__WEBPACK_IMPORTED_MODULE_3__["MatchStoreService"],
             _services_utility_store_service__WEBPACK_IMPORTED_MODULE_2__["UtilityStoreService"],
             _ngx_translate_core__WEBPACK_IMPORTED_MODULE_1__["TranslateService"]])
     ], HomeComponent);
@@ -1104,7 +1081,7 @@ var LoginPageComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10 px-0\">\r\n    <div class=\"card mx-auto my-5 shadow\">\r\n      <div class=\"card-header h5 bg-transparent d-flex justify-content-between border-warning p-0\">\r\n        <div\r\n          class=\"col-md-6 font-weight-light text-center pointer-cursor align-self-center border-right btn-outline-warning py-3\"\r\n          data-toggle=\"collapse\" href=\"#collapseAccepted\" [ngClass]=\"{'active':acceptedCollapsed === true}\"\r\n          role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseAccepted\" (click)=\"requestsCollapsed=false\"\r\n          (click)=\"acceptedCollapsed=true\">\r\n          {{ 'matchlist.accpetedMatches' | translate }}\r\n        </div>\r\n        <div class=\"col-md-6 font-weight-light text-center pointer-cursor btn-outline-warning py-3\"\r\n          [ngClass]=\"{'active':requestsCollapsed === true}\" data-toggle=\"collapse\" href=\"#collapseRequests\"\r\n          role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseRequests\" (click)=\"acceptedCollapsed=false\"\r\n          (click)=\"requestsCollapsed=true\">\r\n          {{ 'matchlist.unacceptedMatches' | translate }}\r\n        </div>\r\n      </div>\r\n      <!--card-header-->\r\n\r\n      <!--show all accepted Matches-->\r\n      <div *ngIf=\"acceptedCollapsed\" class=\"card-body\" id=\"collapseAccepted\">\r\n        <!-- show all accepted matches which are saved in acceptedMatches[]-->\r\n        <div\r\n          *ngFor=\"let match of acceptedMatchesAsInitiator$ | paginate: { itemsPerPage: 5, currentPage: pageNumberAcceptedMatches, id: 'firstPagination' }\">\r\n          <div class=\"card shadow my-3\">\r\n            <h5 class=\"card-header bg-white border-warning font-italic\">\r\n              {{ 'matchlist.matchedOffer' | translate }}: {{ parseOfferForFrontend(match.matchedOffer) }}\r\n            </h5>\r\n            <div *ngIf=\"acceptedMatchesAsInitiator$, else noRequestBlock\" class=\"card-body accepted-match-cards\">\r\n              <div class=\"card-text\">\r\n                <div class=\"row\">\r\n                  <div class=\"col-8 col-md-10\">\r\n                    <a class=\"pointer-cursor\" (click)=\"openModal(match)\">\r\n                      <p class=\"my-0\"><small>{{ match.firstname }} {{ match.lastname }}</small></p>\r\n                      <!-- <p class=\"my-0\"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->\r\n                      <p class=\"my-0\"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>\r\n                    </a>\r\n                  </div>\r\n                  <div class=\"col-4 col-md-2 d-flex justify-content-end my-auto\">\r\n                    <button type=\"button\" class=\"btn btn-outline-warning homebutton\"\r\n                      (click)=\"contactUser(match.uid)\" data-toggle=\"tooltip\"\r\n                      data-placement=\"top\" title=\"{{ 'matchlist.contactTooltip' | translate }}\">\r\n                      <fa-icon [icon]=\"faEnvelope\"></fa-icon>\r\n                    </button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <!-- if there are no matchrequests-->\r\n            <ng-template #noRequestBlock>\r\n              <p class=\"text-center\">{{ 'home.noRequests' | translate}}</p>\r\n            </ng-template>\r\n          </div>\r\n        </div>\r\n        <!--ngFor-->\r\n\r\n        <!-- show all accepted matches which are saved in acceptedMatches[]-->\r\n        <div\r\n          *ngFor=\"let match of acceptedMatchesAsPartner$ | paginate: { itemsPerPage: 5, currentPage: pageNumberAcceptedMatches, id: 'firstPagination' }\">\r\n          <div class=\"card shadow my-3\">\r\n            <h5 class=\"card-header bg-white border-warning font-italic\">\r\n              {{ 'matchlist.matchedOffer' | translate }}: {{ parseOfferForFrontend(match.matchedOffer) }}\r\n            </h5>\r\n            <div *ngIf=\"acceptedMatchesAsPartner$, else noRequestBlock\" class=\"card-body accepted-match-cards\">\r\n              <div class=\"card-text\">\r\n                <div class=\"row\">\r\n                  <div class=\"col-8 col-md-10\">\r\n                    <a class=\"pointer-cursor\" (click)=\"openModal(match)\">\r\n                      <p class=\"my-0\"><small>{{ match.firstname }} {{ match.lastname }}</small></p>\r\n                      <!-- <p class=\"my-0\"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->\r\n                      <p class=\"my-0\"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>\r\n                    </a>\r\n                  </div>\r\n                  <div class=\"col-4 col-md-2 d-flex justify-content-end my-auto\">\r\n                    <button type=\"button\" class=\"btn btn-outline-warning homebutton\"\r\n                      (click)=\"contactUser(match.uid)\" data-toggle=\"tooltip\"\r\n                      data-placement=\"top\" title=\"{{ 'matchlist.contactTooltip' | translate }}\">\r\n                      <fa-icon [icon]=\"faEnvelope\"></fa-icon>\r\n                    </button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <!-- if there are no matchrequests-->\r\n            <ng-template #noRequestBlock>\r\n              <p class=\"text-center\">{{ 'home.noRequests' | translate}}</p>\r\n            </ng-template>\r\n          </div>\r\n        </div>\r\n        <!--ngFor-->\r\n\r\n        <!--controls for pagination, which are only visible at the length of matchRequest-array bigger than 5-->\r\n        <pagination-controls autoHide=\"true\" class=\"pagination justify-content-center\"\r\n          (pageChange)=\"pageNumberAcceptedMatches = $event\" previousLabel=\"{{'home.previous' | translate }}\"\r\n          nextLabel=\"{{'home.next' | translate }}\" id=\"firstPagination\">\r\n        </pagination-controls>\r\n\r\n      </div>\r\n\r\n      <!--show all Matchrequests-->\r\n      <div *ngIf=\"requestsCollapsed\" class=\"card-body collapse\" id=\"collapseRequests\">\r\n\r\n\r\n\r\n        <!-- show all unaccepted matchrequests which are saved in matchrequests[]-->\r\n        <div\r\n          *ngFor=\"let matchrequest of matchRequests$ | paginate: { itemsPerPage: 5, currentPage: pageNumberRequests, id: 'secondPagination' }\">\r\n          <div class=\"card shadow my-3\">\r\n            <h5 class=\"card-header bg-white border-info font-italic\">\r\n              {{ 'matchlist.matchrequestFor' | translate }}: {{ parseOfferForFrontend(matchrequest.matchedOffer) }}\r\n            </h5>\r\n            <div class=\"card-body unaccepted-match-cards\">\r\n              <div class=\"card-text\">\r\n                <div class=\"row\">\r\n                  <div class=\"col-8 col-md-10\">\r\n\r\n                    <p class=\"my-0\"><small>{{ matchrequest.firstname }} {{ matchrequest.lastname }}</small></p>\r\n                    <!-- <p class=\"my-0\"><small>Age: {{calculateAgeForModal(matchrequest.dateOfBirth)}}</small></p> -->\r\n                    <p class=\"my-0\"><small>Aktivitäten: {{activitiesForModal(parseActivitiesForFrontend(matchrequest.activities))}}</small></p>\r\n\r\n                  </div>\r\n                  <div class=\"col-4 col-md-2 d-flex justify-content-end my-auto\">\r\n                    <button type=\"button\" class=\"btn btn-outline-danger homebutton\"\r\n                      (click)=\"deleteMatchrequest(matchrequest.matchId)\" data-toggle=\"tooltip\" data-placement=\"top\"\r\n                      title=\"{{ 'matchlist.deleteTooltip' | translate }}\">\r\n                      <fa-icon [icon]=\"faTrash\"></fa-icon>\r\n                    </button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!--ngFor-->\r\n\r\n        <!--controls for pagination, which are only visible at the length of matchRequest-array bigger than 5-->\r\n        <pagination-controls autoHide=\"true\" class=\"pagination justify-content-center\"\r\n          (pageChange)=\"pageNumberRequests = $event\" previousLabel=\"{{'home.previous' | translate }}\"\r\n          nextLabel=\"{{'home.next' | translate }}\" id=\"secondPagination\">\r\n        </pagination-controls>\r\n\r\n\r\n      </div>\r\n      <!--second row/card-->\r\n\r\n    </div>\r\n\r\n\r\n  </div>\r\n  <!--col-10-->\r\n\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n\r\n\r\n\r\n<!-- Modal -->\r\n<div class=\"modal-backdrop fade in\" [ngStyle]=\"{'display':display}\"></div>\r\n<div *ngIf=\"modalIsOpen\" class=\"modal\" [ngStyle]=\"{'display': display}\" tabindex=\"-1\" role=\"dialog\">\r\n  <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <div class=\"modal-header\">\r\n        <h5 class=\"modal-title\">{{ 'modals.details' | translate}} {{firstname}}</h5>\r\n        <button type=\"button\" class=\"close\" (click)=\"closeModal()\" aria-label=\"Close\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n        <table class=\"table table-light\">\r\n          <tbody>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'modals.details' | translate}}:</th>\r\n              <td>{{firstname}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'register.lastname' | translate}}:</th>\r\n              <td>{{lastname}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'modals.age' | translate}}:</th>\r\n              <td>{{age}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">Geschlecht:</th>\r\n              <td>{{matchSex}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'search.city' | translate}}:</th>\r\n              <td>{{city}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">Interessen:</th>\r\n              <td>{{matchActivities}}</td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n      <div class=\"modal-footer\">\r\n        <button type=\"button\" class=\"btn btn-outline-warning homebutton\" (click)=\"contactUser(initiatorID, partnerID)\"\r\n          data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{ 'matchlist.contactTooltip' | translate }}\">\r\n          <fa-icon [icon]=\"faEnvelope\"></fa-icon>\r\n        </button>\r\n        <!-- <button type=\"button\" class=\"btn btn-warning\" (click)=\"closeModal()\">Close</button> -->\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10 px-0\">\r\n    <div class=\"card mx-auto my-5 shadow\">\r\n      <div class=\"card-header h5 bg-transparent d-flex justify-content-between border-warning p-0\">\r\n        <div\r\n          class=\"col-md-6 font-weight-light text-center pointer-cursor align-self-center border-right btn-outline-warning py-3\"\r\n          data-toggle=\"collapse\" href=\"#collapseAccepted\" [ngClass]=\"{'active':acceptedCollapsed === true}\"\r\n          role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseAccepted\" (click)=\"requestsCollapsed=false\"\r\n          (click)=\"acceptedCollapsed=true\">\r\n          {{ 'matchlist.accpetedMatches' | translate }}\r\n        </div>\r\n        <div class=\"col-md-6 font-weight-light text-center pointer-cursor btn-outline-warning py-3\"\r\n          [ngClass]=\"{'active':requestsCollapsed === true}\" data-toggle=\"collapse\" href=\"#collapseRequests\"\r\n          role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseRequests\" (click)=\"acceptedCollapsed=false\"\r\n          (click)=\"requestsCollapsed=true\">\r\n          {{ 'matchlist.unacceptedMatches' | translate }}\r\n        </div>\r\n      </div>\r\n      <!--card-header-->\r\n\r\n      <!--show all accepted Matches-->\r\n      <div *ngIf=\"acceptedCollapsed\" class=\"card-body\" id=\"collapseAccepted\">\r\n        <!-- show all accepted matches which are saved in acceptedMatches[]-->\r\n        <div\r\n          *ngFor=\"let match of acceptedMatchesAsInitiator$ | paginate: { itemsPerPage: 5, currentPage: pageNumberAcceptedMatches, id: 'firstPagination' }\">\r\n          <div class=\"card shadow my-3\">\r\n            <h5 class=\"card-header bg-white border-warning font-italic\">\r\n              {{ 'matchlist.matchedOffer' | translate }}: {{ parseOfferForFrontend(match.matchedOffer) }}\r\n            </h5>\r\n            <div *ngIf=\"acceptedMatchesAsInitiator$, else noRequestBlock\" class=\"card-body accepted-match-cards\">\r\n              <div class=\"card-text\">\r\n                <div class=\"row\">\r\n                  <div class=\"col-8 col-md-10\">\r\n                    <a class=\"pointer-cursor\" (click)=\"openModal(match)\">\r\n                      <p class=\"my-0\"><small>{{ match.firstname }} {{ match.lastname }}</small></p>\r\n                      <!-- <p class=\"my-0\"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->\r\n                      <p class=\"my-0\"><small>Aktivitäten:\r\n                          {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>\r\n                    </a>\r\n                  </div>\r\n                  <div class=\"col-4 col-md-2 d-flex justify-content-end my-auto\">\r\n                    <button type=\"button\" class=\"btn btn-outline-warning mr-2 homebutton\" (click)=\"loadingButton($event);contactUser(match.uid);\"\r\n                      data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{ 'matchlist.contactTooltip' | translate }}\">\r\n                      <fa-icon [icon]=\"faEnvelope\"></fa-icon>\r\n                    </button>\r\n                    <button type=\"button\" class=\"btn btn-outline-danger homebutton\"\r\n                      (click)=\"deleteAcceptedMatchAndCorrespondingChatroom('acceptedMatchesAsInitiator$', match.matchId, match.uid);loadingButton($event);\" data-toggle=\"tooltip\" data-placement=\"top\"\r\n                      title=\"{{ 'matchlist.deleteMatchTooltip' | translate }}\">\r\n                      <fa-icon [icon]=\"faTrash\"></fa-icon>\r\n                    </button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <!-- if there are no matchrequests-->\r\n            <ng-template #noRequestBlock>\r\n              <p class=\"text-center\">{{ 'home.noRequests' | translate}}</p>\r\n            </ng-template>\r\n          </div>\r\n        </div>\r\n        <!--ngFor-->\r\n\r\n        <!-- show all accepted matches which are saved in acceptedMatches[]-->\r\n        <div\r\n          *ngFor=\"let match of acceptedMatchesAsPartner$ | paginate: { itemsPerPage: 5, currentPage: pageNumberAcceptedMatches, id: 'firstPagination' }\">\r\n          <div class=\"card shadow my-3\">\r\n            <h5 class=\"card-header bg-white border-warning font-italic\">\r\n              {{ 'matchlist.matchedOffer' | translate }}: {{ parseOfferForFrontend(match.matchedOffer) }}\r\n            </h5>\r\n            <div *ngIf=\"acceptedMatchesAsPartner$, else noRequestBlock\" class=\"card-body accepted-match-cards\">\r\n              <div class=\"card-text\">\r\n                <div class=\"row\">\r\n                  <div class=\"col-8 col-md-10\">\r\n                    <a class=\"pointer-cursor\" (click)=\"openModal(match)\">\r\n                      <p class=\"my-0\"><small>{{ match.firstname }} {{ match.lastname }}</small></p>\r\n                      <!-- <p class=\"my-0\"><small>Age: {{calculateAgeForModal(match.dateOfBirth)}}</small></p> -->\r\n                      <p class=\"my-0\"><small>Aktivitäten:\r\n                          {{activitiesForModal(parseActivitiesForFrontend(match.activities))}}</small></p>\r\n                    </a>\r\n                  </div>\r\n                  <div class=\"col-4 col-md-2 d-flex justify-content-end my-auto\">\r\n                    <button type=\"button\" class=\"btn btn-outline-warning mr-2 homebutton\" (click)=\"loadingButton($event);contactUser(match.uid);\"\r\n                      data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{ 'matchlist.contactTooltip' | translate }}\">\r\n                      <fa-icon [icon]=\"faEnvelope\"></fa-icon>\r\n                    </button>\r\n                    <button type=\"button\" class=\"btn btn-outline-danger homebutton\"\r\n                      (click)=\"deleteAcceptedMatchAndCorrespondingChatroom('acceptedMatchesAsPartner$', match.matchId, match.uid);loadingButton($event);\" data-toggle=\"tooltip\" data-placement=\"top\"\r\n                      title=\"{{ 'matchlist.deleteMatchTooltip' | translate }}\">\r\n                      <fa-icon [icon]=\"faTrash\"></fa-icon>\r\n                    </button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <!-- if there are no matchrequests-->\r\n            <ng-template #noRequestBlock>\r\n              <p class=\"text-center\">{{ 'home.noRequests' | translate}}</p>\r\n            </ng-template>\r\n          </div>\r\n        </div>\r\n        <!--ngFor-->\r\n\r\n        <!--controls for pagination, which are only visible at the length of matchRequest-array bigger than 5-->\r\n        <pagination-controls autoHide=\"true\" class=\"pagination justify-content-center\"\r\n          (pageChange)=\"pageNumberAcceptedMatches = $event\" previousLabel=\"{{'home.previous' | translate }}\"\r\n          nextLabel=\"{{'home.next' | translate }}\" id=\"firstPagination\">\r\n        </pagination-controls>\r\n\r\n      </div>\r\n\r\n      <!--show all Matchrequests-->\r\n      <div *ngIf=\"requestsCollapsed\" class=\"card-body collapse\" id=\"collapseRequests\">\r\n\r\n\r\n\r\n        <!-- show all unaccepted matchrequests which are saved in matchrequests[]-->\r\n        <div\r\n          *ngFor=\"let matchrequest of matchRequests$ | paginate: { itemsPerPage: 5, currentPage: pageNumberRequests, id: 'secondPagination' }\">\r\n          <div class=\"card shadow my-3\">\r\n            <h5 class=\"card-header bg-white border-info font-italic\">\r\n              {{ 'matchlist.matchrequestFor' | translate }}: {{ parseOfferForFrontend(matchrequest.matchedOffer) }}\r\n            </h5>\r\n            <div class=\"card-body unaccepted-match-cards\">\r\n              <div class=\"card-text\">\r\n                <div class=\"row\">\r\n                  <div class=\"col-8 col-md-10\">\r\n\r\n                    <p class=\"my-0\"><small>{{ matchrequest.firstname }} {{ matchrequest.lastname }}</small></p>\r\n                    <!-- <p class=\"my-0\"><small>Age: {{calculateAgeForModal(matchrequest.dateOfBirth)}}</small></p> -->\r\n                    <p class=\"my-0\"><small>Aktivitäten:\r\n                        {{activitiesForModal(parseActivitiesForFrontend(matchrequest.activities))}}</small></p>\r\n\r\n                  </div>\r\n                  <div class=\"col-4 col-md-2 d-flex justify-content-end my-auto\">\r\n                    <button type=\"button\" class=\"btn btn-outline-danger homebutton\"\r\n                      (click)=\"deleteMatchrequest(matchrequest.matchId);loadingButton($event);\" data-toggle=\"tooltip\" data-placement=\"top\"\r\n                      title=\"{{ 'matchlist.deleteTooltip' | translate }}\">\r\n                      <fa-icon [icon]=\"faTrash\"></fa-icon>\r\n                    </button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <!--ngFor-->\r\n\r\n        <!--controls for pagination, which are only visible at the length of matchRequest-array bigger than 5-->\r\n        <pagination-controls autoHide=\"true\" class=\"pagination justify-content-center\"\r\n          (pageChange)=\"pageNumberRequests = $event\" previousLabel=\"{{'home.previous' | translate }}\"\r\n          nextLabel=\"{{'home.next' | translate }}\" id=\"secondPagination\">\r\n        </pagination-controls>\r\n\r\n\r\n      </div>\r\n      <!--second row/card-->\r\n\r\n    </div>\r\n\r\n\r\n  </div>\r\n  <!--col-10-->\r\n\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n\r\n\r\n\r\n<!-- Modal -->\r\n<div class=\"modal-backdrop fade in\" [ngStyle]=\"{'display':display}\"></div>\r\n<div *ngIf=\"modalIsOpen\" class=\"modal\" [ngStyle]=\"{'display': display}\" tabindex=\"-1\" role=\"dialog\">\r\n  <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <div class=\"modal-header\">\r\n        <h5 class=\"modal-title\">{{ 'modals.details' | translate}} {{firstname}}</h5>\r\n        <button type=\"button\" class=\"close\" (click)=\"closeModal()\" aria-label=\"Close\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n        <table class=\"table table-light\">\r\n          <tbody>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'modals.details' | translate}}:</th>\r\n              <td>{{firstname}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'register.lastname' | translate}}:</th>\r\n              <td>{{lastname}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'modals.age' | translate}}:</th>\r\n              <td>{{age}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'register.sex' | translate}}:</th>\r\n              <td>{{matchSex}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'search.city' | translate}}:</th>\r\n              <td>{{city}}</td>\r\n            </tr>\r\n            <tr>\r\n              <th class=\"font-weight-normal\" scope=\"row\">{{ 'result.activities' | translate}}:</th>\r\n              <td>{{matchActivities}}</td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n      <div class=\"modal-footer\">\r\n        <button type=\"button\" class=\"btn btn-outline-warning homebutton\" (click)=\"loadingButton($event);contactUser(matchIDModal);\"\r\n          data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{ 'matchlist.contactTooltip' | translate }}\">\r\n          <fa-icon [icon]=\"faEnvelope\"></fa-icon>\r\n        </button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1130,8 +1107,8 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MatchListComponent", function() { return MatchListComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngx-translate/core */ "./node_modules/@ngx-translate/core/fesm5/ngx-translate-core.js");
-/* harmony import */ var _services_user_store_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../services/user-store.service */ "./src/app/services/user-store.service.ts");
+/* harmony import */ var _chatroom_list_chatroom_list_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../chatroom-list/chatroom-list.component */ "./src/app/components/chatroom-list/chatroom-list.component.ts");
+/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-translate/core */ "./node_modules/@ngx-translate/core/fesm5/ngx-translate-core.js");
 /* harmony import */ var _services_match_store_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../services/match-store.service */ "./src/app/services/match-store.service.ts");
 /* harmony import */ var src_app_services_auth_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/services/auth.service */ "./src/app/services/auth.service.ts");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
@@ -1148,20 +1125,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// import { ChatService } from './../../services/chat.service';
 
 var MatchListComponent = /** @class */ (function () {
-    // initiatorID: string;
-    // partnerID: string;
-    function MatchListComponent(authService, matchStoreService, router, chatservice, userStoreService, utliltyStoreService, translateService) {
+    function MatchListComponent(authService, matchStoreService, router, chatservice, utliltyStoreService, translateService, chatroomListComponent) {
         var _this = this;
         this.authService = authService;
         this.matchStoreService = matchStoreService;
         this.router = router;
         this.chatservice = chatservice;
-        this.userStoreService = userStoreService;
         this.utliltyStoreService = utliltyStoreService;
         this.translateService = translateService;
+        this.chatroomListComponent = chatroomListComponent;
         this.matchRequests$ = [];
         this.acceptedMatchesAsInitiator$ = [];
         this.acceptedMatchesAsPartner$ = [];
@@ -1180,12 +1154,20 @@ var MatchListComponent = /** @class */ (function () {
         this.matchStoreService.getAllMatchrequests().subscribe(function (matches) {
             _this.matchRequestLength = matches.length;
             _this.matchRequests$ = matches;
+        }, function () {
+            console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
         });
         this.matchStoreService.getAllAcceptedMatchesAsInitiator().subscribe(function (matches) {
+            _this.acceptedMatchesAsInitiatorLength = matches.length;
             _this.acceptedMatchesAsInitiator$ = matches;
+        }, function () {
+            console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
         });
         this.matchStoreService.getAllAcceptedMatchesAsPartner().subscribe(function (matches) {
+            _this.acceptedMatchesAsPartnerLength = matches.length;
             _this.acceptedMatchesAsPartner$ = matches;
+        }, function () {
+            console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
         });
     }
     MatchListComponent.prototype.ngOnInit = function () {
@@ -1194,7 +1176,6 @@ var MatchListComponent = /** @class */ (function () {
         this.translateService.onDefaultLangChange.subscribe(function (event) {
             _this.setAllUtilities();
         });
-        console.log('Aufruf - Matches');
     };
     MatchListComponent.prototype.setAllUtilities = function () {
         this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
@@ -1202,7 +1183,6 @@ var MatchListComponent = /** @class */ (function () {
         this.activities = this.utliltyStoreService.getAllActivities(this.translateService.getDefaultLang());
         this.sex = this.utliltyStoreService.getAllSex(this.translateService.getDefaultLang());
     };
-    // TODO refactor, because we seperate know between accepted matches as initiator and as partner
     MatchListComponent.prototype.contactUser = function (matchUid) {
         var _this = this;
         var currentUserID = this.authService.currentUserID;
@@ -1216,15 +1196,42 @@ var MatchListComponent = /** @class */ (function () {
             }
         });
     };
-    // deleteMatchrequest(matchId: string) {
-    //   this.matchStoreService.deleteMatch(matchId)
-    //     .subscribe(() => {
-    //       if (this.matchRequestLength === 1) {
-    //         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-    //           this.router.navigate(['/matches']));
-    //       }
-    //     });
-    // }
+    MatchListComponent.prototype.deleteAcceptedMatchAndCorrespondingChatroom = function (acceptedMatchesArrayName, matchId, matchPartner) {
+        var _this = this;
+        var indexNumber;
+        var chatsAsUserAArray = this.chatroomListComponent.userChatsAsUserA$;
+        var chatsAsUserBArray = this.chatroomListComponent.userChatsAsUserB$;
+        if (acceptedMatchesArrayName === 'acceptedMatchesAsInitiator$') {
+            this.matchStoreService.deleteMatch(matchId).subscribe(function () {
+                for (var index = 0; index < _this.acceptedMatchesAsInitiator$.length; index++) {
+                    if (_this.acceptedMatchesAsInitiator$[index].id === matchId) {
+                        indexNumber = index;
+                    }
+                }
+                _this.acceptedMatchesAsInitiator$.splice(indexNumber, 1);
+            });
+        }
+        else if (acceptedMatchesArrayName === 'acceptedMatchesAsPartner$') {
+            this.matchStoreService.deleteMatch(matchId).subscribe(function () {
+                for (var index = 0; index < _this.acceptedMatchesAsPartner$.length; index++) {
+                    if (_this.acceptedMatchesAsPartner$[index].id === matchId) {
+                        indexNumber = index;
+                    }
+                }
+                _this.acceptedMatchesAsPartner$.splice(indexNumber, 1);
+            });
+        }
+        chatsAsUserAArray.forEach(function (chat) {
+            if (chat.userB === matchPartner) {
+                _this.chatservice.deleteChatroom(chat.id).subscribe();
+            }
+        });
+        chatsAsUserBArray.forEach(function (chat) {
+            if (chat.userA === matchPartner) {
+                _this.chatservice.deleteChatroom(chat.id).subscribe();
+            }
+        });
+    };
     MatchListComponent.prototype.deleteMatchrequest = function (matchId) {
         var _this = this;
         var indexNumber;
@@ -1238,15 +1245,11 @@ var MatchListComponent = /** @class */ (function () {
             }
             // delete match at indexNumber
             _this.matchRequests$.splice(indexNumber, 1);
-            // this.closeModal();
         });
     };
     MatchListComponent.prototype.openModal = function (match) {
-        // save partnerID and initiatorID for Contact
-        // this.initiatorID = initiatorID;
-        // this.partnerID = partnerID;
         // infos for modal
-        // this.activities = '';
+        this.matchIDModal = match.uid;
         this.modalIsOpen = true;
         this.display = 'block';
         this.firstname = match.firstname;
@@ -1298,6 +1301,9 @@ var MatchListComponent = /** @class */ (function () {
     MatchListComponent.prototype.parseCityForFrontend = function (cityIndex) {
         return this.cities[cityIndex];
     };
+    MatchListComponent.prototype.loadingButton = function (event) {
+        event.target.classList.add('disabled');
+    };
     MatchListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_5__["Component"])({
             selector: 'app-match-list',
@@ -1308,9 +1314,9 @@ var MatchListComponent = /** @class */ (function () {
             _services_match_store_service__WEBPACK_IMPORTED_MODULE_3__["MatchStoreService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_7__["Router"],
             src_app_services_chat_service__WEBPACK_IMPORTED_MODULE_8__["ChatService"],
-            _services_user_store_service__WEBPACK_IMPORTED_MODULE_2__["UserStoreService"],
             src_app_services_utility_store_service__WEBPACK_IMPORTED_MODULE_9__["UtilityStoreService"],
-            _ngx_translate_core__WEBPACK_IMPORTED_MODULE_1__["TranslateService"]])
+            _ngx_translate_core__WEBPACK_IMPORTED_MODULE_2__["TranslateService"],
+            _chatroom_list_chatroom_list_component__WEBPACK_IMPORTED_MODULE_1__["ChatroomListComponent"]])
     ], MatchListComponent);
     return MatchListComponent;
 }());
@@ -1326,7 +1332,7 @@ var MatchListComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<header>\r\n  <!--when the bug of new logging in is solved, we can use the following line\r\n  <nav *ngIf=\"router.url !== '/login'\" class=\"navbar navbar-light navbar-expand-lg shadow\">-->\r\n\r\n  <nav class=\"navbar fixed-top navbar-light navbar-expand-lg bg-white shadow\">\r\n    <!--toggle only visible for screens smaller than lg-->\r\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarLinks\" aria-controls=\"navbarLinks\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n          <span class=\"navbar-toggler-icon\"></span>\r\n      </button>\r\n      <a class=\"navbar-brand\" [routerLink]=\"['/home']\">\r\n        <img src=\"../../../assets/images/navbarLogo.png\" width=\"40\" height=\"40\" class=\"d-inline-block align-top\" alt=\"Tandem Logo\">\r\n      </a>\r\n\r\n      <!--navbar links-->\r\n      <div class=\"collapse navbar-collapse\" id=\"navbarLinks\">\r\n        <!--left aligned links-->\r\n        <ul *ngIf=\"isLoggedIn()\" class=\"navbar-nav mr-auto\">\r\n          <li class=\"nav-item\">\r\n            <a class=\"nav-link\" [routerLink]=\"['/home']\" [routerLinkActive]=\"['active']\">{{ 'navbar.homeLink' | translate }}</a>\r\n          </li>\r\n          <li class=\"nav-item\">\r\n            <a class=\"nav-link\" [routerLink]=\"['/profile']\" [routerLinkActive]=\"['active']\">{{ 'navbar.profileLink' | translate }}</a>\r\n          </li>\r\n          <li class=\"nav-item\">\r\n            <a *ngIf=\"router.url !== '/search/result', else resultBlock\" class=\"nav-link\" [routerLink]=\"['/search']\" [routerLinkActive]=\"['active']\">{{ 'navbar.searchLink' | translate }}</a>\r\n            <ng-template #resultBlock>\r\n              <a class=\"nav-link active\">{{ 'navbar.searchResults' | translate }}</a>\r\n            </ng-template>\r\n          </li>\r\n          <li class=\"nav-item\">\r\n            <a class=\"nav-link\" [routerLink]=\"['/matches']\" [routerLinkActive]=\"['active']\">{{ 'navbar.matchesLink' | translate }}</a>\r\n          </li>\r\n          <li class=\"nav-item\">\r\n            <a class=\"nav-link\" [routerLink]=\"['/chats']\" [routerLinkActive]=\"['active']\">{{ 'navbar.chatLink' | translate }}</a>\r\n          </li>\r\n        </ul>\r\n\r\n        <!-- right aligned links-->\r\n        <ul class=\"navbar-nav ml-auto\">\r\n          <!--dropdown menu-->\r\n          <li class=\"nav-item dropdown\">\r\n            <!--showing english or german language, via checking whether english language was clicked or not -->\r\n            <a class=\"nav-link dropdown-toggle pointer-cursor border-right\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\" id=\"dropdownMenuLink\">\r\n              {{ 'navbar.lang' | translate }}\r\n            </a>\r\n            <!--dropdown links-->\r\n            <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuLink\">\r\n              <a class=\"dropdown-item pointer-cursor\" (click)=\"switchLanguage('de')\">De</a>\r\n              <div class=\"dropdown-divider\"></div>\r\n              <a class=\"dropdown-item pointer-cursor\" (click)=\"switchLanguage('en')\" >En</a>\r\n            </div>\r\n          </li>\r\n\r\n          <!--username-->\r\n          <span *ngIf=\"isLoggedIn()\" class=\"navbar-text font-italic mx-lg-2\">\r\n\r\n            {{ greeting }} {{ currentUserFirstname }}\r\n\r\n          </span>\r\n\r\n          <!--Logout-->\r\n          <li *ngIf=\"isLoggedIn()\" class=\"nav-item border-left\">\r\n            <a class=\"nav-link pointer-cursor\" (click)=\"logout()\">{{ 'navbar.logout' | translate }}</a>\r\n          </li>\r\n          <!--Login-->\r\n          <li *ngIf=\"!isLoggedIn() \" class=\"nav-item border-left\">\r\n            <a class=\"nav-link\" [routerLink]=\"['/login']\">{{ 'navbar.login' | translate }}</a>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n  </nav>\r\n</header>\r\n"
+module.exports = "<header>\r\n  <!--when the bug of new logging in is solved, we can use the following line\r\n  <nav *ngIf=\"router.url !== '/login'\" class=\"navbar navbar-light navbar-expand-lg shadow\">-->\r\n\r\n  <nav class=\"navbar fixed-top navbar-light navbar-expand-lg bg-white shadow\">\r\n    <!--toggle only visible for screens smaller than lg-->\r\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarLinks\" aria-controls=\"navbarLinks\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n          <span class=\"navbar-toggler-icon\"></span>\r\n      </button>\r\n      <a class=\"navbar-brand\" [routerLink]=\"['/home']\">\r\n        <img src=\"../../../assets/images/navbarLogo.png\" class=\"rounded d-inline-block align-top\" alt=\"Tandem Logo\">\r\n      </a>\r\n\r\n      <!--navbar links-->\r\n      <div class=\"collapse navbar-collapse\" id=\"navbarLinks\">\r\n        <!--left aligned links-->\r\n        <ul *ngIf=\"isLoggedIn()\" class=\"navbar-nav mr-auto\">\r\n          <li class=\"nav-item\">\r\n            <a class=\"nav-link\" [routerLink]=\"['/home']\" [routerLinkActive]=\"['active']\">{{ 'navbar.homeLink' | translate }}</a>\r\n          </li>\r\n          <li class=\"nav-item\">\r\n            <a class=\"nav-link\" [routerLink]=\"['/profile']\" [routerLinkActive]=\"['active']\">{{ 'navbar.profileLink' | translate }}</a>\r\n          </li>\r\n          <li class=\"nav-item\">\r\n            <a *ngIf=\"router.url !== '/search/result', else resultBlock\" class=\"nav-link\" [routerLink]=\"['/search']\" [routerLinkActive]=\"['active']\">{{ 'navbar.searchLink' | translate }}</a>\r\n            <ng-template #resultBlock>\r\n              <a class=\"nav-link active\">{{ 'navbar.searchResults' | translate }}</a>\r\n            </ng-template>\r\n          </li>\r\n          <li class=\"nav-item\">\r\n            <a class=\"nav-link\" [routerLink]=\"['/matches']\" [routerLinkActive]=\"['active']\">{{ 'navbar.matchesLink' | translate }}</a>\r\n          </li>\r\n          <li class=\"nav-item\">\r\n            <a class=\"nav-link\" [routerLink]=\"['/chats']\" [routerLinkActive]=\"['active']\">{{ 'navbar.chatLink' | translate }}</a>\r\n          </li>\r\n        </ul>\r\n\r\n        <!-- right aligned links-->\r\n        <ul class=\"navbar-nav ml-auto\">\r\n          <!--dropdown menu-->\r\n          <li class=\"nav-item dropdown\">\r\n            <!--showing english or german language, via checking whether english language was clicked or not -->\r\n            <a class=\"nav-link dropdown-toggle pointer-cursor\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\" id=\"dropdownMenuLink\">\r\n              {{ 'navbar.lang' | translate }}\r\n            </a>\r\n            <!--dropdown links-->\r\n            <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuLink\">\r\n              <a class=\"dropdown-item pointer-cursor\" (click)=\"switchLanguage('de')\">De</a>\r\n              <div class=\"dropdown-divider\"></div>\r\n              <a class=\"dropdown-item pointer-cursor\" (click)=\"switchLanguage('en')\" >En</a>\r\n            </div>\r\n          </li>\r\n\r\n          <!--username-->\r\n          <span *ngIf=\"isLoggedIn()\" class=\"navbar-text font-italic px-2 border-right border-left\">\r\n\r\n           {{ currentUserFirstname }}\r\n\r\n          </span>\r\n\r\n          <!--Logout-->\r\n          <li *ngIf=\"isLoggedIn()\" class=\"nav-item\">\r\n            <a class=\"nav-link pointer-cursor\" (click)=\"logout()\">{{ 'navbar.logout' | translate }}</a>\r\n          </li>\r\n          <!--Login-->\r\n          <li *ngIf=\"!isLoggedIn() \" class=\"nav-item\">\r\n            <a class=\"nav-link\" [routerLink]=\"['/login']\">{{ 'navbar.login' | translate }}</a>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n  </nav>\r\n</header>\r\n"
 
 /***/ }),
 
@@ -1374,35 +1380,17 @@ var NavbarComponent = /** @class */ (function () {
         translateService.setDefaultLang('de');
     }
     NavbarComponent.prototype.ngOnInit = function () {
-        this.setUsername();
-        // random greeting
-        this.greeting = this.randomGreeting();
-    };
-    NavbarComponent.prototype.randomGreeting = function () {
-        var arr = ['Grüß dich', 'Hallo', 'Hi', 'Hey', 'Guten Tag', 'Servus', 'Huhu', 'Willkommen', 'Moin'];
-        var randomNumber = Math.floor(Math.random() * (arr.length - 1));
-        return arr[randomNumber];
+        var _this = this;
+        this.authService.user$.subscribe(function (user) {
+            try {
+                _this.currentUserFirstname = user.firstname;
+            }
+            catch (_a) {
+            }
+        });
     };
     NavbarComponent.prototype.isLoggedIn = function () {
         return this.authService.isloggedIn();
-    };
-    NavbarComponent.prototype.setUsername = function () {
-        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
-            var _this = this;
-            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.authService.getCurrentUser().then((function (user) {
-                            _this.currentUserFirstname = user.firstname;
-                        }))
-                            .catch(function () {
-                            console.log('Promises need a catch-block after the then-block');
-                        })];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
     };
     NavbarComponent.prototype.switchLanguage = function (language) {
         this.translateService.use(language);
@@ -1443,7 +1431,7 @@ var NavbarComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10\">\r\n    <div class=\"card mx-auto my-5 shadow\">\r\n      <div class=\"card-header bg-warning text-center h5\">\r\n        {{'profile.headerTitle' | translate }}\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <form class=\"\" [formGroup]=\"editForm\" novalidate>\r\n          <div class=\"row\">\r\n            <div class=\"form-group col-md-6\">\r\n              <label for=\"editFormFirstname\">{{'register.firstname' | translate }}*</label>\r\n              <input type=\"text\" class=\"form-control shadow-sm\" id=\"editFormFirstname\"\r\n                formControlName=\"editFormFirstname\" placeholder=\"{{'register.firstname' | translate }}\">\r\n            </div>\r\n            <div class=\"form-group col-md-6\">\r\n              <label for=\"editFormLastname\">{{'register.lastname' | translate }}*</label>\r\n              <input type=\"text\" class=\"form-control shadow-sm\" id=\"editFormLastname\" formControlName=\"editFormLastname\"\r\n                placeholder=\"{{'register.lastname' | translate }}\">\r\n            </div>\r\n          </div>\r\n\r\n            <div class=\"row\">\r\n              <div class=\"col-md-6 form-group\">\r\n                <label for=\"editFormSex\">{{'register.sex' | translate }}*</label>\r\n                <div class=\"form-control shadow-sm bg-light\"id=\"editFormSex\" disabled>{{selectedSex}}</div>\r\n\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label>{{'register.mail' | translate }}*</label>\r\n              <input type=\"text\" class=\"form-control shadow-sm\" id=\"editFormMail\" formControlName=\"editFormMail\"\r\n                placeholder=\"name@example.com\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"editFormCity\">{{'register.city' | translate }}*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"editFormCity\" #editFormCity=\"ngModel\"\r\n                [placeholder]=\"'register.pleaseChoose' | translate\" [data]=\"cities\" [(ngModel)]=\"selectedCity\"\r\n                [ngModelOptions]=\"{ standalone : true }\" [settings]=\"selectCitySettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"editFormBirthday\">{{'register.birthday' | translate }}*</label>\r\n              <input type=\"text\" [placeholder]=\"'register.birthday' | translate\" class=\"form-control shadow-sm bg-light\"\r\n                bsDatepicker id=\"editFormBirthday\" formControlName=\"editFormBirthday\"\r\n                [bsConfig]=\"{ dateInputFormat: 'DD.MM.YYYY', containerClass: 'theme-orange' }\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"editFormOffers\">{{'register.offers' | translate }}:*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"editFormOffers\" #editFormOffers=\"ngModel\"\r\n                [placeholder]=\"'register.pleaseChoose' | translate\" [data]=\"offers\" [(ngModel)]=\"selectedOffers\"\r\n                [ngModelOptions]=\"{ standalone : true }\" [settings]=\"selectOffersActivitiesSettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"editFormActivities\">{{'register.activities' | translate }}:*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"editFormActivities\"\r\n                #editFormActivities=\"ngModel\" [placeholder]=\"'register.pleaseChoose' | translate\" [data]=\"activities\"\r\n                [(ngModel)]=\"selectedActivities\" [ngModelOptions]=\"{ standalone : true }\"\r\n                [settings]=\"selectOffersActivitiesSettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label>{{'profile.newPassword' | translate }}*</label>\r\n              <input type=\"password\" class=\"form-control shadow-sm\" id=\"editFormPassword\"\r\n                formControlName=\"editFormPassword\" placeholder=\"{{'register.password' | translate }}\">\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label>{{'profile.newPasswordConfirm' | translate }}*</label>\r\n              <input type=\"password\" class=\"form-control shadow-sm\" id=\"editFormPasswordConfirm\"\r\n                formControlName=\"editFormPasswordConfirm\" placeholder=\"{{'register.passwordConfirm' | translate }}\">\r\n            </div>\r\n          </div>\r\n\r\n          <!--Validator messages-->\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormFirstname.errors && (editFormFirstname.touched || editFormFirstname.dirty)\">\r\n            <div *ngIf=\"editFormFirstname.errors.required\">{{'register.firstname' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"editFormFirstname.errors.pattern\">{{'validators.letterSpaces' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormLastname.errors && (editFormLastname.touched || editFormLastname.dirty)\">\r\n            <div *ngIf=\"editFormLastname.errors.required\">{{'register.lastname' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"editFormLastname.errors.pattern\">{{'validators.letterSpaces' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\" *ngIf=\"editFormMail.errors && (editFormMail.touched || editFormMail.dirty)\">\r\n            <div *ngIf=\"editFormMail.errors.required\">{{'register.mail' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"editFormMail.errors.email\">{{'validators.email' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormPassword.errors && (editFormPassword.touched || editFormPassword.dirty)\">\r\n            <div *ngIf=\"editFormPassword.errors.pattern\">{{'validators.passwordPattern' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormPasswordConfirm.errors && (editFormPasswordConfirm.touched || editFormPasswordConfirm.dirty)\">\r\n            <div *ngIf=\"editFormPasswordConfirm.errors.pattern\">{{'validators.passwordPattern' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormPassword.value != editFormPasswordConfirm.value && editFormPasswordConfirm.value != null\">\r\n            {{'validators.passwordMismatch' | translate }}\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormOffers.errors && (editFormOffers.touched || editFormOffers.dirty)\">\r\n            <div *ngIf=\"editFormOffers.errors.required\" class=\"alert-danger\">{{'validators.minOffers' | translate }}\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\" *ngIf=\"editFormCity.errors && (editFormCity.touched || editFormCity.dirty)\">\r\n            <div *ngIf=\"editFormCity.errors.required\" class=\"alert-danger\">{{'validators.city' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormActivities.errors && (editFormActivities.touched || editFormActivities.dirty)\">\r\n            <div *ngIf=\"editFormActivities.errors.required\" class=\"alert-danger\">\r\n              {{'validators.minActivities' | translate }}</div>\r\n          </div>\r\n\r\n\r\n          <div  *ngIf=\"updateSuccess\" class=\"alert alert-success mb-2\" role=\"alert\">\r\n              {{'validators.updateSuccess' | translate }}\r\n          </div>\r\n\r\n          <div  *ngIf=\"invalidPassword\" class=\"alert alert-danger mb-2\" role=\"alert\">\r\n              {{'validators.incorrectPassword' | translate }}\r\n          </div>\r\n          <!--End-Validator messages-->\r\n\r\n          <div class=\"btn-toolbar d-flex justify-content-center\" role=\"toolbar\">\r\n            <div class=\"btn-group mr-1 mr-md-3\">\r\n              <button type=\"button\" type=\"submit\" class=\"btn btn-warning d-flex mx-auto mt-2\" data-toggle=\"modal\"\r\n                data-target=\"#confirmModal\"\r\n                [disabled]=\"(!editForm.valid || !editFormOffers.valid || !editFormActivities.valid || !editFormCity.valid)\">{{'register.saveButton' | translate }}</button>\r\n            </div>\r\n            <div class=\"btn-group ml-md-3 mr-1 mr-md-3\">\r\n              <button type=\"button\" [routerLink]=\"['/home']\"\r\n                class=\"btn btn-outline-warning d-flex mx-auto mt-2\">{{'register.quitButton' | translate }}</button>\r\n            </div>\r\n            <div class=\"btn-group ml-md-3\">\r\n              <button type=\"button\"  class=\"btn btn-outline-danger d-flex mx-auto mt-2\" (click)=\"openModal()\">{{'profile.deleteButton' | translate }}</button>\r\n            </div>\r\n          </div>\r\n        </form>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n\r\n<!-- Confirm Modal -->\r\n<div class=\"modal fade\" id=\"confirmModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"confirmModalLabel\"\r\n  aria-hidden=\"true\">\r\n  <div class=\"modal-dialog\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <form [formGroup]=\"modalForm\">\r\n      <div class=\"modal-header\">\r\n        <h5 class=\"modal-title\" id=\"confirmModalLabel\">{{ 'profile.modalHeader' | translate }}</h5>\r\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n          <input type=\"password\" class=\"form-control shadow-sm\" id=\"modalFormPassword\" formControlName=\"modalFormPassword\"\r\n          placeholder=\"{{'register.passwordConfirm' | translate }}\">\r\n      </div>\r\n      <div class=\"modal-footer\">\r\n        <button type=\"button\" type=\"submit\" (click)=\"confirmAndValidatePassword()\" class=\"btn btn-outline-warning\" data-dismiss=\"modal\" [disabled]=\"!modalForm.valid\">{{ 'profile.confirmButton' | translate }}</button>\r\n        <button type=\"button\" class=\"btn btn-warning\" data-dismiss=\"modal\">{{ 'register.quitButton' | translate }}</button>\r\n      </div>\r\n    </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<!-- Deletemodal -->\r\n<div class=\"modal-backdrop fade in\" [ngStyle]=\"{'display':display}\"></div>\r\n<div *ngIf=\"modalIsOpen\" class=\"modal\" [ngStyle]=\"{'display': display}\" tabindex=\"-1\" role=\"dialog\">\r\n  <div class=\"modal-dialog\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <div class=\"modal-header\">\r\n        <h5 class=\"modal-title\">{{ 'profile.deleteButton' | translate}}</h5>\r\n        <button type=\"button\" class=\"close\" (click)=\"closeModal()\" aria-label=\"Close\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n          {{ 'profile.deleteQuestion' | translate}}\r\n      </div>\r\n      <div class=\"modal-footer\">\r\n        <button type=\"button\" class=\"btn btn-outline-warning\" (click)=\"deleteProfile()\">{{ 'profile.deleteButton' | translate}}</button>\r\n        <button type=\"button\" class=\"btn btn-warning\" (click)=\"closeModal()\">{{ 'register.quitButton' | translate}}</button>\r\n      </div>\r\n  </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10\">\r\n    <div class=\"card mx-auto my-5 shadow\">\r\n      <div class=\"card-header bg-warning text-center h5\">\r\n        {{'profile.headerTitle' | translate }}\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <form class=\"\" [formGroup]=\"editForm\" novalidate>\r\n          <div class=\"row\">\r\n            <div class=\"form-group col-md-6\">\r\n              <label for=\"editFormFirstname\">{{'register.firstname' | translate }}*</label>\r\n              <input type=\"text\" class=\"form-control shadow-sm\" id=\"editFormFirstname\"\r\n                formControlName=\"editFormFirstname\" placeholder=\"{{'register.firstname' | translate }}\">\r\n            </div>\r\n            <div class=\"form-group col-md-6\">\r\n              <label for=\"editFormLastname\">{{'register.lastname' | translate }}*</label>\r\n              <input type=\"text\" class=\"form-control shadow-sm\" id=\"editFormLastname\" formControlName=\"editFormLastname\"\r\n                placeholder=\"{{'register.lastname' | translate }}\">\r\n            </div>\r\n          </div>\r\n\r\n            <div class=\"row\">\r\n              <div class=\"col-md-6 form-group\">\r\n                <label for=\"editFormSex\">{{'register.sex' | translate }}*</label>\r\n                <div class=\"form-control shadow-sm bg-light\"id=\"editFormSex\" disabled>{{selectedSex}}</div>\r\n\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label>{{'register.mail' | translate }}*</label>\r\n              <input type=\"text\" class=\"form-control shadow-sm\" id=\"editFormMail\" formControlName=\"editFormMail\"\r\n                placeholder=\"name@example.com\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"editFormCity\">{{'register.city' | translate }}*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"editFormCity\" #editFormCity=\"ngModel\"\r\n                [placeholder]=\"'register.pleaseChoose' | translate\" [data]=\"cities\" [(ngModel)]=\"selectedCity\"\r\n                [ngModelOptions]=\"{ standalone : true }\" [settings]=\"selectCitySettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"editFormBirthday\">{{'register.birthday' | translate }}*</label>\r\n              <input type=\"text\" [placeholder]=\"'register.birthday' | translate\" class=\"form-control shadow-sm bg-light\"\r\n                bsDatepicker id=\"editFormBirthday\" formControlName=\"editFormBirthday\"\r\n                [bsConfig]=\"{ dateInputFormat: 'DD.MM.YYYY', containerClass: 'theme-orange' }\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"editFormOffers\">{{'register.offers' | translate }}:*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"editFormOffers\" #editFormOffers=\"ngModel\"\r\n                [placeholder]=\"'register.pleaseChoose' | translate\" [data]=\"offers\" [(ngModel)]=\"selectedOffers\"\r\n                [ngModelOptions]=\"{ standalone : true }\" [settings]=\"selectOffersActivitiesSettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"editFormActivities\">{{'register.activities' | translate }}:*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"editFormActivities\"\r\n                #editFormActivities=\"ngModel\" [placeholder]=\"'register.pleaseChoose' | translate\" [data]=\"activities\"\r\n                [(ngModel)]=\"selectedActivities\" [ngModelOptions]=\"{ standalone : true }\"\r\n                [settings]=\"selectOffersActivitiesSettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label>{{'profile.newPassword' | translate }}*</label>\r\n              <input type=\"password\" class=\"form-control shadow-sm\" id=\"editFormPassword\"\r\n                formControlName=\"editFormPassword\" placeholder=\"{{'register.password' | translate }}\">\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label>{{'profile.newPasswordConfirm' | translate }}*</label>\r\n              <input type=\"password\" class=\"form-control shadow-sm\" id=\"editFormPasswordConfirm\"\r\n                formControlName=\"editFormPasswordConfirm\" placeholder=\"{{'register.passwordConfirm' | translate }}\">\r\n            </div>\r\n          </div>\r\n\r\n          <!--Validator messages-->\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormFirstname.errors && (editFormFirstname.touched || editFormFirstname.dirty)\">\r\n            <div *ngIf=\"editFormFirstname.errors.required\">{{'register.firstname' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"editFormFirstname.errors.pattern\">{{'validators.letterSpaces' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormLastname.errors && (editFormLastname.touched || editFormLastname.dirty)\">\r\n            <div *ngIf=\"editFormLastname.errors.required\">{{'register.lastname' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"editFormLastname.errors.pattern\">{{'validators.letterSpaces' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\" *ngIf=\"editFormMail.errors && (editFormMail.touched || editFormMail.dirty)\">\r\n            <div *ngIf=\"editFormMail.errors.required\">{{'register.mail' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"editFormMail.errors.email\">{{'validators.email' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormPassword.errors && (editFormPassword.touched || editFormPassword.dirty)\">\r\n            <div *ngIf=\"editFormPassword.errors.pattern\">{{'validators.passwordPattern' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormPasswordConfirm.errors && (editFormPasswordConfirm.touched || editFormPasswordConfirm.dirty)\">\r\n            <div *ngIf=\"editFormPasswordConfirm.errors.pattern\">{{'validators.passwordPattern' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormPassword.value != editFormPasswordConfirm.value && editFormPasswordConfirm.value != null\">\r\n            {{'validators.passwordMismatch' | translate }}\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormOffers.errors && (editFormOffers.touched || editFormOffers.dirty)\">\r\n            <div *ngIf=\"editFormOffers.errors.required\" class=\"alert-danger\">{{'validators.minOffers' | translate }}\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\" *ngIf=\"editFormCity.errors && (editFormCity.touched || editFormCity.dirty)\">\r\n            <div *ngIf=\"editFormCity.errors.required\" class=\"alert-danger\">{{'validators.city' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"editFormActivities.errors && (editFormActivities.touched || editFormActivities.dirty)\">\r\n            <div *ngIf=\"editFormActivities.errors.required\" class=\"alert-danger\">\r\n              {{'validators.minActivities' | translate }}</div>\r\n          </div>\r\n\r\n\r\n          <div  *ngIf=\"updateSuccess\" class=\"alert alert-success mb-2\" role=\"alert\">\r\n              {{'validators.updateSuccess' | translate }}\r\n          </div>\r\n\r\n          <div  *ngIf=\"invalidPassword\" class=\"alert alert-danger mb-2\" role=\"alert\">\r\n              {{'validators.incorrectPassword' | translate }}\r\n          </div>\r\n          <!--End-Validator messages-->\r\n\r\n          <div class=\"btn-toolbar d-flex justify-content-center\" role=\"toolbar\">\r\n            <div class=\"btn-group mr-1 mr-md-3\">\r\n              <button type=\"button\" type=\"submit\" class=\"btn btn-warning d-flex mx-auto mt-2\" data-toggle=\"modal\"\r\n                data-target=\"#confirmModal\"\r\n                [disabled]=\"(!editForm.valid || !editFormOffers.valid || !editFormActivities.valid || !editFormCity.valid)\">{{'profile.saveButton' | translate }}</button>\r\n            </div>\r\n            <div class=\"btn-group ml-md-3 mr-1 mr-md-3\">\r\n              <button type=\"button\" [routerLink]=\"['/home']\"\r\n                class=\"btn btn-outline-warning d-flex mx-auto mt-2\">{{'register.quitButton' | translate }}</button>\r\n            </div>\r\n            <div class=\"btn-group ml-md-3\">\r\n              <button type=\"button\"  class=\"btn btn-outline-danger d-flex mx-auto mt-2\" (click)=\"openModal()\">{{'profile.deleteButton' | translate }}</button>\r\n            </div>\r\n          </div>\r\n        </form>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n\r\n<!-- Confirm Modal -->\r\n<div class=\"modal fade\" id=\"confirmModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"confirmModalLabel\"\r\n  aria-hidden=\"true\">\r\n  <div class=\"modal-dialog\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <form [formGroup]=\"modalForm\">\r\n      <div class=\"modal-header\">\r\n        <h5 class=\"modal-title\" id=\"confirmModalLabel\">{{ 'profile.modalHeader' | translate }}</h5>\r\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n          <input type=\"password\" class=\"form-control shadow-sm\" id=\"modalFormPassword\" formControlName=\"modalFormPassword\"\r\n          placeholder=\"{{'register.passwordConfirm' | translate }}\">\r\n      </div>\r\n      <div class=\"modal-footer\">\r\n        <button type=\"button\" type=\"submit\" (click)=\"confirmAndValidatePassword()\" class=\"btn btn-outline-warning\" data-dismiss=\"modal\" [disabled]=\"!modalForm.valid\">{{ 'profile.confirmButton' | translate }}</button>\r\n        <button type=\"button\" class=\"btn btn-warning\" data-dismiss=\"modal\">{{ 'register.quitButton' | translate }}</button>\r\n      </div>\r\n    </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<!-- Deletemodal -->\r\n<div class=\"modal-backdrop fade in\" [ngStyle]=\"{'display':display}\"></div>\r\n<div *ngIf=\"modalIsOpen\" class=\"modal\" [ngStyle]=\"{'display': display}\" tabindex=\"-1\" role=\"dialog\">\r\n  <div class=\"modal-dialog\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <div class=\"modal-header\">\r\n        <h5 class=\"modal-title\">{{ 'profile.deleteButton' | translate}}</h5>\r\n        <button type=\"button\" class=\"close\" (click)=\"closeModal()\" aria-label=\"Close\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n          {{ 'profile.deleteQuestion' | translate}}\r\n      </div>\r\n      <div class=\"modal-footer\">\r\n        <button type=\"button\" class=\"btn btn-outline-warning\" (click)=\"deleteProfile()\">{{ 'profile.deleteButton' | translate}}</button>\r\n        <button type=\"button\" class=\"btn btn-warning\" (click)=\"closeModal()\">{{ 'register.quitButton' | translate}}</button>\r\n      </div>\r\n  </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1471,14 +1459,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var src_app_services_user_store_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/services/user-store.service */ "./src/app/services/user-store.service.ts");
-/* harmony import */ var src_app_services_auth_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/services/auth.service */ "./src/app/services/auth.service.ts");
-/* harmony import */ var _services_utility_store_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../services/utility-store.service */ "./src/app/services/utility-store.service.ts");
-/* harmony import */ var ts_md5__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ts-md5 */ "./node_modules/ts-md5/dist/md5.js");
-/* harmony import */ var ts_md5__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(ts_md5__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ngx-translate/core */ "./node_modules/@ngx-translate/core/fesm5/ngx-translate-core.js");
-
+/* harmony import */ var src_app_services_user_store_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/services/user-store.service */ "./src/app/services/user-store.service.ts");
+/* harmony import */ var src_app_services_auth_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var _services_utility_store_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/utility-store.service */ "./src/app/services/utility-store.service.ts");
+/* harmony import */ var ts_md5__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ts-md5 */ "./node_modules/ts-md5/dist/md5.js");
+/* harmony import */ var ts_md5__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(ts_md5__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ngx-translate/core */ "./node_modules/@ngx-translate/core/fesm5/ngx-translate-core.js");
 
 
 
@@ -1488,15 +1474,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var ProfilePageComponent = /** @class */ (function () {
-    function ProfilePageComponent(formBuilder, router, userStoreService, authService, utliltyStoreService, translateService) {
+    function ProfilePageComponent(formBuilder, userStoreService, authService, utliltyStoreService, translateService) {
         this.formBuilder = formBuilder;
-        this.router = router;
         this.userStoreService = userStoreService;
         this.authService = authService;
         this.utliltyStoreService = utliltyStoreService;
         this.translateService = translateService;
-        this.md5 = new ts_md5__WEBPACK_IMPORTED_MODULE_7__["Md5"]();
-        this.md52 = new ts_md5__WEBPACK_IMPORTED_MODULE_7__["Md5"]();
+        this.md5 = new ts_md5__WEBPACK_IMPORTED_MODULE_6__["Md5"]();
+        this.md52 = new ts_md5__WEBPACK_IMPORTED_MODULE_6__["Md5"]();
         // for selecting fields
         this.selectCitySettings = {};
         this.selectOffersActivitiesSettings = {};
@@ -1517,19 +1502,22 @@ var ProfilePageComponent = /** @class */ (function () {
             _this.setAllUtilities();
         });
         this.userStoreService.getUserById(this.authService.currentUserID).subscribe(function (recievedUser) {
-            _this.selectedSex = _this.parseSexValueForFrontend(recievedUser.sex);
-            _this.selectedActivities = _this.parseActivitiesForFrontend(recievedUser.activities);
-            _this.selectedOffers = _this.parseOffersForFrontend(recievedUser.offers);
-            _this.selectedCity = Array.of(_this.cities[recievedUser.city]);
-            _this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
-            _this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
-            _this.editForm.get('editFormMail').setValue(_this.authService.currentUserMail);
-            _this.editForm.get('editFormBirthday').setValue(new Date(recievedUser.dateOfBirth));
-            // modalForm valid status will be validated, therefore has to be initialized in ngOnInit()
-            _this.modalForm.get('modalFormPassword');
+            if (recievedUser !== undefined) {
+                _this.selectedSex = _this.parseSexValueForFrontend(recievedUser.sex);
+                _this.selectedActivities = _this.parseActivitiesForFrontend(recievedUser.activities);
+                _this.selectedOffers = _this.parseOffersForFrontend(recievedUser.offers);
+                _this.selectedCity = Array.of(_this.cities[recievedUser.city]);
+                _this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
+                _this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
+                _this.editForm.get('editFormMail').setValue(_this.authService.currentUserMail);
+                _this.editForm.get('editFormBirthday').setValue(new Date(recievedUser.dateOfBirth));
+                // modalForm valid status will be validated, therefore has to be initialized in ngOnInit()
+                _this.modalForm.get('modalFormPassword');
+            }
+        }, function (error) {
+            console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
         });
         this.initializeMultiselectSettings();
-        console.log('Aufruf - Profile');
     };
     ProfilePageComponent.prototype.setAllUtilities = function () {
         this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
@@ -1541,9 +1529,9 @@ var ProfilePageComponent = /** @class */ (function () {
         // create the formGroup
         return this.formBuilder.group({
             // the field only contains letters or spaces
-            editFormFirstname: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('[a-zA-Z ]*')]],
+            editFormFirstname: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('[a-zA-ZäÄüÜöÖß]*')]],
             // the field only contains letters or spaces
-            editFormLastname: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('[a-zA-Z ]*')]],
+            editFormLastname: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('[a-zA-ZäÄüÜöÖß]*')]],
             editFormMail: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email]],
             editFormBirthday: [{ value: '', disabled: true }],
             // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
@@ -1625,6 +1613,7 @@ var ProfilePageComponent = /** @class */ (function () {
     };
     ProfilePageComponent.prototype.confirmAndValidatePassword = function () {
         var _this = this;
+        var enteredPassword = this.modalForm.value.modalFormPassword;
         // hash the input for conclusion with the saved password in firebase's Auth
         var password = this.md52.appendStr(this.authService.currentUserMail)
             .appendStr(this.modalForm.value.modalFormPassword).end();
@@ -1632,7 +1621,7 @@ var ProfilePageComponent = /** @class */ (function () {
             // when password was correct start editFormSave()
             .then(function () {
             _this.invalidPassword = false;
-            _this.editFormSave();
+            _this.editFormSave(enteredPassword);
         })
             // when the password was incorrect, show the specific message
             .catch(function () {
@@ -1646,7 +1635,7 @@ var ProfilePageComponent = /** @class */ (function () {
     };
     // validate the input & select fields and send the mail & password to Firebase Authentication
     // after that the rest of userdata incl. the recieved UserID will be send to the API(Firebase Cloud Functions)
-    ProfilePageComponent.prototype.editFormSave = function () {
+    ProfilePageComponent.prototype.editFormSave = function (enteredPassword) {
         var _this = this;
         if (this.editForm.invalid) {
             return;
@@ -1668,6 +1657,30 @@ var ProfilePageComponent = /** @class */ (function () {
                 mail: mail,
                 password: this.md5.appendStr(mail)
                     .appendStr(password).end()
+            };
+            this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(function () {
+                // show the updateSuccess message
+                _this.updateSuccess = true;
+                setTimeout(function () {
+                    _this.updateSuccess = false;
+                }, 3000);
+                _this.modalForm.reset();
+                _this.authService.logout();
+            });
+        }
+        else if (mail !== this.authService.currentUserMail) {
+            userdata = {
+                firstname: this.editForm.value.editFormFirstname,
+                lastname: this.editForm.value.editFormLastname,
+                city: this.cities.indexOf(this.selectedCity[0]),
+                dateOfBirth: this.editForm.value.editFormBirthday,
+                // get the only one item from selectedSex-Array
+                sex: this.parseSexValueForBackend(this.selectedSex),
+                activities: this.parseActivitiesForBackend(this.selectedActivities),
+                offers: this.parseOffersForBackend(this.selectedOffers),
+                mail: mail,
+                password: this.md5.appendStr(mail)
+                    .appendStr(enteredPassword).end()
             };
             this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(function () {
                 // show the updateSuccess message
@@ -1701,11 +1714,6 @@ var ProfilePageComponent = /** @class */ (function () {
         } // end else
     };
     Object.defineProperty(ProfilePageComponent.prototype, "editFormFirstname", {
-        // deleteUser() {
-        //   this.userStoreService.deleteUser(this.authService.currentUserID).subscribe(() => {
-        //     this.authService.logout();
-        //   });
-        // }
         // getter for the inputfields
         get: function () {
             return this.editForm.get('editFormFirstname');
@@ -1780,11 +1788,10 @@ var ProfilePageComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./profile-page.component.scss */ "./src/app/components/profile-page/profile-page.component.scss")]
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
-            src_app_services_user_store_service__WEBPACK_IMPORTED_MODULE_4__["UserStoreService"],
-            src_app_services_auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"],
-            _services_utility_store_service__WEBPACK_IMPORTED_MODULE_6__["UtilityStoreService"],
-            _ngx_translate_core__WEBPACK_IMPORTED_MODULE_8__["TranslateService"]])
+            src_app_services_user_store_service__WEBPACK_IMPORTED_MODULE_3__["UserStoreService"],
+            src_app_services_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"],
+            _services_utility_store_service__WEBPACK_IMPORTED_MODULE_5__["UtilityStoreService"],
+            _ngx_translate_core__WEBPACK_IMPORTED_MODULE_7__["TranslateService"]])
     ], ProfilePageComponent);
     return ProfilePageComponent;
 }());
@@ -1811,7 +1818,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10\">\r\n    <div class=\"card mx-auto my-5 shadow\">\r\n      <div class=\"card-header bg-warning text-center h5\">\r\n        {{'register.headerTitle' | translate }}\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <form class=\"\" [formGroup]=\"registerForm\" (ngSubmit)=\"registerFormSave()\" novalidate>\r\n          <div class=\"row\">\r\n            <div class=\"form-group col-md-6\">\r\n              <label for=\"registerFormFirstname\">{{'register.firstname' | translate }}*</label>\r\n              <input type=\"text\" class=\"form-control shadow-sm\" id=\"registerFormFirstname\"\r\n                formControlName=\"registerFormFirstname\" placeholder=\"{{'register.firstname' | translate }}\">\r\n            </div>\r\n            <div class=\"form-group col-md-6\">\r\n              <label for=\"registerFormLastname\">{{'register.lastname' | translate }}*</label>\r\n              <input type=\"text\" class=\"form-control shadow-sm\" id=\"registerFormLastname\"\r\n                formControlName=\"registerFormLastname\" placeholder=\"{{'register.lastname' | translate }}\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"registerFormSex\">{{'register.sex' | translate }}*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"registerFormSex\" #registerFormSex=\"ngModel\"\r\n                [placeholder]=\"'register.pleaseChoose' | translate\" [data]=\"sex\" [(ngModel)]=\"selectedSex\"\r\n                [ngModelOptions]=\"{ standalone : true }\" [settings]=\"selectSexSettings\" required>\r\n              </ng-multiselect-dropdown>\r\n\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label>{{'register.mail' | translate }}*</label>\r\n              <input type=\"text\" class=\"form-control shadow-sm\" id=\"registerFormMail\" formControlName=\"registerFormMail\"\r\n                placeholder=\"name@example.com\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"registerFormCity\">{{'register.city' | translate }}*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"registerFormCity\" #registerFormCity=\"ngModel\"\r\n                [placeholder]=\"'register.pleaseChoose' | translate\" [data]=\"cities\" [(ngModel)]=\"selectedCity\"\r\n                [ngModelOptions]=\"{ standalone : true }\" [settings]=\"selectCitySettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"registerFormBirthday\">{{'register.birthday' | translate }}*</label>\r\n              <input type=\"text\" [placeholder]=\"'register.birthdayShort' | translate\" class=\"form-control shadow-sm\"\r\n                bsDatepicker id=\"registerFormBirthday\" formControlName=\"registerFormBirthday\"\r\n                [bsConfig]=\"{ dateInputFormat: 'DD.MM.YYYY', containerClass: 'theme-orange' }\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"registerFormOffers\">{{'register.offers' | translate }}:*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"registerFormOffers\"\r\n                #registerFormOffers=\"ngModel\" [placeholder]=\"'register.pleaseChoose' | translate\" [data]=\"offers\"\r\n                [(ngModel)]=\"selectedOffers\" [ngModelOptions]=\"{ standalone : true }\"\r\n                [settings]=\"selectOffersActivitiesSettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"registerFormActivities\">{{'register.activities' | translate }}:*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"registerFormActivities\"\r\n                #registerFormActivities=\"ngModel\" [placeholder]=\"'register.pleaseChoose' | translate\"\r\n                [data]=\"activities\" [(ngModel)]=\"selectedActivities\" [ngModelOptions]=\"{ standalone : true }\"\r\n                [settings]=\"selectOffersActivitiesSettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label>{{'register.password' | translate }}*</label>\r\n              <input type=\"password\" class=\"form-control shadow-sm\" id=\"registerFormPassword\"\r\n                formControlName=\"registerFormPassword\" placeholder=\"{{'register.password' | translate }}\">\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label>{{'register.passwordConfirm' | translate }}*</label>\r\n              <input type=\"password\" class=\"form-control shadow-sm\" id=\"registerFormPasswordConfirm\"\r\n                formControlName=\"registerFormPasswordConfirm\" placeholder=\"{{'register.passwordConfirm' | translate }}\">\r\n            </div>\r\n          </div>\r\n\r\n          <!--Validator messages-->\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormFirstname.errors && (registerFormFirstname.touched || registerFormFirstname.dirty)\">\r\n            <div *ngIf=\"registerFormFirstname.errors.required\">{{'register.firstname' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"registerFormFirstname.errors.pattern\">{{'validators.letterSpaces' | translate }}</div>\r\n          </div>\r\n\r\n          <!--Validator messages-->\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormFirstname.errors && (registerFormFirstname.touched || registerFormFirstname.dirty)\">\r\n            <div *ngIf=\"registerFormFirstname.errors.required\">{{'register.firstname' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"registerFormFirstname.errors.pattern\">{{'validators.letterSpaces' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormLastname.errors && (registerFormLastname.touched || registerFormLastname.dirty)\">\r\n            <div *ngIf=\"registerFormLastname.errors.required\">{{'register.lastname' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"registerFormLastname.errors.pattern\">{{'validators.letterSpaces' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormMail.errors && (registerFormMail.touched || registerFormMail.dirty)\">\r\n            <div *ngIf=\"registerFormMail.errors.required\">{{'register.mail' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"registerFormMail.errors.email\">{{'validators.email' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormPassword.errors && (registerFormPassword.touched || registerFormPassword.dirty)\">\r\n            <div *ngIf=\"registerFormPassword.errors.required\">{{'register.password' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"registerFormPassword.errors.pattern\">{{'validators.passwordPattern' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormPasswordConfirm.errors && (registerFormPasswordConfirm.touched || registerFormPasswordConfirm.dirty)\">\r\n            <div *ngIf=\"registerFormPasswordConfirm.errors.required\">{{'register.passwordConfirm' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"registerFormPassword.errors.pattern\">{{'validators.passwordPattern' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormPassword.value != registerFormPasswordConfirm.value && registerFormPasswordConfirm.value != null\">\r\n            {{'validators.passwordMismatch' | translate }}\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormSex.errors && (registerFormSex.touched || registerFormSex.dirty)\">\r\n            <div *ngIf=\"registerFormSex.errors.required\" class=\"alert-danger\">{{'register.sex' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormOffers.errors && (registerFormOffers.touched || registerFormOffers.dirty)\">\r\n            <div *ngIf=\"registerFormOffers.errors.required\" class=\"alert-danger\">{{'validators.minOffers' | translate }}\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormActivities.errors && (registerFormActivities.touched || registerFormActivities.dirty)\">\r\n            <div *ngIf=\"registerFormActivities.errors.required\" class=\"alert-danger\">\r\n              {{'validators.minActivities' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormCity.errors && (registerFormCity.touched || registerFormCity.dirty)\">\r\n            <div *ngIf=\"registerFormCity.errors.required\" class=\"alert-danger\">{{'validators.city' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormBirthday.errors && (registerFormBirthday.touched || registerFormBirthday.dirty)\">\r\n            <div *ngIf=\"registerFormBirthday.errors.required\" class=\"alert-danger\">\r\n              {{'validators.birthday' | translate }}</div>\r\n          </div>\r\n          <!--End-Validator messages-->\r\n\r\n          <div class=\"btn-toolbar d-flex justify-content-center\" role=\"toolbar\">\r\n            <div class=\"btn-group mr-1 mr-md-3\">\r\n              <button type=\"button\" type=\"submit\" class=\"btn btn-warning d-flex mx-auto mt-2\"\r\n                [disabled]=\"(!registerForm.valid || !registerFormOffers.valid || !registerFormActivities.valid || !registerFormCity.valid)\">{{'register.saveButton' | translate }}</button>\r\n            </div>\r\n            <div class=\"btn-group ml-md-3\">\r\n              <button type=\"button\" [routerLink]=\"['/login']\"\r\n                class=\"btn btn-outline-warning d-flex mx-auto mt-2\">{{'register.quitButton' | translate }}</button>\r\n            </div>\r\n          </div>\r\n        </form>\r\n      </div>\r\n      <p class=\"d-flex justify-content-end text-black-50 mr-4\"><small>*\r\n          {{'register.requiredExplanation' | translate }}</small></p>\r\n    </div>\r\n    <!--card-->\r\n  </div>\r\n  <!--col-10-->\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10\">\r\n    <div class=\"card mx-auto my-5 shadow\">\r\n      <div class=\"card-header bg-warning text-center h5\">\r\n        {{'register.headerTitle' | translate }}\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <form class=\"\" [formGroup]=\"registerForm\" (ngSubmit)=\"registerFormSave()\" novalidate>\r\n          <div class=\"row\">\r\n            <div class=\"form-group col-md-6\">\r\n              <label for=\"registerFormFirstname\">{{'register.firstname' | translate }}*</label>\r\n              <input type=\"text\" class=\"form-control shadow-sm\" id=\"registerFormFirstname\"\r\n                formControlName=\"registerFormFirstname\" placeholder=\"{{'register.firstname' | translate }}\">\r\n            </div>\r\n            <div class=\"form-group col-md-6\">\r\n              <label for=\"registerFormLastname\">{{'register.lastname' | translate }}*</label>\r\n              <input type=\"text\" class=\"form-control shadow-sm\" id=\"registerFormLastname\"\r\n                formControlName=\"registerFormLastname\" placeholder=\"{{'register.lastname' | translate }}\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"registerFormSex\">{{'register.sex' | translate }}*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"registerFormSex\" #registerFormSex=\"ngModel\"\r\n                [placeholder]=\"'register.pleaseChoose' | translate\" [data]=\"sex\" [(ngModel)]=\"selectedSex\"\r\n                [ngModelOptions]=\"{ standalone : true }\" [settings]=\"selectSexSettings\" required>\r\n              </ng-multiselect-dropdown>\r\n\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label>{{'register.mail' | translate }}*</label>\r\n              <input type=\"text\" class=\"form-control shadow-sm\" id=\"registerFormMail\" formControlName=\"registerFormMail\"\r\n                placeholder=\"name@example.com\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"registerFormCity\">{{'register.city' | translate }}*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"registerFormCity\" #registerFormCity=\"ngModel\"\r\n                [placeholder]=\"'register.pleaseChoose' | translate\" [data]=\"cities\" [(ngModel)]=\"selectedCity\"\r\n                [ngModelOptions]=\"{ standalone : true }\" [settings]=\"selectCitySettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"registerFormBirthday\">{{'register.birthday' | translate }}*</label>\r\n              <input type=\"text\" [placeholder]=\"'register.birthdayShort' | translate\" class=\"form-control shadow-sm\"\r\n                bsDatepicker id=\"registerFormBirthday\" formControlName=\"registerFormBirthday\"\r\n                [bsConfig]=\"{ dateInputFormat: 'DD.MM.YYYY', containerClass: 'theme-orange' }\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"registerFormOffers\">{{'register.offers' | translate }}:*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"registerFormOffers\"\r\n                #registerFormOffers=\"ngModel\" [placeholder]=\"'register.pleaseChoose' | translate\" [data]=\"offers\"\r\n                [(ngModel)]=\"selectedOffers\" [ngModelOptions]=\"{ standalone : true }\"\r\n                [settings]=\"selectOffersActivitiesSettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"registerFormActivities\">{{'register.activities' | translate }}:*</label>\r\n              <ng-multiselect-dropdown class=\"form-control shadow-sm\" id=\"registerFormActivities\"\r\n                #registerFormActivities=\"ngModel\" [placeholder]=\"'register.pleaseChoose' | translate\"\r\n                [data]=\"activities\" [(ngModel)]=\"selectedActivities\" [ngModelOptions]=\"{ standalone : true }\"\r\n                [settings]=\"selectOffersActivitiesSettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label>{{'register.password' | translate }}*</label>\r\n              <input type=\"password\" class=\"form-control shadow-sm\" id=\"registerFormPassword\"\r\n                formControlName=\"registerFormPassword\" placeholder=\"{{'register.password' | translate }}\">\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label>{{'register.passwordConfirm' | translate }}*</label>\r\n              <input type=\"password\" class=\"form-control shadow-sm\" id=\"registerFormPasswordConfirm\"\r\n                formControlName=\"registerFormPasswordConfirm\" placeholder=\"{{'register.passwordConfirm' | translate }}\">\r\n            </div>\r\n          </div>\r\n\r\n          <!--Validator messages-->\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormFirstname.errors && (registerFormFirstname.touched || registerFormFirstname.dirty)\">\r\n            <div *ngIf=\"registerFormFirstname.errors.required\">{{'register.firstname' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"registerFormFirstname.errors.pattern\">{{'validators.letterSpaces' | translate }}</div>\r\n          </div>\r\n\r\n          <!--Validator messages-->\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormFirstname.errors && (registerFormFirstname.touched || registerFormFirstname.dirty)\">\r\n            <div *ngIf=\"registerFormFirstname.errors.required\">{{'register.firstname' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"registerFormFirstname.errors.pattern\">{{'validators.letterSpaces' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormLastname.errors && (registerFormLastname.touched || registerFormLastname.dirty)\">\r\n            <div *ngIf=\"registerFormLastname.errors.required\">{{'register.lastname' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"registerFormLastname.errors.pattern\">{{'validators.letterSpaces' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormMail.errors && (registerFormMail.touched || registerFormMail.dirty)\">\r\n            <div *ngIf=\"registerFormMail.errors.required\">{{'register.mail' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"registerFormMail.errors.email\">{{'validators.email' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormPassword.errors && (registerFormPassword.touched || registerFormPassword.dirty)\">\r\n            <div *ngIf=\"registerFormPassword.errors.required\">{{'register.password' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"registerFormPassword.errors.pattern\">{{'validators.passwordPattern' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormPasswordConfirm.errors && (registerFormPasswordConfirm.touched || registerFormPasswordConfirm.dirty)\">\r\n            <div *ngIf=\"registerFormPasswordConfirm.errors.required\">{{'register.passwordConfirm' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n            <div *ngIf=\"registerFormPassword.errors.pattern\">{{'validators.passwordPattern' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormPassword.value != registerFormPasswordConfirm.value && registerFormPasswordConfirm.value != null\">\r\n            {{'validators.passwordMismatch' | translate }}\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormSex.errors && (registerFormSex.touched || registerFormSex.dirty)\">\r\n            <div *ngIf=\"registerFormSex.errors.required\" class=\"alert-danger\">{{'register.sex' | translate }}\r\n              {{'validators.required' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormOffers.errors && (registerFormOffers.touched || registerFormOffers.dirty)\">\r\n            <div *ngIf=\"registerFormOffers.errors.required\" class=\"alert-danger\">{{'validators.minOffers' | translate }}\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormActivities.errors && (registerFormActivities.touched || registerFormActivities.dirty)\">\r\n            <div *ngIf=\"registerFormActivities.errors.required\" class=\"alert-danger\">\r\n              {{'validators.minActivities' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormCity.errors && (registerFormCity.touched || registerFormCity.dirty)\">\r\n            <div *ngIf=\"registerFormCity.errors.required\" class=\"alert-danger\">{{'validators.city' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\"\r\n            *ngIf=\"registerFormBirthday.errors && (registerFormBirthday.touched || registerFormBirthday.dirty)\">\r\n            <div *ngIf=\"registerFormBirthday.errors.required\" class=\"alert-danger\">\r\n              {{'validators.birthday' | translate }}</div>\r\n          </div>\r\n          <!--End-Validator messages-->\r\n\r\n          <div class=\"btn-toolbar d-flex justify-content-center\" role=\"toolbar\">\r\n            <div class=\"btn-group mr-1 mr-md-3\">\r\n              <button type=\"button\" type=\"submit\" class=\"btn btn-warning d-flex mx-auto mt-2\" (click)=\"loadingButton($event)\" id=\"loadingButton\"\r\n                [disabled]=\"(!registerForm.valid || !registerFormOffers.valid || !registerFormActivities.valid || !registerFormCity.valid)\">{{'register.saveButton' | translate }}</button>\r\n            </div>\r\n            <div class=\"btn-group ml-md-3\">\r\n              <button type=\"button\" [routerLink]=\"['/login']\"\r\n                class=\"btn btn-outline-warning d-flex mx-auto mt-2\">{{'register.quitButton' | translate }}</button>\r\n            </div>\r\n          </div>\r\n        </form>\r\n      </div>\r\n      <p class=\"d-flex justify-content-end text-black-50 mr-4\"><small>*\r\n          {{'register.requiredExplanation' | translate }}</small></p>\r\n    </div>\r\n    <!--card-->\r\n  </div>\r\n  <!--col-10-->\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1874,9 +1881,9 @@ var RegisterPageComponent = /** @class */ (function () {
         // create the formGroup
         return this.formBuilder.group({
             // the field only contains letters or spaces
-            registerFormFirstname: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('[a-zA-Z ]*')]],
+            registerFormFirstname: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('[a-zA-ZäÄüÜöÖß]*')]],
             // the field only contains letters or spaces
-            registerFormLastname: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('[a-zA-Z ]*')]],
+            registerFormLastname: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('[a-zA-ZäÄüÜöÖß]*')]],
             registerFormMail: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email]],
             registerFormBirthday: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
             // at least 6 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number, can contain special characters
@@ -2011,6 +2018,12 @@ var RegisterPageComponent = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    RegisterPageComponent.prototype.loadingButton = function (event) {
+        this.translateService.stream('loading.button').subscribe(function (key) {
+            document.getElementById('loadingButton').innerText = key;
+        });
+        event.target.classList.add('disabled');
+    };
     RegisterPageComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-register-page',
@@ -2037,7 +2050,7 @@ var RegisterPageComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row my-5\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10\">\r\n    <div *ngIf=\"searchResultLength, else elseBlock\"> <!-- TODO Need something else to check, if there are any results -->\r\n      <div class=\"card\">\r\n        <div class=\"card-header bg-transparent text-center border-warning\">\r\n          <h2 class=\"font-weight-light\">{{ 'result.results' | translate }}</h2>\r\n        </div>\r\n        <div class=\"card-body mx-5\">\r\n          <!-- show all accepted matches which are saved in acceptedMatches[]-->\r\n          <div\r\n            *ngFor=\"let user of searchResults$ | sort:'commonActivities' | paginate: { itemsPerPage: 5, currentPage: pageNumber } \"> <!--  -->\r\n            <div class=\"card shadow my-3\">\r\n              <div class=\"card-body accepted-match-cards\">\r\n                <div class=\"card-text\">\r\n                  <div class=\"row\">\r\n                    <div class=\"col-8 col-md-10\">\r\n                      <p class=\"my-0\"><small><b>{{ user.firstname }} {{ user.lastname }}</b></small></p>\r\n                      <p class=\"my-0\"><small><i>{{ parseSexValueForFrontend(user.sex) }}</i></small></p>\r\n                      <p class=\"my-0\"><small><i>{{ parseCityForFrontend(user.city) }}</i></small></p>\r\n                      <p class=\"my-0\"><small><i>{{ calculateAge(user.dateOfBirth) }} {{ 'result.age' | translate }}</i></small></p>\r\n                      <p class=\"my-0\"><small><i>{{ 'result.activities' | translate }}</i>: {{activitiesForModal(parseActivitiesForFrontend(user.activities))}}</small></p>\r\n                      <p class=\"my-0\"><small><i>{{ 'result.commonActivities' | translate }}</i>: <b>{{activitiesForModal(parseActivitiesForFrontend(user.commonActivities))}}</b></small></p>\r\n                    </div>\r\n                    <div class=\"col-4 col-md-2 d-flex justify-content-end my-auto\">\r\n                      <button type=\"button\" class=\"btn btn-outline-success homebutton\" (click)=\"sendMatchrequest(user)\"\r\n                        data-toggle=\"tooltip\" data-placement=\"top\"\r\n                        title=\"{{ 'result.sendMatchrequestTooltip' | translate }}\">\r\n                        <fa-icon [icon]=\"faUserCheck\"></fa-icon>\r\n                      </button>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <!--ngFor-->\r\n\r\n          <!--controls for pagination, which are only visible at the length of matchRequest-array bigger than 5-->\r\n          <pagination-controls autoHide=\"true\" class=\"pagination justify-content-center\"\r\n            (pageChange)=\"pageNumber = $event\" previousLabel=\"{{'home.previous' | translate }}\"\r\n            nextLabel=\"{{'home.next' | translate }}\">\r\n          </pagination-controls>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <!-- if there are no matchrequests-->\r\n    <ng-template #elseBlock>\r\n      <p class=\"text-center\">{{ 'result.noResults' | translate}}</p>\r\n    </ng-template>\r\n  </div>\r\n  <!--col-10-->\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n"
+module.exports = "<div class=\"row my-5\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10\">\r\n    <div *ngIf=\"searchResultLength, else elseBlock\">\r\n      <div class=\"card\">\r\n        <div class=\"card-header bg-transparent text-center border-warning\">\r\n          <h2 class=\"font-weight-light\">{{ 'result.results' | translate }}</h2>\r\n        </div>\r\n        <div class=\"card-body mx-5\">\r\n          <!-- show all accepted matches which are saved in acceptedMatches[]-->\r\n          <div\r\n            *ngFor=\"let user of searchResults$ | sort:'commonActivities' | paginate: { itemsPerPage: 5, currentPage: pageNumber } \">\r\n            <!--  -->\r\n            <div class=\"card shadow my-3\">\r\n              <div class=\"card-body accepted-match-cards\">\r\n                <div class=\"card-text\">\r\n                  <div class=\"row\">\r\n                    <div class=\"col-8 col-md-10\">\r\n                      <p class=\"my-0\"><small><b>{{ user.firstname }} {{ user.lastname }}</b></small></p>\r\n                      <p class=\"my-0\"><small><i>{{ parseSexValueForFrontend(user.sex) }}</i></small></p>\r\n                      <p class=\"my-0\"><small><i>{{ parseCityForFrontend(user.city) }}</i></small></p>\r\n                      <p class=\"my-0\"><small><i>{{ calculateAge(user.dateOfBirth) }}\r\n                            {{ 'result.age' | translate }}</i></small></p>\r\n                      <!-- <p class=\"my-0\"><small><i>{{ 'result.activities' | translate }}</i>:\r\n                          {{activitiesForModal(parseActivitiesForFrontend(user.activities))}}</small></p> -->\r\n                      <p class=\"my-0\"><small><i>{{ 'result.commonActivities' | translate }}</i>:\r\n                          <b>{{activitiesForModal(parseActivitiesForFrontend(user.commonActivities))}}</b></small></p>\r\n                    </div>\r\n                    <div class=\"col-4 col-md-2 d-flex justify-content-end my-auto\">\r\n                      <button type=\"button\" class=\"btn btn-outline-success homebutton\"\r\n                        (click)=\"sendMatchrequest(user);openModal();\" data-toggle=\"tooltip\" data-placement=\"top\"\r\n                        title=\"{{ 'result.sendMatchrequestTooltip' | translate }}\">\r\n                        <fa-icon [icon]=\"faUserCheck\"></fa-icon>\r\n                      </button>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <!--ngFor-->\r\n\r\n          <!--controls for pagination, which are only visible at the length of matchRequest-array bigger than 5-->\r\n          <pagination-controls autoHide=\"true\" class=\"pagination justify-content-center\"\r\n            (pageChange)=\"pageNumber = $event\" previousLabel=\"{{'home.previous' | translate }}\"\r\n            nextLabel=\"{{'home.next' | translate }}\">\r\n          </pagination-controls>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <!-- if there are no matchrequests-->\r\n    <ng-template #elseBlock>\r\n      <p class=\"text-center\">{{ 'result.noResults' | translate}}</p>\r\n    </ng-template>\r\n  </div>\r\n  <!--col-10-->\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n\r\n\r\n\r\n\r\n<!-- Info Modal -->\r\n<div class=\"modal-backdrop fade in\" [ngStyle]=\"{'display':display}\"></div>\r\n<div *ngIf=\"modalIsOpen\" class=\"modal\" [ngStyle]=\"{'display': display}\" tabindex=\"-1\" role=\"dialog\">\r\n  <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <div class=\"modal-header\">\r\n        <h5 class=\"modal-title\">Info</h5>\r\n        <button type=\"button\" class=\"close\" (click)=\"closeModal()\" aria-label=\"Close\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n        {{ 'modals.matchrequest' | translate}}\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -2072,6 +2085,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
 /* harmony import */ var _models_match__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../..//models/match */ "./src/app/models/match.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
 
 
 
@@ -2094,6 +2109,9 @@ var ResultPageComponent = /** @class */ (function () {
         this.faUserCheck = _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_8__["faUserCheck"];
         this.userForSpecificRequest = [];
         this.usersToBeExcludedArray = [];
+        // for modal
+        this.display = 'none';
+        this.modalIsOpen = false;
     }
     ResultPageComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -2102,21 +2120,31 @@ var ResultPageComponent = /** @class */ (function () {
             _this.setAllUtilities();
         });
         var searchRequestId = this.route.snapshot.paramMap.get('id');
-        // this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
-        //   this.matchedOffer = searchRequest.offerParam; // TODO check, if the error message occures again
-        //   this.searchResults$ = this.searchService.getSearchResult(searchRequest);
-        //   // this.searchService.getSearchResult(searchRequest).subscribe(); // TODO subscribe in a subscribe is bad code. Try to fix this!
-        // });
-        this.searchService.getSearchRequestById(searchRequestId).subscribe(function (searchRequest) {
+        this.searchService.getSearchRequestById(searchRequestId).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_10__["flatMap"])(function (searchRequest) {
             if (searchRequest.offerParam !== undefined) {
-                _this.matchedOffer = searchRequest.offerParam; // TODO check, if the error message occures again, even inside the if-clause
+                _this.matchedOffer = searchRequest.offerParam;
             }
-            // TODO subscribe in a subscribe is bad code. Try to fix this!
-            _this.searchService.getSearchResult(searchRequest).subscribe(function (searchResults) {
-                _this.searchResultLength = searchResults.length;
-                _this.searchResults$ = searchResults;
-            });
+            return _this.searchService.getSearchResult(searchRequest);
+        })).subscribe(function (searchResults) {
+            _this.searchResultLength = searchResults.length;
+            _this.searchResults$ = searchResults;
         });
+        // TODO check if the new implementation works, then delete the following lines.
+        // this.searchService.getSearchRequestById(searchRequestId).subscribe((searchRequest: Searchrequest) => {
+        //   if (searchRequest.offerParam !== undefined) {
+        //     this.matchedOffer = searchRequest.offerParam;
+        //   }
+        //   this.searchService.getSearchResult(searchRequest).subscribe(searchResults => {
+        //     this.searchResultLength = searchResults.length;
+        //     this.searchResults$ = searchResults;
+        //   }, error => {
+        //     console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+        //     console.error(error);
+        //   });
+        // }, error => {
+        //   console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+        //   console.error(error);
+        // });
     };
     ResultPageComponent.prototype.setAllUtilities = function () {
         this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
@@ -2165,6 +2193,14 @@ var ResultPageComponent = /** @class */ (function () {
         var age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
         return age + '';
     };
+    ResultPageComponent.prototype.openModal = function () {
+        this.modalIsOpen = true;
+        this.display = 'block';
+    };
+    ResultPageComponent.prototype.closeModal = function () {
+        this.display = 'none';
+        this.modalIsOpen = false;
+    };
     ResultPageComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_7__["Component"])({
             selector: 'app-result-page',
@@ -2192,7 +2228,7 @@ var ResultPageComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"router.url === '/search'\" class=\"row\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10\">\r\n    <div class=\"card mx-auto my-5 shadow\">\r\n      <!--header-->\r\n      <div class=\"card-header h5 bg-transparent d-flex justify-content-between border-warning p-0\">\r\n        <div class=\"col-md-6 font-weight-light text-center pointer-cursor align-self-center border-right btn-outline-warning py-3\"\r\n          data-toggle=\"collapse\" href=\"#collapseNewSearch\"\r\n          [ngClass]=\"{'active':newSearchCollapsed === true}\"\r\n          role=\"button\" aria-expanded=\"false\"\r\n          aria-controls=\"collapseNewSearch\" (click)=\"recentRequestCollapsed=false\" (click)=\"newSearchCollapsed=true\">\r\n          {{'search.newSearch' | translate }}\r\n        </div>\r\n        <div class=\"col-md-6 font-weight-light text-center pointer-cursor btn-outline-warning py-3\"\r\n            [ngClass]=\"{'active':recentRequestCollapsed === true}\"\r\n            data-toggle=\"collapse\" href=\"#collapseRecentSearches\"\r\n            role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseRecentSearches\"\r\n            (click)=\"newSearchCollapsed=false\" (click)=\"recentRequestCollapsed=true\">\r\n            {{'search.recentSearches' | translate }}\r\n        </div>\r\n      </div><!--header-->\r\n\r\n      <!--new search area-->\r\n      <div *ngIf=\"newSearchCollapsed\" class=\"card-body\" id=\"collapseNewSearch\">\r\n        <form class=\"\" [formGroup]=\"searchForm\" (ngSubmit)=\"newSearchSave()\" novalidate>\r\n          <div class=\"row\">\r\n            <div class=\"form-group col-md-6\">\r\n              <label for=\"searchFormOffer\">{{'search.offer' | translate }}:*</label>\r\n              <ng-multiselect-dropdown  class=\"form-control shadow-sm\" id=\"searchFormOffer\" #searchFormOffer=\"ngModel\"\r\n                [placeholder]=\"'search.offer' | translate\"\r\n                [data]=\"offers\"\r\n                [(ngModel)]=\"selectedOffer\" [ngModelOptions]=\"{ standalone : true }\"\r\n                [settings]=\"selectOnlyOneSettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"searchFormCity\">{{'search.city' | translate }}</label>\r\n              <ng-multiselect-dropdown  class=\"form-control shadow-sm\" id=\"searchFormCity\" #searchFormCity=\"ngModel\"\r\n                [placeholder]=\"'register.pleaseChoose' | translate\"\r\n                [data]=\"cities\"\r\n                [(ngModel)]=\"selectedCity\" [ngModelOptions]=\"{ standalone : true }\"\r\n                [settings]=\"selectOnlyOneSettings\">\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"searchFormSex\">{{'register.sex' | translate }}:*</label>\r\n              <ng-multiselect-dropdown  class=\"form-control shadow-sm\" id=\"searchFormSex\" #searchFormSex=\"ngModel\"\r\n                [placeholder]=\"'register.pleaseChoose' | translate\"\r\n                [data]=\"sex\"\r\n                [(ngModel)]=\"selectedSex\" [ngModelOptions]=\"{ standalone : true }\"\r\n                [settings]=\"selectSexSettings\">\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n            </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n                <label>{{'search.minAge' | translate }}</label>\r\n                <input type=\"number\" class=\"form-control shadow-sm\" id=\"searchFormMinAge\" formControlName=\"searchFormMinAge\" placeholder=\"{{'search.minAge' | translate }}\">\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n                <label>{{'search.maxAge' | translate }}</label>\r\n                <input type=\"number\" class=\"form-control shadow-sm\" id=\"searchFormMaxAge\" formControlName=\"searchFormMaxAge\" placeholder=\"{{'search.maxAge' | translate }}\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\" *ngIf=\"searchFormOffer.errors && (searchFormOffer.touched || searchFormOffer.dirty)\">\r\n            <div *ngIf=\"searchFormOffer.errors.required\" class=\"alert-danger\">{{'validators.minOffers' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\" *ngIf=\"searchFormMinAge.value > searchFormMaxAge.value && searchFormMaxAge.touched\">\r\n            {{'validators.ageMismatch' | translate }}\r\n          </div>\r\n\r\n          <div class=\"row\" role=\"toolbar\">\r\n            <div class=\"col-md-6\">\r\n              <button type=\"button\" type=\"submit\" class=\"btn btn-warning d-flex mx-auto ml-md-auto mt-2\"\r\n                      [disabled]=\"!searchFormOffer.valid || (searchFormMinAge.value > searchFormMaxAge.value  && searchFormMaxAge.touched)\">\r\n                      {{'search.searchButton' | translate }}\r\n              </button>\r\n            </div>\r\n            <div class=\"col-md-6\">\r\n              <button type=\"button\" [routerLink]=\"['/home']\" class=\"btn btn-outline-warning d-flex mx-auto mr-md-auto mt-2\" >{{'register.quitButton' | translate }}</button>\r\n            </div>\r\n          </div>\r\n\r\n        </form>\r\n      </div>\r\n\r\n      <!--recent searchrequests area-->\r\n      <div *ngIf=\"recentRequestCollapsed\" class=\"card-body collapse\" id=\"collapseRecentSearches\">\r\n        <div *ngFor=\"let request of recentSearchRequests$ | async\">\r\n          <div class=\"card\">\r\n            <div class=\"card-body\">\r\n              <a class=\"pointer-cursor\" (click)=\"useRecentSearchrequest(request.id)\">\r\n                <h5 class=\"font-weight-light\">{{ parseOfferForFrontend(request.offerParam) }}</h5>\r\n                <h6 class=\"font-weight-light\">{{ request.minAgeParam }} - {{request.maxAgeParam}} {{'search.years' | translate }} </h6>\r\n                <h6 class=\"font-weight-light\">{{ parseSexValueForFrontend(request.sexParam) }}</h6>\r\n              </a>\r\n            </div>\r\n          </div>\r\n        </div><!--ngfor-->\r\n      </div><!--recent searchrequests-->\r\n\r\n    </div>\r\n  </div><!--col-10-->\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n<app-result-page *ngIf=\"router.url === '/search/result'\"></app-result-page>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-1\"></div>\r\n  <div class=\"col-10\">\r\n    <div class=\"card mx-auto my-5 shadow\">\r\n      <!--header-->\r\n      <div class=\"card-header h5 bg-transparent d-flex justify-content-between border-warning p-0\">\r\n        <div class=\"col-md-6 font-weight-light text-center pointer-cursor align-self-center border-right btn-outline-warning py-3\"\r\n          data-toggle=\"collapse\" href=\"#collapseNewSearch\"\r\n          [ngClass]=\"{'active':newSearchCollapsed === true}\"\r\n          role=\"button\" aria-expanded=\"false\"\r\n          aria-controls=\"collapseNewSearch\" (click)=\"recentRequestCollapsed=false\" (click)=\"newSearchCollapsed=true\">\r\n          {{'search.newSearch' | translate }}\r\n        </div>\r\n        <div class=\"col-md-6 font-weight-light text-center pointer-cursor btn-outline-warning py-3\"\r\n            [ngClass]=\"{'active':recentRequestCollapsed === true}\"\r\n            data-toggle=\"collapse\" href=\"#collapseRecentSearches\"\r\n            role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseRecentSearches\"\r\n            (click)=\"newSearchCollapsed=false\" (click)=\"recentRequestCollapsed=true\">\r\n            {{'search.recentSearches' | translate }}\r\n        </div>\r\n      </div><!--header-->\r\n\r\n      <!--new search area-->\r\n      <div *ngIf=\"newSearchCollapsed\" class=\"card-body\" id=\"collapseNewSearch\">\r\n        <form class=\"\" [formGroup]=\"searchForm\" (ngSubmit)=\"newSearchSave()\" novalidate>\r\n          <div class=\"row\">\r\n            <div class=\"form-group col-md-6\">\r\n              <label for=\"searchFormOffer\">{{'search.offer' | translate }}:*</label>\r\n              <ng-multiselect-dropdown  class=\"form-control shadow-sm\" id=\"searchFormOffer\" #searchFormOffer=\"ngModel\"\r\n                [placeholder]=\"'search.offer' | translate\"\r\n                [data]=\"offers\"\r\n                [(ngModel)]=\"selectedOffer\" [ngModelOptions]=\"{ standalone : true }\"\r\n                [settings]=\"selectOnlyOneSettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"searchFormCity\">{{'search.city' | translate }}</label>\r\n              <ng-multiselect-dropdown  class=\"form-control shadow-sm\" id=\"searchFormCity\" #searchFormCity=\"ngModel\"\r\n                [placeholder]=\"'register.pleaseChoose' | translate\"\r\n                [data]=\"cities\"\r\n                [(ngModel)]=\"selectedCity\" [ngModelOptions]=\"{ standalone : true }\"\r\n                [settings]=\"selectOnlyOneSettings\">\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n              <label for=\"searchFormSex\">{{'register.sex' | translate }}:*</label>\r\n              <ng-multiselect-dropdown  class=\"form-control shadow-sm\" id=\"searchFormSex\" #searchFormSex=\"ngModel\"\r\n                [placeholder]=\"'register.pleaseChoose' | translate\"\r\n                [data]=\"sex\"\r\n                [(ngModel)]=\"selectedSex\" [ngModelOptions]=\"{ standalone : true }\"\r\n                [settings]=\"selectSexSettings\" required>\r\n              </ng-multiselect-dropdown>\r\n            </div>\r\n            </div>\r\n\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6 form-group\">\r\n                <label>{{'search.minAge' | translate }}</label>\r\n                <input type=\"number\" class=\"form-control shadow-sm\" id=\"searchFormMinAge\" formControlName=\"searchFormMinAge\" placeholder=\"{{'search.minAge' | translate }}\">\r\n            </div>\r\n            <div class=\"col-md-6 form-group\">\r\n                <label>{{'search.maxAge' | translate }}</label>\r\n                <input type=\"number\" class=\"form-control shadow-sm\" id=\"searchFormMaxAge\" formControlName=\"searchFormMaxAge\" placeholder=\"{{'search.maxAge' | translate }}\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\" *ngIf=\"searchFormOffer.errors && (searchFormOffer.touched || searchFormOffer.dirty)\">\r\n            <div *ngIf=\"searchFormOffer.errors.required\" class=\"alert-danger\">{{'validators.minOffers' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\" *ngIf=\"searchFormMinAge.value > searchFormMaxAge.value && searchFormMaxAge.touched\">\r\n            {{'validators.ageMismatch' | translate }}\r\n          </div>\r\n\r\n          <div class=\"alert-danger pl-2\" *ngIf=\"searchFormSex.errors && (searchFormSex.touched || searchFormSex.dirty)\">\r\n          <div *ngIf=\"searchFormSex.errors.required\" class=\"alert-danger\">{{'register.sex' | translate }}\r\n            {{'validators.required' | translate }}</div>\r\n          </div>\r\n\r\n          <div class=\"row mt-2\" role=\"toolbar\">\r\n            <div class=\"col-md-6\">\r\n              <button type=\"button\" type=\"submit\" class=\"btn btn-warning d-flex mx-auto ml-md-auto mt-2\" (click)=\"loadingButton($event)\" id=\"loadingButton\"\r\n                      [disabled]=\"!searchFormOffer.valid || (searchFormMinAge.value > searchFormMaxAge.value  && searchFormMaxAge.touched)\">\r\n                      {{'search.searchButton' | translate }}\r\n              </button>\r\n            </div>\r\n            <div class=\"col-md-6\">\r\n              <button type=\"button\" [routerLink]=\"['/home']\" class=\"btn btn-outline-warning d-flex mx-auto mr-md-auto mt-2\" >{{'register.quitButton' | translate }}</button>\r\n            </div>\r\n          </div>\r\n\r\n        </form>\r\n        <p class=\"d-flex justify-content-end text-black-50 mr-4 mt-5 mb-0\"><small>*\r\n          {{'register.requiredExplanation' | translate }}</small></p>\r\n      </div>\r\n\r\n      <!--recent searchrequests area-->\r\n      <div *ngIf=\"recentRequestCollapsed\" class=\"card-body collapse\" id=\"collapseRecentSearches\">\r\n        <div *ngFor=\"let request of recentSearchRequests$ | async\">\r\n          <div class=\"card\">\r\n            <div class=\"card-body\">\r\n              <a class=\"pointer-cursor\" (click)=\"useRecentSearchrequest(request.id)\">\r\n                <h5 class=\"font-weight-light\">{{ parseOfferForFrontend(request.offerParam) }}</h5>\r\n                <h6 *ngIf=\"request.minAgeParam > 0 && request.maxAgeParam > 0\" class=\"font-weight-light\">{{ request.minAgeParam }} - {{request.maxAgeParam}} {{'search.years' | translate }} </h6>\r\n                <h6 *ngIf=\"request.minAgeParam > 0 && request.maxAgeParam === 0\" class=\"font-weight-light\"> {{'search.from' | translate }} {{ request.minAgeParam }} {{'search.years' | translate }} </h6>\r\n                <h6 *ngIf=\"request.minAgeParam === 0 && request.maxAgeParam > 0\" class=\"font-weight-light\"> {{'search.until' | translate }} {{request.maxAgeParam}} {{'search.years' | translate }} </h6>\r\n                <h6 class=\"font-weight-light\">{{ parseSexValueForFrontend(request.sexParam) }}</h6>\r\n              </a>\r\n            </div>\r\n          </div>\r\n        </div><!--ngfor-->\r\n      </div><!--recent searchrequests-->\r\n\r\n    </div>\r\n  </div><!--col-10-->\r\n  <div class=\"col-1\"></div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -2261,7 +2297,6 @@ var SearchPageComponent = /** @class */ (function () {
         });
         this.initializeMultiselectSettings();
         this.recentSearchRequests$ = this.searchService.getRecentSearchRequests();
-        // console.log('Aufruf - search');
     };
     SearchPageComponent.prototype.setAllUtilities = function () {
         this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
@@ -2311,11 +2346,11 @@ var SearchPageComponent = /** @class */ (function () {
         };
         this.searchService.createSearchrequest(searchdata)
             .subscribe(function (response) {
-            _this.router.navigate(["/search/result/" + response.id]);
+            _this.router.navigate(["/result/" + response.id]);
         });
     };
     SearchPageComponent.prototype.useRecentSearchrequest = function (searchRequestId) {
-        this.router.navigate(["/search/result/" + searchRequestId]);
+        this.router.navigate(["/result/" + searchRequestId]);
     };
     // shorten the male/female-word and return one letter or 'no choice'
     SearchPageComponent.prototype.parseSexValueForBackend = function (sex) {
@@ -2360,6 +2395,12 @@ var SearchPageComponent = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    SearchPageComponent.prototype.loadingButton = function (event) {
+        this.translateService.stream('loading.button').subscribe(function (key) {
+            document.getElementById('loadingButton').innerText = key;
+        });
+        event.target.classList.add('disabled');
+    };
     SearchPageComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
             selector: 'app-search-page',
@@ -2538,6 +2579,7 @@ var AuthService = /** @class */ (function () {
         this.angularFireAuth = angularFireAuth;
         this.angularFirestore = angularFirestore;
         this.router = router;
+        this.currentUserActivities = [];
         this.isLoggedIn = false;
         this.user$ = this.angularFireAuth.authState.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["switchMap"])(function (user) {
             if (user) {
@@ -2550,10 +2592,18 @@ var AuthService = /** @class */ (function () {
                 return Object(rxjs__WEBPACK_IMPORTED_MODULE_6__["of"])(null);
             }
         }));
+        // this.user$.pipe(first()).toPromise().then(user => {
+        //   this.currentUserActivities = user.activities;
+        // })
+        // .catch(error => {
+        //   console.error(error);
+        // });
         this.user$.subscribe(function (user) {
-            if (user !== null) {
+            if (user !== null && user !== undefined) {
                 _this.currentUserActivities = user.activities;
             }
+        }, function (error) {
+            console.log('Error in auth-service - TODO delete this console.log() before finishing WebProg!');
         });
     }
     AuthService.prototype.isloggedIn = function () {
@@ -2667,9 +2717,8 @@ var ChatService = /** @class */ (function () {
         this.angularFirestore = angularFirestore;
         this.http = http;
         this.userStoreService = userStoreService;
-        // TODO change if using over web
-        // private apiUrl2 = 'http://localhost:5000/livechattandem/us-central1/chatrooms';
-        this.apiUrl2 = 'https://us-central1-livechattandem.cloudfunctions.net/chatrooms';
+        // private apiUrl2 = 'http://localhost:5000/tandemfirebase/us-central1/chatrooms';
+        this.apiUrl2 = 'https://us-central1-tandemfirebase.cloudfunctions.net/chatrooms';
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
     }
@@ -2683,7 +2732,7 @@ var ChatService = /** @class */ (function () {
         };
         return this.http.post("" + this.apiUrl2, data);
     };
-    // Send a message to the Cloud Firestore database by valling the corresponding endpoint.
+    // Send a message to the Cloud Firestore database by calling the corresponding endpoint.
     ChatService.prototype.sendMessage = function (chatroomId, content) {
         var uid = this.authService.currentUserID;
         var data = {
@@ -2693,70 +2742,41 @@ var ChatService = /** @class */ (function () {
         };
         return this.http.put(this.apiUrl2 + "/" + chatroomId, data);
     };
-    // Get all chatrooms of the current user and return it as an observable array with realtime changes.
-    ChatService.prototype.getAllChatrooms = function () {
-        var resultA = this.queryChatrooms('userA');
-        var resultB = this.queryChatrooms('userB');
-        return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["combineLatest"])(resultA, resultB).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (_a) {
-            var users = _a[0], otherUsers = _a[1];
-            return users.concat(otherUsers);
-        }));
-    };
     ChatService.prototype.getAllChatroomsAsUserA = function () {
         var _this = this;
-        return this.authService.user$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["switchMap"])(function (user) {
-            return _this.angularFirestore
-                .collection('chatrooms', function (ref) { return ref.where('userA', '==', user ? user.uid : ''); })
-                .snapshotChanges()
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (actions) {
-                return actions.map(function (a) {
-                    var data = a.payload.doc.data();
-                    var id = a.payload.doc.id;
-                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
-                });
-            }));
+        return this.angularFirestore
+            .collection('chatrooms', function (ref) { return ref.where('userA', '==', _this.authService.user$ ? _this.authService.currentUserID : ''); })
+            .snapshotChanges()
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
         }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["switchMap"])(function (chatrooms) {
             return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["combineLatest"])(chatrooms.map(function (chatroom) {
-                return _this.userStoreService.getUserById(chatroom.userB).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (user) {
-                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, chatroom, user);
+                return _this.userStoreService.getUserById(chatroom.userB).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (userChatPartner) {
+                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, chatroom, userChatPartner);
                 }));
             }));
         }));
     };
     ChatService.prototype.getAllChatroomsAsUserB = function () {
         var _this = this;
-        return this.authService.user$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["switchMap"])(function (user) {
-            return _this.angularFirestore
-                .collection('chatrooms', function (ref) { return ref.where('userB', '==', user ? user.uid : ''); })
-                .snapshotChanges()
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (actions) {
-                return actions.map(function (a) {
-                    var data = a.payload.doc.data();
-                    var id = a.payload.doc.id;
-                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
-                });
-            }));
+        return this.angularFirestore
+            .collection('chatrooms', function (ref) { return ref.where('userB', '==', _this.authService.user$ ? _this.authService.currentUserID : ''); })
+            .snapshotChanges()
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
         }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["switchMap"])(function (chatrooms) {
             return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["combineLatest"])(chatrooms.map(function (chatroom) {
-                return _this.userStoreService.getUserById(chatroom.userA).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (user) {
-                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, chatroom, user);
+                return _this.userStoreService.getUserById(chatroom.userA).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (userChatPartner) {
+                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, chatroom, userChatPartner);
                 }));
-            }));
-        }));
-    };
-    // Query chatrooms by field name.
-    ChatService.prototype.queryChatrooms = function (fieldName) {
-        var _this = this;
-        return this.authService.user$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["switchMap"])(function (user) {
-            return _this.angularFirestore
-                .collection('chatrooms', function (ref) { return ref.where(fieldName, '==', user ? user.uid : ''); })
-                .snapshotChanges()
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (actions) {
-                return actions.map(function (a) {
-                    var data = a.payload.doc.data();
-                    var id = a.payload.doc.id;
-                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
-                });
             }));
         }));
     };
@@ -2843,8 +2863,8 @@ var MatchStoreService = /** @class */ (function () {
         this.angularFirestore = angularFirestore;
         this.authService = authService;
         this.userStoreService = userStoreService;
-        // private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
-        this.apiUrl = 'https://us-central1-livechattandem.cloudfunctions.net';
+        // private apiUrl = 'http://localhost:5000/tandemfirebase/us-central1';
+        this.apiUrl = 'https://us-central1-tandemfirebase.cloudfunctions.net';
     }
     MatchStoreService.prototype.createMatch = function (match) {
         return this.http.post(this.apiUrl + "/matches/", match);
@@ -2880,51 +2900,61 @@ var MatchStoreService = /** @class */ (function () {
         }));
     };
     MatchStoreService.prototype.getAllAcceptedMatchesAsInitiator = function () {
-        return this.queryMatches(true);
+        var _this = this;
+        return this.angularFirestore
+            .collection('matches', function (ref) { return ref.where('initiatorID', '==', _this.authService.user$ ? _this.authService.currentUserID : '')
+            .where('accepted', '==', true); })
+            .snapshotChanges()
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var matchId = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ matchId: matchId }, data);
+            });
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["switchMap"])(function (matches) {
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_7__["combineLatest"])(matches.map(function (match) {
+                return _this.userStoreService.getUserById(match.partnerID).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (userMatch) {
+                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, match, userMatch);
+                }));
+            }));
+        }));
     };
     MatchStoreService.prototype.getAllAcceptedMatchesAsPartner = function () {
         var _this = this;
-        return this.authService.user$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["switchMap"])(function (user) {
-            return _this.angularFirestore
-                .collection('matches', function (ref) { return ref.where('partnerID', '==', user ? user.uid : '')
-                .where('accepted', '==', true); })
-                .snapshotChanges()
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (actions) {
-                return actions.map(function (a) {
-                    var data = a.payload.doc.data();
-                    var matchId = a.payload.doc.id;
-                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ matchId: matchId }, data);
-                });
-            }));
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["mergeMap"])(function (matches) {
+        return this.angularFirestore
+            .collection('matches', function (ref) { return ref.where('partnerID', '==', _this.authService.user$ ? _this.authService.currentUserID : '')
+            .where('accepted', '==', true); })
+            .snapshotChanges()
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var matchId = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ matchId: matchId }, data);
+            });
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["switchMap"])(function (matches) {
             return Object(rxjs__WEBPACK_IMPORTED_MODULE_7__["combineLatest"])(matches.map(function (match) {
-                return _this.userStoreService.getUserById(match.initiatorID).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (user) {
-                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, match, user);
+                return _this.userStoreService.getUserById(match.initiatorID).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (userMatch) {
+                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, match, userMatch);
                 }));
             }));
         }));
     };
     MatchStoreService.prototype.getAllMatchrequests = function () {
-        return this.queryMatches(false);
-    };
-    MatchStoreService.prototype.queryMatches = function (boolValueOfAccepted) {
         var _this = this;
-        return this.authService.user$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["switchMap"])(function (user) {
-            return _this.angularFirestore
-                .collection('matches', function (ref) { return ref.where('initiatorID', '==', user ? user.uid : '')
-                .where('accepted', '==', boolValueOfAccepted); })
-                .snapshotChanges()
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (actions) {
-                return actions.map(function (a) {
-                    var data = a.payload.doc.data();
-                    var matchId = a.payload.doc.id;
-                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ matchId: matchId }, data);
-                });
-            }));
+        return this.angularFirestore
+            .collection('matches', function (ref) { return ref.where('initiatorID', '==', _this.authService.user$ ? _this.authService.currentUserID : '')
+            .where('accepted', '==', false); })
+            .snapshotChanges()
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var matchId = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ matchId: matchId }, data);
+            });
         }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["switchMap"])(function (matches) {
             return Object(rxjs__WEBPACK_IMPORTED_MODULE_7__["combineLatest"])(matches.map(function (match) {
-                return _this.userStoreService.getUserById(match.partnerID).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (user) {
-                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, match, user);
+                return _this.userStoreService.getUserById(match.partnerID).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (userMatch) {
+                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, match, userMatch);
                 }));
             }));
         }));
@@ -2998,8 +3028,9 @@ var SearchService = /** @class */ (function () {
         this.angularFirestore = angularFirestore;
         this.authService = authService;
         this.matchStoreService = matchStoreService;
-        // private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
-        this.apiUrl = 'https://us-central1-livechattandem.cloudfunctions.net';
+        // TODO Try to refactor service, if there is still time at the end
+        // private apiUrl = 'http://localhost:5000/tandemfirebase/us-central1';
+        this.apiUrl = 'https://us-central1-tandemfirebase.cloudfunctions.net';
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
     }
@@ -3252,7 +3283,7 @@ var SearchService = /** @class */ (function () {
     SearchService.prototype.searchQueryWithCityAndSexAndMinAndMax = function (searchRequest) {
         var _this = this;
         var minAge = searchRequest.minAgeParam;
-        var maxAge = searchRequest.maxAgeParam + 1; // TODO Why does this shows the right results?
+        var maxAge = searchRequest.maxAgeParam + 1;
         var today = new Date();
         var todayYear = today.getFullYear();
         var todayMonth = today.getMonth();
@@ -3975,8 +4006,8 @@ var UserStoreService = /** @class */ (function () {
     function UserStoreService(http, angularFirestore) {
         this.http = http;
         this.angularFirestore = angularFirestore;
-        // private apiUrl = 'http://localhost:5000/livechattandem/us-central1';
-        this.apiUrl = 'https://us-central1-livechattandem.cloudfunctions.net';
+        // private apiUrl = 'http://localhost:5000/tandemfirebase/us-central1';
+        this.apiUrl = 'https://us-central1-tandemfirebase.cloudfunctions.net';
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
     }
@@ -4119,8 +4150,8 @@ __webpack_require__.r(__webpack_exports__);
 var environment = {
     production: false,
     firebase: {
-        apiKey: 'AIzaSyA60SCLQd6f7KOT_UmUml5RgMnAC3F5E_A',
-        projectId: 'livechattandem'
+        apiKey: 'AIzaSyCww8YKdmbCbawimU1yEzpNDb6jHpr8fzs',
+        projectId: 'tandemfirebase'
     }
 };
 /*

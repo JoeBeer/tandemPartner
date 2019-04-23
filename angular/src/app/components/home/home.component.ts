@@ -1,15 +1,10 @@
 import { TranslateService, DefaultLangChangeEvent } from '@ngx-translate/core';
 import { UtilityStoreService } from './../../services/utility-store.service';
-import { Match } from './../../models/match';
 import { MatchStoreService } from './../../services/match-store.service';
-import { AuthService } from './../../services/auth.service';
-import { UserStoreService } from 'src/app/services/user-store.service';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
-import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -27,10 +22,10 @@ export class HomeComponent implements OnInit {
   unAcceptedMatches$: any[] = [];
   unAcceptedMatchesLength: number;
 
-  activities;
-  cities;
-  offers;
-  sex;
+  activities: string[];
+  cities: string[];
+  offers: string[];
+  sex: string[];
 
   openedModal: any;
 
@@ -44,28 +39,25 @@ export class HomeComponent implements OnInit {
   // for modal
   display = 'none';
   modalIsOpen = false;
-  // modalUser: User;
   firstname: string;
   lastname: string;
   matchSex: string;
   city: string;
-  matchActivities;
-  age;
+  matchActivities: string;
+  age: number;
   matchId: string;
 
   constructor(
-    private userStoreService: UserStoreService,
-    private authService: AuthService,
-    private router: Router,
     private matchStoreService: MatchStoreService,
     private utliltyStoreService: UtilityStoreService,
     private translateService: TranslateService
   ) {
+    // initialize all the unaccepted matches from the current user, where the current user ID is equal to partnerID
     this.matchStoreService.getAllUnAcceptedMatches().subscribe(matches => {
       this.unAcceptedMatchesLength = matches.length;
       this.unAcceptedMatches$ = matches;
-    }, error => {
-      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
+    }, () => {
+      console.log('Error in home-page - TODO delete this console.log() before finishing WebProg!');
     });
   }
 
@@ -77,6 +69,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  // loads the lists with cities, offers, activities and sex
   setAllUtilities() {
     this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
     this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
@@ -146,10 +139,12 @@ export class HomeComponent implements OnInit {
     return arr.substring(0, (arr.length - 2));
   }
 
+  // converts the sex value from the database for the frontend
   parseSexValueForFrontend(sexIndex: number): string {
     return this.sex[sexIndex];
   }
 
+  // converts the activities from the database for the frontend
   parseActivitiesForFrontend(activitiesIndex: number[]) {
     const activities: string[] = [];
 
@@ -159,18 +154,24 @@ export class HomeComponent implements OnInit {
     return activities;
   }
 
+  // converts the offers from the database for the frontend
   parseOfferForFrontend(selectedOfferIndex: number) {
     return this.offers[selectedOfferIndex];
   }
 
+  // converts the date of birth value from the database for the frontend
   parseDateOfBirthForFrontend(dateOfBirth: number) {
     const ageDifMs = Date.now() - dateOfBirth;
     const ageDate = new Date(ageDifMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 
+  // converts the city value from the database for the frontend
   parseCityForFrontend(cityIndex: number) {
     return this.cities[cityIndex];
   }
 
+  loadingButton(event) {
+    event.target.classList.add('disabled');
+  }
 }

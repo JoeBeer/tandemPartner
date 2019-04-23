@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
-import { Router } from '@angular/router';
 import { UserStoreService } from 'src/app/services/user-store.service';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
@@ -49,7 +48,6 @@ export class ProfilePageComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,
     private userStoreService: UserStoreService,
     private authService: AuthService,
     private utliltyStoreService: UtilityStoreService,
@@ -60,30 +58,34 @@ export class ProfilePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    // initialzie all available offers & activities
+    // initialize all available offers & activities
     this.setAllUtilities();
     this.translateService.onDefaultLangChange.subscribe((event: DefaultLangChangeEvent) => {
       this.setAllUtilities();
     });
 
+    // load all neccessary information of the current user
     this.userStoreService.getUserById(this.authService.currentUserID).subscribe((recievedUser: User) => {
-      this.selectedSex = this.parseSexValueForFrontend(recievedUser.sex);
-      this.selectedActivities = this.parseActivitiesForFrontend(recievedUser.activities);
-      this.selectedOffers = this.parseOffersForFrontend(recievedUser.offers);
-      this.selectedCity = Array.of(this.cities[recievedUser.city]);
-      this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
-      this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
-      this.editForm.get('editFormMail').setValue(this.authService.currentUserMail);
-      this.editForm.get('editFormBirthday').setValue(new Date(recievedUser.dateOfBirth));
-      // modalForm valid status will be validated, therefore has to be initialized in ngOnInit()
-      this.modalForm.get('modalFormPassword');
-    }, error => {
+      if (recievedUser !== undefined) {
+        this.selectedSex = this.parseSexValueForFrontend(recievedUser.sex);
+        this.selectedActivities = this.parseActivitiesForFrontend(recievedUser.activities);
+        this.selectedOffers = this.parseOffersForFrontend(recievedUser.offers);
+        this.selectedCity = Array.of(this.cities[recievedUser.city]);
+        this.editForm.get('editFormFirstname').setValue(recievedUser.firstname);
+        this.editForm.get('editFormLastname').setValue(recievedUser.lastname);
+        this.editForm.get('editFormMail').setValue(this.authService.currentUserMail);
+        this.editForm.get('editFormBirthday').setValue(new Date(recievedUser.dateOfBirth));
+        // modalForm valid status will be validated, therefore has to be initialized in ngOnInit()
+        this.modalForm.get('modalFormPassword');
+      }
+    }, () => {
       console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
     });
 
     this.initializeMultiselectSettings();
   }
 
+  // loads the lists with cities, offers, activities and sex
   setAllUtilities() {
     this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
     this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
@@ -143,14 +145,17 @@ export class ProfilePageComponent implements OnInit {
     };
   }
 
+  // converts the sex value from the database for the frontend
   parseSexValueForFrontend(sexIndex: number): string {
     return this.sex[sexIndex];
   }
 
+  // converts the sex value from the frontend for the database
   parseSexValueForBackend(sex: string): number {
     return this.sex.indexOf(sex);
   }
 
+  // converts the activities from the database for the frontend
   parseActivitiesForFrontend(selectedActivitiesIndexes: number[]) {
     const selectedActivities: string[] = [];
 
@@ -160,6 +165,7 @@ export class ProfilePageComponent implements OnInit {
     return selectedActivities;
   }
 
+  // converts the activities from the frontend for the database
   parseActivitiesForBackend(selectedActivities: string[]) {
     const selectedActivitiesIndexes: number[] = [];
 
@@ -169,6 +175,7 @@ export class ProfilePageComponent implements OnInit {
     return selectedActivitiesIndexes;
   }
 
+  // converts the offers from the database for the frontend
   parseOffersForFrontend(selectedOffersIndexes: number[]) {
     const selectedOffers: string[] = [];
 
@@ -178,6 +185,7 @@ export class ProfilePageComponent implements OnInit {
     return selectedOffers;
   }
 
+  // converts the offers from the frontend for the database
   parseOffersForBackend(selectedOffers: string[]) {
     const selectedOffersIndexes: number[] = [];
 
@@ -196,30 +204,31 @@ export class ProfilePageComponent implements OnInit {
 
   confirmAndValidatePassword() {
 
+    const enteredPassword = this.modalForm.value.modalFormPassword;
     // hash the input for conclusion with the saved password in firebase's Auth
     const password: string = this.md52.appendStr(this.authService.currentUserMail)
-    .appendStr(this.modalForm.value.modalFormPassword).end() as string;
+      .appendStr(this.modalForm.value.modalFormPassword).end() as string;
 
     this.authService.validatePassword(password)
-    // when password was correct start editFormSave()
-    .then(() => {
-      this.invalidPassword = false;
-      this.editFormSave();
-    })
-    // when the password was incorrect, show the specific message
-    .catch(() => {
-      this.updateSuccess = false;
-      this.invalidPassword = true;
-      setTimeout(() => {
+      // when password was correct start editFormSave()
+      .then(() => {
         this.invalidPassword = false;
-      }, 3000);
-      this.modalForm.reset();
-    });
+        this.editFormSave(enteredPassword);
+      })
+      // when the password was incorrect, show the specific message
+      .catch(() => {
+        this.updateSuccess = false;
+        this.invalidPassword = true;
+        setTimeout(() => {
+          this.invalidPassword = false;
+        }, 3000);
+        this.modalForm.reset();
+      });
   }
 
   // validate the input & select fields and send the mail & password to Firebase Authentication
   // after that the rest of userdata incl. the recieved UserID will be send to the API(Firebase Cloud Functions)
-  editFormSave() {
+  editFormSave(enteredPassword: string) {
 
     if (this.editForm.invalid) {
       return;
@@ -242,6 +251,31 @@ export class ProfilePageComponent implements OnInit {
         mail,
         password: this.md5.appendStr(mail)
           .appendStr(password).end()
+      };
+
+      this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
+        // show the updateSuccess message
+        this.updateSuccess = true;
+        setTimeout(() => {
+          this.updateSuccess = false;
+        }, 3000);
+        this.modalForm.reset();
+
+        this.authService.logout();
+      });
+    } else if (mail !== this.authService.currentUserMail) {
+      userdata = {
+        firstname: this.editForm.value.editFormFirstname,
+        lastname: this.editForm.value.editFormLastname,
+        city: this.cities.indexOf(this.selectedCity[0]),
+        dateOfBirth: this.editForm.value.editFormBirthday,
+        // get the only one item from selectedSex-Array
+        sex: this.parseSexValueForBackend(this.selectedSex),
+        activities: this.parseActivitiesForBackend(this.selectedActivities),
+        offers: this.parseOffersForBackend(this.selectedOffers),
+        mail,
+        password: this.md5.appendStr(mail)
+          .appendStr(enteredPassword).end()
       };
 
       this.userStoreService.updateUser(this.authService.currentUserID, userdata).subscribe(() => {
@@ -277,13 +311,6 @@ export class ProfilePageComponent implements OnInit {
     } // end else
   }
 
-  // deleteUser() {
-  //   this.userStoreService.deleteUser(this.authService.currentUserID).subscribe(() => {
-  //     this.authService.logout();
-  //   });
-  // }
-
-
   // getter for the inputfields
   get editFormFirstname() {
     return this.editForm.get('editFormFirstname');
@@ -312,9 +339,7 @@ export class ProfilePageComponent implements OnInit {
     return this.editForm.get('modalFormPassword');
   }
 
-
   openModal(id: string) {
-    console.log('id: ' + id);
     this.modalIsOpen = true;
     this.display = 'block';
 
@@ -329,7 +354,7 @@ export class ProfilePageComponent implements OnInit {
     this.userStoreService.deleteUser(this.authService.currentUserID).subscribe(() => {
       this.closeModal();
       this.authService.logout().then(() => {
-        alert('Profil wurde gelöscht');
+        alert('Profil wurde gelöscht'); // TODO @Arne or @Eric: What about the english version?
       });
     });
   }

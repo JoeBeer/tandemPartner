@@ -2,7 +2,7 @@ const admin = require('firebase-admin');
 const db = admin.firestore();
 const matchesCollection = db.collection("matches");
 
-// Sets the required fields and then creates an match document in the Firestore database.
+// Sets the required fields and then creates a match document in the Firestore database.
 exports.createMatch = function (req, res) {
     const match = req.body;
 
@@ -16,7 +16,7 @@ exports.createMatch = function (req, res) {
         return res.status(201).send(true);
     })
         .catch((error) => {
-            console.log('Error creating new match', error);
+            console.error('Error creating new match', error);
             return res.send(false);
         });
 };
@@ -34,7 +34,7 @@ exports.updateMatch = (req, res) => {
             return res.status(200).send(true);
         })
         .catch((error) => {
-            console.log('Error updating match', error);
+            console.error('Error updating match', error);
             return res.status(500).send(false);
         })
 }
@@ -47,7 +47,7 @@ exports.deleteMatch = (req, res) => {
             return res.status(200).send(true)
         })
         .catch((error) => {
-            console.log('Error - deleting match failed')
+            console.error('Error - deleting match failed', error)
             return res.status(500).send(false)
         })
 }

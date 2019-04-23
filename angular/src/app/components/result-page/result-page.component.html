@@ -1,7 +1,7 @@
 <div class="row my-5">
   <div class="col-1"></div>
   <div class="col-10">
-    <div *ngIf="searchResultLength, else elseBlock"> <!-- TODO Need something else to check, if there are any results -->
+    <div *ngIf="searchResultLength, else elseBlock">
       <div class="card">
         <div class="card-header bg-transparent text-center border-warning">
           <h2 class="font-weight-light">{{ 'result.results' | translate }}</h2>
@@ -9,7 +9,8 @@
         <div class="card-body mx-5">
           <!-- show all accepted matches which are saved in acceptedMatches[]-->
           <div
-            *ngFor="let user of searchResults$ | sort:'commonActivities' | paginate: { itemsPerPage: 5, currentPage: pageNumber } "> <!--  -->
+            *ngFor="let user of searchResults$ | sort:'commonActivities' | paginate: { itemsPerPage: 5, currentPage: pageNumber } ">
+            <!--  -->
             <div class="card shadow my-3">
               <div class="card-body accepted-match-cards">
                 <div class="card-text">
@@ -18,13 +19,16 @@
                       <p class="my-0"><small><b>{{ user.firstname }} {{ user.lastname }}</b></small></p>
                       <p class="my-0"><small><i>{{ parseSexValueForFrontend(user.sex) }}</i></small></p>
                       <p class="my-0"><small><i>{{ parseCityForFrontend(user.city) }}</i></small></p>
-                      <p class="my-0"><small><i>{{ calculateAge(user.dateOfBirth) }} {{ 'result.age' | translate }}</i></small></p>
-                      <p class="my-0"><small><i>{{ 'result.activities' | translate }}</i>: {{activitiesForModal(parseActivitiesForFrontend(user.activities))}}</small></p>
-                      <p class="my-0"><small><i>{{ 'result.commonActivities' | translate }}</i>: <b>{{activitiesForModal(parseActivitiesForFrontend(user.commonActivities))}}</b></small></p>
+                      <p class="my-0"><small><i>{{ calculateAge(user.dateOfBirth) }}
+                            {{ 'result.age' | translate }}</i></small></p>
+                      <!-- <p class="my-0"><small><i>{{ 'result.activities' | translate }}</i>:
+                          {{activitiesForModal(parseActivitiesForFrontend(user.activities))}}</small></p> -->
+                      <p *ngIf="activitiesForModal(parseActivitiesForFrontend(user.commonActivities))" class="my-0"><small><i>{{ 'result.commonActivities' | translate }}</i>:
+                          <b>{{activitiesForModal(parseActivitiesForFrontend(user.commonActivities))}}</b></small></p>
                     </div>
                     <div class="col-4 col-md-2 d-flex justify-content-end my-auto">
-                      <button type="button" class="btn btn-outline-success homebutton" (click)="sendMatchrequest(user)"
-                        data-toggle="tooltip" data-placement="top"
+                      <button type="button" class="btn btn-outline-success homebutton"
+                        (click)="sendMatchrequest(user);openModal();" data-toggle="tooltip" data-placement="top"
                         title="{{ 'result.sendMatchrequestTooltip' | translate }}">
                         <fa-icon [icon]="faUserCheck"></fa-icon>
                       </button>
@@ -51,4 +55,25 @@
   </div>
   <!--col-10-->
   <div class="col-1"></div>
+</div>
+
+
+
+
+<!-- Info Modal -->
+<div class="modal-backdrop fade in" [ngStyle]="{'display':display}"></div>
+<div *ngIf="modalIsOpen" class="modal" [ngStyle]="{'display': display}" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Info</h5>
+        <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ 'modals.matchrequest' | translate}}
+      </div>
+    </div>
+  </div>
 </div>

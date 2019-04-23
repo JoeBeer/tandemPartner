@@ -3,6 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'sort'
 })
+// sorts a list according to the same values that are contained in a second list
 export class SortPipe implements PipeTransform {
   transform(array: any, field: string): any[] {
     if (!Array.isArray(array)) {
