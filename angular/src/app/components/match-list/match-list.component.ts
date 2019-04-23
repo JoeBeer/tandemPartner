@@ -50,12 +50,14 @@ export class MatchListComponent implements OnInit {
   // for modal
   display = 'none';
   modalIsOpen = false;
+  deleteModalIsOpen = false;
   firstname: string;
   lastname: string;
   matchSex: string;
   city: string;
   matchActivities;
   matchIDModal: string;
+  matchID: string;
   age;
 
   constructor(
@@ -238,9 +240,18 @@ export class MatchListComponent implements OnInit {
     return this.cities[cityIndex];
   }
 
+  openDeleteModal(match) {
+    // infos for modal
+    this.matchIDModal = match.uid;
+    this.matchID = match.matchId;
+    this.deleteModalIsOpen = true;
+    this.display = 'block';
+  }
+
   closeModal() {
     this.display = 'none';
     this.modalIsOpen = false;
+    this.deleteModalIsOpen = false;
   }
 
   loadingButton(event) {

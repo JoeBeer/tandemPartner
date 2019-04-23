@@ -85,7 +85,8 @@
     "matchrequestFor": "Request for",
     "contactTooltip": "Contact the Partner",
     "deleteTooltip": "Withdraw the Offer",
-    "deleteMatchTooltip": "Delete Match"
+    "deleteMatchTooltip": "Delete Match",
+    "deleteMatch": "Do you really want to delete your match?"
   },
 
   "search": {
