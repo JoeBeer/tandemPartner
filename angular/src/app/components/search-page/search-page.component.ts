@@ -26,7 +26,7 @@ export class SearchPageComponent implements OnInit {
   // where the selected data will be saved
   selectedOffer: string;
   selectedCity: string[] = [];
-  selectedSex: string;
+  selectedSex: string[] = [];
 
   // settings for select fields
   selectOnlyOneSettings = {};
@@ -68,6 +68,7 @@ export class SearchPageComponent implements OnInit {
     this.cities = this.utliltyStoreService.getAllCities(this.translateService.getDefaultLang());
     this.offers = this.utliltyStoreService.getAllOffers(this.translateService.getDefaultLang());
     this.sex = this.getSex(this.translateService.getDefaultLang());
+    this.selectedSex[0] = this.sex[2];
   }
 
   createSearchForm() {
