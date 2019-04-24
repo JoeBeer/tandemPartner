@@ -149,7 +149,9 @@
     "accept": "Annehmen",
     "decline": "Ablehnen",
     "age": "Alter",
-    "matchrequest": "Eine Matchanfrage wurde versendet!"
+    "matchrequest": "Eine Matchanfrage wurde versendet!",
+    "failedLogin": "Login fehlgeschlagen",
+    "failingExplanation": "Der Benutzername und/oder das Passwort wurde falsche eingegeben."
   },
 
   "loading": {

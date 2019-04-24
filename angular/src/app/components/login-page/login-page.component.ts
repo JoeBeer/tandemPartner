@@ -19,6 +19,9 @@ export class LoginPageComponent implements OnInit {
   faAt = faAt;
   faLock = faLock;
 
+  // for modal
+  failedLogin = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService) {
@@ -40,7 +43,14 @@ export class LoginPageComponent implements OnInit {
     const password = this.md5.appendStr(this.loginForm.value.loginFormMail)
       .appendStr(this.loginForm.value.loginFormPassword).end() as string;
 
-    this.authService.login(mail, password);
+    this.authService.login(mail, password).catch( error => {
+      this.failedLogin = true;
+    });
+  }
+
+  // neccessary for the modal in the html.file
+  reloadWindow() {
+    window.location.reload();
   }
 
   get loginFormMail() {
