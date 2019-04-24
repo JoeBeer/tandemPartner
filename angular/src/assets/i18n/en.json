@@ -74,7 +74,8 @@
     "minActivities": "at least one activity is required!",
     "ageMismatch": "The minimum Age has to be smaller than the maximum Age!",
     "updateSuccess": "Update successful!",
-    "incorrectPassword": "Incorrect Password! Please try again!"
+    "incorrectPassword": "Incorrect Password! Please try again!",
+    "minAge": "You have to be at least 16 years old!"
   },
 
   "matchlist": {
