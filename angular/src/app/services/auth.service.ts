@@ -79,12 +79,8 @@ export class AuthService {
 
   // login with given mail and password
   async login(mail: string, password: string) {
-    try {
       await this.angularFireAuth.auth.signInWithEmailAndPassword(mail, password);
       this.isLoggedIn = true;
       this.router.navigate(['/home']);
-    } catch (error) {
-      window.location.reload();
-    }
   }
 }

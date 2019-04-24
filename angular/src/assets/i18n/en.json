@@ -149,7 +149,9 @@
     "accept": "Accept",
     "decline": "Decline",
     "age": "Age",
-    "matchrequest": "A match request has been sent!"
+    "matchrequest": "A match request has been sent!",
+    "failedLogin": "Login failed",
+    "failingExplanation": "The Username and/or the Password was incorrect."
   },
 
   "loading": {
