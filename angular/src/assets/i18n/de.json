@@ -74,7 +74,8 @@
     "minActivities": "mind. eine Aktivität muss ausgewählt sein!",
     "ageMismatch": "Das Mindestalter muss kleiner als das Maximalalter sein!",
     "updateSuccess": "Aktualisierung erfoglreich!",
-    "incorrectPassword": "Falsches Passwort! Bitte erneut versuchen!"
+    "incorrectPassword": "Falsches Passwort! Bitte erneut versuchen!",
+    "minAge": "Du musst mindestens 16 jahre alt sein!"
   },
 
   "matchlist": {
