@@ -59,7 +59,8 @@
     "deleteButton": "Delete Profile",
     "deleteQuestion": "Do you really want to delete your profile?",
     "confirmButton": "Confirm",
-    "modalHeader": "Confirm you current Password"
+    "modalHeader": "Confirm you current Password",
+    "deleteNotification": "Profile was deleted"
   },
 
   "validators": {
@@ -74,7 +75,8 @@
     "minActivities": "at least one activity is required!",
     "ageMismatch": "The minimum Age has to be smaller than the maximum Age!",
     "updateSuccess": "Update successful!",
-    "incorrectPassword": "Incorrect Password! Please try again!"
+    "incorrectPassword": "Incorrect Password! Please try again!",
+    "minAge": "You have to be at least 16 years old!"
   },
 
   "matchlist": {
@@ -85,7 +87,8 @@
     "matchrequestFor": "Request for",
     "contactTooltip": "Contact the Partner",
     "deleteTooltip": "Withdraw the Offer",
-    "deleteMatchTooltip": "Delete Match"
+    "deleteMatchTooltip": "Delete Match",
+    "deleteMatch": "Do you really want to delete your match?"
   },
 
   "search": {
@@ -134,7 +137,8 @@
     "heading": "About Us",
     "blockquote": "\"An investment in knowledge still brings the best interest.\"",
     "explanation": "We want to make your investment as simple as possible. Therefore we are offering you one platform, with whom you can share your knowledge with other people and learn something new. The tandemPartner Team consists of students of HWR Berlin in their sixth semesters.",
-    "imageExplanation": "This is the team from the left to the right:"
+    "imageExplanation": "This is the team from the left to the right:",
+    "uniProject": "TandemPartner is a project only for university purposes and will not be hosted for serious purposes!!! Saved Data is fictitious - the user should register with notional data as well!"
   },
 
   "sex": {
@@ -147,7 +151,9 @@
     "accept": "Accept",
     "decline": "Decline",
     "age": "Age",
-    "matchrequest": "A match request has been sent!"
+    "matchrequest": "A match request has been sent!",
+    "failedLogin": "Login failed",
+    "failingExplanation": "The Username and/or the Password was incorrect."
   },
 
   "loading": {
