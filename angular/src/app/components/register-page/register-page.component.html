@@ -129,7 +129,7 @@
           </div>
 
           <div class="alert-danger pl-2"
-            *ngIf="registerFormPassword.value != registerFormPasswordConfirm.value && registerFormPasswordConfirm.value != null">
+            *ngIf="registerFormPassword.value !== registerFormPasswordConfirm.value || registerFormPasswordConfirm.value == null">
             {{'validators.passwordMismatch' | translate }}
           </div>
 
@@ -161,12 +161,17 @@
             <div *ngIf="registerFormBirthday.errors.required" class="alert-danger">
               {{'validators.birthday' | translate }}</div>
           </div>
+
+          <div class="alert-danger pl-2"
+            *ngIf="calculateAge() === false && (registerFormBirthday.touched || registerFormBirthday.dirty)">
+            {{'validators.minAge' | translate }}
+          </div>
           <!--End-Validator messages-->
 
           <div class="btn-toolbar d-flex justify-content-center" role="toolbar">
             <div class="btn-group mr-1 mr-md-3">
               <button type="button" type="submit" class="btn btn-warning d-flex mx-auto mt-2" (click)="loadingButton($event)" id="loadingButton"
-                [disabled]="(!registerForm.valid || !registerFormOffers.valid || !registerFormActivities.valid || !registerFormCity.valid)">{{'register.saveButton' | translate }}</button>
+                [disabled]="!registerForm.valid || !registerFormOffers.valid || !registerFormActivities.valid || !registerFormCity.valid || !registerFormSex.valid || calculateAge() === false">{{'register.saveButton' | translate }}</button>
             </div>
             <div class="btn-group ml-md-3">
               <button type="button" [routerLink]="['/login']"

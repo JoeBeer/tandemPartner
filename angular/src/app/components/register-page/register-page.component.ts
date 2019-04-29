@@ -149,6 +149,17 @@ export class RegisterPageComponent implements OnInit {
 
   }
 
+  calculateAge() {
+    const birthdate = new Date(this.registerForm.value.registerFormBirthday);
+    const timeDiff = Math.abs(Date.now() - birthdate.getTime());
+    const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    if (age >= 16) {
+      return true;
+    } else {
+      return false;
+    }
+ }
+
   // converts the sex value from the frontend for the database
   parseSexValueForBackend(sex: string) {
     return this.sex.indexOf(sex);

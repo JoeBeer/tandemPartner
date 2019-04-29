@@ -59,7 +59,8 @@
     "deleteButton": "Profil löschen",
     "deleteQuestion": "Möchtest du wirklich dein Profil löschen?",
     "confirmButton": "Bestätigen",
-    "modalHeader": "Aktuelles Passwort bestätigen"
+    "modalHeader": "Aktuelles Passwort bestätigen",
+    "deleteNotification": "Profil wurde gelöscht"
   },
 
   "validators": {
@@ -74,7 +75,8 @@
     "minActivities": "mind. eine Aktivität muss ausgewählt sein!",
     "ageMismatch": "Das Mindestalter muss kleiner als das Maximalalter sein!",
     "updateSuccess": "Aktualisierung erfoglreich!",
-    "incorrectPassword": "Falsches Passwort! Bitte erneut versuchen!"
+    "incorrectPassword": "Falsches Passwort! Bitte erneut versuchen!",
+    "minAge": "Du musst mindestens 16 jahre alt sein!"
   },
 
   "matchlist": {
@@ -85,7 +87,8 @@
     "matchrequestFor": "Anfrage für",
     "contactTooltip": "Partner kontaktieren",
     "deleteTooltip": "Anfrage zurückziehen",
-    "deleteMatchTooltip": "Match löschen"
+    "deleteMatchTooltip": "Match löschen",
+    "deleteMatch": "Möchtest du dein Match wirklich löschen?"
   },
 
   "search": {
@@ -134,7 +137,8 @@
     "heading": "Über Uns",
     "blockquote": "\"Eine Investition in Wissen bringt immer noch die besten Zinsen.\"",
     "explanation": "Wir möchten Dir deine Investition so einfach wie möglich machen und bieten Dir deshalb eine Plattform, mit dieser Du jeder Zeit dein eigenes Wissen mit anderen teilen und auch neues erlangen kannst. Das tandemPartner Team besteht aus Studenten des 6. Semester an der HWR Berlin.",
-    "imageExplanation": "Hier das Team von links nach rechts:"
+    "imageExplanation": "Hier das Team von links nach rechts:",
+    "uniProject": "TandemPartner ist nur ein Uniprojekt und verfolgt keine Absichten, diese Plattform ernsthaft zu betreiben!!! Gespeicherte Daten sind fiktiv, ebenso sollte das auch vom Anwender berücksichtigt werden!"
   },
 
   "sex": {
@@ -147,7 +151,9 @@
     "accept": "Annehmen",
     "decline": "Ablehnen",
     "age": "Alter",
-    "matchrequest": "Eine Matchanfrage wurde versendet!"
+    "matchrequest": "Eine Matchanfrage wurde versendet!",
+    "failedLogin": "Login fehlgeschlagen",
+    "failingExplanation": "Der Benutzername und/oder das Passwort wurde falsche eingegeben."
   },
 
   "loading": {
