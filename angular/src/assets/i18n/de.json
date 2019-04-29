@@ -59,7 +59,8 @@
     "deleteButton": "Profil löschen",
     "deleteQuestion": "Möchtest du wirklich dein Profil löschen?",
     "confirmButton": "Bestätigen",
-    "modalHeader": "Aktuelles Passwort bestätigen"
+    "modalHeader": "Aktuelles Passwort bestätigen",
+    "deleteNotification": "Profil wurde gelöscht"
   },
 
   "validators": {

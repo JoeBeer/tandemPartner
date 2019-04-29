@@ -339,7 +339,7 @@ export class ProfilePageComponent implements OnInit {
     return this.editForm.get('modalFormPassword');
   }
 
-  openModal(id: string) {
+  openModal() {
     this.modalIsOpen = true;
     this.display = 'block';
 
@@ -354,7 +354,9 @@ export class ProfilePageComponent implements OnInit {
     this.userStoreService.deleteUser(this.authService.currentUserID).subscribe(() => {
       this.closeModal();
       this.authService.logout().then(() => {
-        alert('Profil wurde gelöscht'); // TODO @Arne or @Eric: What about the english version?
+        this.translateService.stream('profile.deleteNotification').subscribe((value: string) => {
+          alert(value);
+        });
       });
     });
   }

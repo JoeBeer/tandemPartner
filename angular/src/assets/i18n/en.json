@@ -59,7 +59,8 @@
     "deleteButton": "Delete Profile",
     "deleteQuestion": "Do you really want to delete your profile?",
     "confirmButton": "Confirm",
-    "modalHeader": "Confirm you current Password"
+    "modalHeader": "Confirm you current Password",
+    "deleteNotification": "Profile was deleted"
   },
 
   "validators": {
