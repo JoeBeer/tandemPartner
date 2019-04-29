@@ -12,14 +12,12 @@ exports.createUser = async (req, res) => {
             email: user.mail,
             password: user.password,
             displayName: user.firstname + ' ' + user.lastname,
-            photoURL: "http://www.example.com/12345678/photo.png",
             disabled: false
         }).then(async (userRecord) => {
             return await usersCollection.doc(userRecord.uid).set({
                 uid: userRecord.uid,
                 firstname: user.firstname,
-                lastname: user.lastname,
-                photoURL: userRecord.photoURL,
+                lastname: user.lastname,                
                 dateOfBirth: user.dateOfBirth,
                 sex: user.sex,
                 city: user.city,
