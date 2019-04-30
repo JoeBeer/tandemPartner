@@ -26,7 +26,7 @@
 
   "login": {
     "tandemSlogan": " - gemeinsam lernen",
-    "mailPlaceholder": "E-Mailadresse",
+    "mailPlaceholder": "E-Mail-Adresse",
     "passwordPlaceholder": "Passwort",
     "loginButton": "Einloggen",
     "registerButton": "Account erstellen"
@@ -153,7 +153,7 @@
     "age": "Alter",
     "matchrequest": "Eine Matchanfrage wurde versendet!",
     "failedLogin": "Login fehlgeschlagen",
-    "failingExplanation": "Der Benutzername und/oder das Passwort wurde falsche eingegeben."
+    "failingExplanation": "Die E-Mail-Adresse und/oder das Passwort wurde falsch eingegeben."
   },
 
   "loading": {
