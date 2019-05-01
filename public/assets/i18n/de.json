@@ -124,7 +124,8 @@
   "chatroomItem": {
     "currentUser": "Du",
     "inputPlaceholder": "Schreib etwas...",
-    "sendButton": "Senden"
+    "sendButton": "Senden",
+    "emptyMessage": "Du musst etwas eingeben!"
   },
 
   "impressum": {
