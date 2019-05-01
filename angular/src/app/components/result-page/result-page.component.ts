@@ -68,7 +68,6 @@ export class ResultPageComponent implements OnInit {
       this.searchResultLength = searchResults.length;
       this.searchResults$ = searchResults;
     }, () => {
-      console.log('Error in result-page - TODO delete this console.log() before finishing WebProg!');
     });
   }
 

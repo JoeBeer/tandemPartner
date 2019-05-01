@@ -46,7 +46,6 @@ export class AuthService {
         this.currentUserActivities = user.activities;
       }
     }, () => {
-      console.log('Error in auth-service - TODO delete this console.log() before finishing WebProg!');
     });
   }
 

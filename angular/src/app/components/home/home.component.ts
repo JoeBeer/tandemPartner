@@ -57,7 +57,6 @@ export class HomeComponent implements OnInit {
       this.unAcceptedMatchesLength = matches.length;
       this.unAcceptedMatches$ = matches;
     }, () => {
-      console.log('Error in home-page - TODO delete this console.log() before finishing WebProg!');
     });
   }
 
