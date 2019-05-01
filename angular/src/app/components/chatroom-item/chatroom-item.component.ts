@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService } from './../../services/chat.service';
 import { Component, OnInit } from '@angular/core';
@@ -20,7 +21,8 @@ export class ChatroomItemComponent implements OnInit {
   constructor(
     public chatService: ChatService,
     private route: ActivatedRoute,
-    public authService: AuthService
+    public authService: AuthService,
+    private translateService: TranslateService
   ) { }
 
   // initalize the chatroom with the messages and user information
@@ -33,7 +35,9 @@ export class ChatroomItemComponent implements OnInit {
   // send written message to the backend
   submit(chatId) {
     if (!this.newMessage) {
-      return alert('you need to enter something');
+      return this.translateService.stream('chatroomItem.emptyMessage').subscribe( (value: string) => {
+        alert(value);
+      });
     }
     this.chatService.sendMessage(chatId, this.newMessage)
       .subscribe();
