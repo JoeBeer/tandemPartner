@@ -31,14 +31,12 @@ export class ChatroomListComponent implements OnInit {
     this.chatService.getAllChatroomsAsUserA().subscribe(chatrooms => {
       this.userChatsAsUserA$ = chatrooms;
     }, () => {
-      console.log('Error in chatroom-list-page - TODO delete this console.log() before finishing WebProg!');
     });
 
     // initialize all the chatrooms from the current user, where the current user ID is equal to userB
     this.chatService.getAllChatroomsAsUserB().subscribe(chatrooms => {
       this.userChatsAsUserB$ = chatrooms;
     }, () => {
-      console.log('Error in chatroom-list-page - TODO delete this console.log() before finishing WebProg!');
     });
   }
 

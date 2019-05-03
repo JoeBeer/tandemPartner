@@ -79,7 +79,6 @@ export class ProfilePageComponent implements OnInit {
         this.modalForm.get('modalFormPassword');
       }
     }, () => {
-      console.log('Error in profile-page - TODO delete this console.log() before finishing WebProg!');
     });
 
     this.initializeMultiselectSettings();

@@ -74,7 +74,6 @@ export class MatchListComponent implements OnInit {
       this.matchRequestLength = matches.length;
       this.matchRequests$ = matches;
     }, () => {
-      console.log('Error in match-list-page - TODO delete this console.log() before finishing WebProg!');
     });
 
     // initialize all the accepted matches from the current user, where the current user ID is equal to initiatorID
@@ -82,7 +81,6 @@ export class MatchListComponent implements OnInit {
       this.acceptedMatchesAsInitiatorLength = matches.length;
       this.acceptedMatchesAsInitiator$ = matches;
     }, () => {
-      console.log('Error in match-list-page - TODO delete this console.log() before finishing WebProg!');
     });
 
     // initialize all the accepted matches from the current user, where the current user ID is equal to partnerID
@@ -90,7 +88,6 @@ export class MatchListComponent implements OnInit {
       this.acceptedMatchesAsPartnerLength = matches.length;
       this.acceptedMatchesAsPartner$ = matches;
     }, () => {
-      console.log('Error in match-list-page - TODO delete this console.log() before finishing WebProg!');
     });
   }
 
